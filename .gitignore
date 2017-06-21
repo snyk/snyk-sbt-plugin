@@ -4,3 +4,6 @@ __pycache__/
 test/fixtures/testproj/project/project/
 test/fixtures/testproj/project/target/
 test/fixtures/testproj/target/
+test/fixtures/testproj-noplugin/project/project/
+test/fixtures/testproj-noplugin/project/target/
+test/fixtures/testproj-noplugin/target/

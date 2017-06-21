@@ -1,12 +1,13 @@
-var test = require('tap-only');
-var parse = require('../../lib/parse-sbt');
 var fs = require('fs');
+var path = require('path');
+var test = require('tap-only');
+var parser = require('../../lib/parse-sbt');
 
 test('parse a `sbt dependencies` output', function (t) {
   t.plan(4);
-  var sbtOutput = fs.readFileSync(
-    __dirname + '/../fixtures/sbt-dependency-output.txt', 'utf8');
-  var depTree = parse(sbtOutput, 'testApp', '1.0.1');
+  var sbtOutput = fs.readFileSync(path.join(
+    __dirname, '..', 'fixtures', 'sbt-dependency-output.txt'), 'utf8');
+  var depTree = parser.parse(sbtOutput, 'testApp', '1.0.1');
 
   t.equal(depTree
     .dependencies['myproject-common:myproject-common_2.11']
@@ -43,4 +44,13 @@ test('parse a `sbt dependencies` output', function (t) {
       'org.slf4j:slf4j-log4j12@1.7.10',
     ],
     '`from` array is good');
+});
+
+
+test('parse an error output', function (t) {
+  t.plan(1);
+  var sbtOutput = fs.readFileSync(path.join(
+    __dirname, '..', 'fixtures', 'sbt-no-plugin-output.txt'), 'utf8');
+  var error = parser.parseError(sbtOutput, 'testApp', '1.0.1');
+  t.type(error, 'object', 'Error thrown correctly');
 });
