@@ -1,12 +1,17 @@
 var test = require('tap-only');
-var parse = require('../lib/parse-sbt');
+var parse = require('../../lib/parse-sbt');
 var fs = require('fs');
 
-test('parse a `sbt dependencies` output', function(t) {
-  t.plan(3);
+test('parse a `sbt dependencies` output', function (t) {
+  t.plan(4);
   var sbtOutput = fs.readFileSync(
-    __dirname + '/fixtures/sbt-dependency-output.txt', 'utf8');
+    __dirname + '/../fixtures/sbt-dependency-output.txt', 'utf8');
   var depTree = parse(sbtOutput, 'testApp', '1.0.1');
+
+  t.equal(depTree
+    .dependencies['myproject-common:myproject-common_2.11']
+    .version,
+    '0.0.1', 'resolved stand-alone dependency');
 
   t.equal(depTree
     .dependencies['myproject-api:myproject-api_2.11']
