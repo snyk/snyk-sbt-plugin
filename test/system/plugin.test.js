@@ -1,11 +1,12 @@
+var fs = require('fs');
+var path = require('path');
 var test = require('tap-only');
 var plugin = require('../../lib');
-var fs = require('fs');
 
 test('run inspect()', function (t) {
   t.plan(1);
-  return plugin.inspect(
-    __dirname + '/../fixtures/testproj/',
+  return plugin.inspect(path.join(
+    __dirname, '..', 'fixtures', 'testproj'),
     'build.sbt')
   .then(function (result) {
     t.equal(result.package
@@ -15,5 +16,15 @@ test('run inspect()', function (t) {
       .dependencies['org.apache.axis:axis-jaxrpc'].version,
       '1.4',
       'correct version found');
+  });
+});
+
+test('run inspect() with no sbt plugin', function (t) {
+  t.plan(1);
+  return plugin.inspect(path.join(
+    __dirname, '..', 'fixtures', 'testproj-noplugin'),
+    'build.sbt')
+  .catch(function (result) {
+    t.pass('Error thrown correctly');
   });
 });
