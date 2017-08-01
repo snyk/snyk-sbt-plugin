@@ -10,7 +10,6 @@ test('run inspect()', function (t) {
     'build.sbt')
   .then(function (result) {
     t.equal(result.package
-      .dependencies['com.example:hello_2.12']
       .dependencies['axis:axis']
       .dependencies['axis:axis-jaxrpc']
       .dependencies['org.apache.axis:axis-jaxrpc'].version,
@@ -24,6 +23,9 @@ test('run inspect() with no sbt plugin', function (t) {
   return plugin.inspect(path.join(
     __dirname, '..', 'fixtures', 'testproj-noplugin'),
     'build.sbt')
+  .then(function () {
+    t.fail('should not be reached');
+  })
   .catch(function (result) {
     t.pass('Error thrown correctly');
   });
