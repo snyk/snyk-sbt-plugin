@@ -7,7 +7,7 @@ test('check build args with array', function (t) {
     '-Pjaxen',
   ]);
   t.deepEqual(result, [
-    'dependency-tree',
+    'dependencyTree',
     '-Paxis',
     '-Pjaxen',
   ]);
@@ -17,7 +17,7 @@ test('check build args with array', function (t) {
 test('check build args with string', function (t) {
   var result = plugin.buildArgs(null, null, '-Paxis -Pjaxen');
   t.deepEqual(result, [
-    'dependency-tree',
+    'dependencyTree',
     '-Paxis -Pjaxen',
   ]);
   t.end();
