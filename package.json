@@ -16,6 +16,9 @@
   },
   "author": "snyk.io",
   "license": "Apache-2.0",
+  "dependencies": {
+    "debug": "^2.2.0"
+  },
   "devDependencies": {
     "jscs": "^3.0.7",
     "semantic-release": "^6.3.6",
