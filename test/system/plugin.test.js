@@ -27,6 +27,7 @@ test('run inspect() with no sbt plugin', function (t) {
     t.fail('should not be reached');
   })
   .catch(function (result) {
+    t.match(result.message, 'Missing plugin `sbt-dependency-graph`');
     t.pass('Error thrown correctly');
   });
 });
