@@ -4,7 +4,7 @@ var test = require('tap-only');
 var parser = require('../../lib/parse-sbt');
 
 test('parse `sbt dependencies` output: multi configuration', function (t) {
-  t.plan(7);
+  t.plan(6);
   var sbtOutput = fs.readFileSync(path.join(
     __dirname, '..', 'fixtures', 'sbt-dependency-output.txt'), 'utf8');
   var depTree = parser.parse(sbtOutput, 'testApp', '1.0.1');
@@ -33,27 +33,10 @@ test('parse `sbt dependencies` output: multi configuration', function (t) {
     .dependencies['org.slf4j:slf4j-log4j12']
     .version,
     '1.7.10', 'found dependency');
-
-  t.same(depTree
-    .dependencies['myproject-spark:myproject-spark_2.11']
-    .dependencies['org.apache.spark:spark-core_2.11']
-    .dependencies['org.apache.curator:curator-recipes']
-    .dependencies['org.apache.zookeeper:zookeeper']
-    .dependencies['org.slf4j:slf4j-log4j12']
-    .from,
-    [
-      'testApp@1.0.1',
-      'myproject-spark:myproject-spark_2.11@0.0.1',
-      'org.apache.spark:spark-core_2.11@1.4.1',
-      'org.apache.curator:curator-recipes@2.4.0',
-      'org.apache.zookeeper:zookeeper@3.4.5',
-      'org.slf4j:slf4j-log4j12@1.7.10',
-    ],
-    '`from` array is good');
 });
 
 test('parse `sbt dependencies` output: single configuration', function (t) {
-  t.plan(9);
+  t.plan(8);
   var sbtOutput = fs.readFileSync(path.join(
     __dirname, '..', 'fixtures', 'sbt-single-config-dependency-output.txt'),
     'utf8');
@@ -93,22 +76,6 @@ test('parse `sbt dependencies` output: single configuration', function (t) {
     .dependencies['com.github.nscala-time:nscala-time_2.10']
     .dependencies['joda-time:joda-time'].version,
     '2.5', 'transient dependency');
-
-  t.same(depTree
-    .dependencies['com.stratio.datasource:spark-mongodb_2.10']
-    .dependencies['org.mongodb:casbah-commons_2.10']
-    .dependencies['com.github.nscala-time:nscala-time_2.10']
-    .dependencies['joda-time:joda-time']
-    .from,
-    [
-      'my-recommendation-spark-engine:my-recommendation-spark-engine_2.10@' +
-        '1.0-SNAPSHOT',
-      'com.stratio.datasource:spark-mongodb_2.10@0.11.1',
-      'org.mongodb:casbah-commons_2.10@2.8.0',
-      'com.github.nscala-time:nscala-time_2.10@1.0.0',
-      'joda-time:joda-time@2.5',
-    ],
-    '`from` array is good');
 });
 
 
