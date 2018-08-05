@@ -4,7 +4,6 @@ var test = require('tap-only');
 var plugin = require('../../lib');
 
 test('run inspect()', function (t) {
-  t.plan(1);
   return plugin.inspect(path.join(
     __dirname, '..', 'fixtures', 'testproj'),
     'build.sbt')
@@ -19,7 +18,6 @@ test('run inspect()', function (t) {
 });
 
 test('run inspect() with no sbt plugin', function (t) {
-  t.plan(1);
   return plugin.inspect(path.join(
     __dirname, '..', 'fixtures', 'testproj-noplugin'),
     'build.sbt')
