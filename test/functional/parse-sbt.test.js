@@ -77,12 +77,3 @@ test('parse `sbt dependencies` output: single configuration', function (t) {
     .dependencies['joda-time:joda-time'].version,
   '2.5', 'transient dependency');
 });
-
-
-test('parse an error output', function (t) {
-  t.plan(1);
-  var sbtOutput = fs.readFileSync(path.join(
-    __dirname, '..', 'fixtures', 'sbt-no-plugin-output.txt'), 'utf8');
-  var error = parser.parseError(sbtOutput, 'testApp', '1.0.1');
-  t.type(error, 'object', 'Error thrown correctly');
-});
