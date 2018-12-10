@@ -5,9 +5,8 @@ var plugin = require('../../lib');
 var subProcess = require('../../lib/sub-process');
 
 test('run inspect()', function (t) {
-  return plugin.inspect(path.join(
-    __dirname, '..', 'fixtures', 'testproj'),
-  'build.sbt')
+  return plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj/build.sbt')
     .then(function (result) {
       t.equal(result.package
         .dependencies['axis:axis']
@@ -33,8 +32,8 @@ test('run inspect() with no sbt plugin', function (t) {
 
 test('run inspect() with failing `sbt` execution', function (t) {
   stubSubProcessExec(t);
-  return plugin.inspect(path.join(__dirname, '..', 'fixtures', 'testproj'),
-    'build.sbt')
+  return plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj/build.sbt')
     .then(function () {
       t.fail('should not be reached');
     })
