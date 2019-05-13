@@ -17,23 +17,28 @@
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --format stylish",
     "prepare": "npm run build",
-    "test": "npm run lint && npm run test-functional",
-    "test-functional": "tap -R spec ./test/functional/*.test.[tj]s",
-    "test-system": "tap -R spec --timeout=600 ./test/system/*.test.[tj]s"
+    "test": "npm run lint && npm run build && npm run test-functional",
+    "test-functional": "tap -Rspec ./test/functional/*.test.[tj]s",
+    "test-system": "tap -Rspec --timeout=600 ./test/system/*.test.[tj]s"
   },
   "author": "snyk.io",
   "license": "Apache-2.0",
   "devDependencies": {
     "debug": "^4.1.1",
+    "@types/node": "12.0.3",
     "sinon": "^2.4.1",
     "tap": "12.6.1",
     "tap-only": "0.0.5",
-    "typescript": "3.4.5",
-    "tslint": "5.16.0"
+    "tslint": "5.16.0",
+    "typescript": "3.4.5"
   },
   "dependencies": {
     "@types/node": "6.14.6",
     "@types/sinon": "7.0.11",
-    "tree-kill": "^1.2.1"
+    "tree-kill": "^1.2.1",
+    "child_process": "1.0.2",
+    "fs": "0.0.1-security",
+    "path": "0.12.7",
+    "tslib": "1.9.3"
   }
 }

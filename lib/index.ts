@@ -1,18 +1,14 @@
-var path = require('path');
-var fs = require('fs');
-var subProcess = require('./sub-process');
-var parser = require('./parse-sbt');
-var packageFormatVersion = 'mvn:0.0.1';
+import * as path from 'path';
+import * as fs from 'fs';
 
-module.exports = {
-  inspect: inspect,
-};
+import * as subProcess from './sub-process';
+import * as parser from './parse-sbt';
+import * as types from './types';
+const packageFormatVersion = 'mvn:0.0.1';
 
-module.exports.__tests = {
-  buildArgs: buildArgs,
-};
+export async function inspect(root, targetFile, options):
+  Promise<types.PluginResult> {
 
-function inspect(root, targetFile, options) {
   if (!options) {
     options = {dev: false};
   }
@@ -71,7 +67,7 @@ function inspect(root, targetFile, options) {
     });
 }
 
-// guess whether we have the couriser plugin by looking for sbt-coursier
+ // guess whether we have the couriser plugin by looking for sbt-coursier
 // in project and project/project
 function coursierPluginInProject(basePath) {
   const sbtFileList = sbtFiles(path.join(basePath, 'project'))
@@ -79,10 +75,10 @@ function coursierPluginInProject(basePath) {
   const searchResults = sbtFileList.map ((file) => {
     return searchWithFs(file);
   });
-  return searchResults.includes(true);
+  return searchResults.filter(Boolean).length > 0;
 }
 
-// provide a list of .sbt files in the specified directory
+ // provide a list of .sbt files in the specified directory
 function sbtFiles(basePath) {
   if (fs.existsSync(basePath) && fs.lstatSync(basePath).isDirectory()) {
     return fs.readdirSync(basePath).filter((fileName) => {
@@ -99,7 +95,7 @@ function searchWithFs( filename ) {
   return buffer.indexOf('sbt-coursier') > -1;
 }
 
-function buildArgs(sbtArgs, isCoursierProject) {
+export function buildArgs(sbtArgs, isCoursierProject) {
   // force plain output so we don't have to parse colour codes
   let args = ['-Dsbt.log.noformat=true'];
   if (sbtArgs) {
