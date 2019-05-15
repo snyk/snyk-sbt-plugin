@@ -10,6 +10,10 @@ node_js:
 cache:
   directories:
     - node_modules
+install: 
+  # Install a later version of sbt-extras to support SBT >=1.0
+  - curl -Ls https://git.io/sbt > ~/bin/sbt
+  - chmod a+x ~/bin/sbt
 script:
   - npm test
   - npm run test-system
