@@ -1,7 +1,6 @@
-- `node -v`:
-- `npm -v`:
-- `snyk -v`:
-- Command run:
+- `sbt -v`:
+
+- What command was run(including all the options):
 
 ### Expected behaviour
 
@@ -14,4 +13,4 @@
 
 ---
 
-If applicable, please append the `--debug` flag on your command and include the output here **ensuring to remove any sensitive/personal details or tokens.
+If applicable, please append the `-d` flag on your command and include the output here **ensuring to remove any sensitive/personal details or tokens.
