@@ -16,7 +16,6 @@ before_install:
   - chmod a+x ~/bin/sbt
 script:
   - npm test
-  - npm run test-system
 jobs:
   include:
     - stage: npm release

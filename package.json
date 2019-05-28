@@ -17,9 +17,9 @@
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --format stylish",
     "prepare": "npm run build",
-    "test": "npm run lint && npm run build && npm run test-functional",
-    "test-functional": "tap -Rspec ./test/functional/*.test.[tj]s",
-    "test-system": "tap -Rspec --timeout=600 ./test/system/*.test.[tj]s"
+    "test": "npm run lint && npm run test-functional && npm run test-system",
+    "test-functional": "tap -R spec ./test/functional/*.test.[tj]s",
+    "test-system": "tap -R spec --timeout=600 ./test/system/*.test.[tj]s"
   },
   "author": "snyk.io",
   "license": "Apache-2.0",
