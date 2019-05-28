@@ -97,7 +97,7 @@ function searchWithFs( filename ) {
 
 export function buildArgs(sbtArgs, isCoursierProject) {
   // force plain output so we don't have to parse colour codes
-  let args = ['-Dsbt.log.noformat=true'];
+  let args = ['-debug', '"-J-Dsbt.log.noformat=true"'];
   if (sbtArgs) {
     args = args.concat(sbtArgs);
   }

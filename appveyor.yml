@@ -5,29 +5,22 @@ init:
 
 install:
   - cinst jdk8 -params 'installdir=C:\\jdk8'
-  - cinst jdk11 -params 'installdir=C:\\jdk11'
   - SET JAVA_HOME=C:\jdk8
   - SET PATH=C:\jdk8\bin;%PATH%
-
-  - ps: |
-      Add-Type -AssemblyName System.IO.Compression.FileSystem
-      if (!(Test-Path -Path "C:\sbt" )) {
-        (new-object System.Net.WebClient).DownloadFile(
-          'https://piccolo.link/sbt-0.13.18.zip',
-          'C:\sbt-bin.zip'
-        )
-        [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\sbt-bin.zip", "C:\sbt")
-      }
-  - SET PATH=C:\sbt\sbt\bin;%PATH%
-  - SET SBT_OPTS=-Xmx4g -Dfile.encoding=UTF8
+  - cmd: choco install sbt --version 1.2.8 -ia "INSTALLDIR=""C:\sbt""" -y
+  - cmd: choco upgrade sbt -y
+  - cmd: SET PATH=C:\sbt\bin;%JAVA_HOME%\bin;%PATH%
+  - cmd: SET SBT_OPTS=-XX:MaxPermSize=2g -Xmx4g
+  - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
   - ps: Install-Product node $env:nodejs_version
   - node --version
   - npm --version
   - npm install
 
 cache:
-  - '%USERPROFILE%\.ivy2\cache'
-  - '%USERPROFILE%\.sbt'
+  - C:\Users\appveyor\.sbt
+  - C:\Users\appveyor\.m2
+  - C:\Users\appveyor\.ivy2
   - node_modules -> package.json
 
 
@@ -45,5 +38,4 @@ environment:
 
 test_script:
   - npm test
-  # TODO: fix setu and re-enable
-  # - npm run test-system
+  - npm run test-system
