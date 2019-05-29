@@ -1,8 +1,8 @@
-var test = require('tap-only');
-var plugin = require('../../lib').__tests;
+import * as test from 'tap-only';
+import * as plugin from '../../lib';
 
-test('check build args with array', function (t) {
-  var result = plugin.buildArgs([
+test('check build args with array', (t) => {
+  const result = plugin.buildArgs([
     '-Paxis',
     '-Pjaxen',
   ]);
@@ -15,8 +15,8 @@ test('check build args with array', function (t) {
   t.end();
 });
 
-test('check build args with string', function (t) {
-  var result = plugin.buildArgs('-Paxis -Pjaxen');
+test('check build args with string', (t) => {
+  const result = plugin.buildArgs('-Paxis -Pjaxen');
   t.deepEqual(result, [
     '-Dsbt.log.noformat=true',
     '-Paxis -Pjaxen',

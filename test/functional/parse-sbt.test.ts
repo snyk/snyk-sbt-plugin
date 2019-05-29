@@ -1,10 +1,10 @@
-var fs = require('fs');
-var path = require('path');
-var test = require('tap-only');
-var parser = require('../../lib/parse-sbt');
+import * as fs from 'fs';
+import * as  path from 'path';
+import * as  test from 'tap-only';
+import * as  parser from '../../lib/parse-sbt';
 
 function flatten(dependencies) {
-  let acc = new Set();
+  const acc = new Set();
   function rec(deps) {
     acc.add(deps.name);
     Object.keys(deps.dependencies).forEach((key) => {
@@ -15,7 +15,7 @@ function flatten(dependencies) {
   return Array.from(acc);
 }
 
-test('parse `sbt dependencies` output: multi configuration', function (t) {
+test('parse `sbt dependencies` output: multi configuration', (t) => {
   t.plan(7);
   const sbtOutput = fs.readFileSync(path.join(
     __dirname, '..', 'fixtures', 'sbt-dependency-output.txt'), 'utf8');
@@ -48,11 +48,11 @@ test('parse `sbt dependencies` output: multi configuration', function (t) {
 
   const depSet = flatten(depTree);
   t.equal(depSet
-    .some(dep => dep.includes('scala-library')),
+    .some((dep) => dep.includes('scala-library')),
   false, 'output does NOT include scala-library');
 });
 
-test('parse `sbt dependencies` output: single configuration', function (t) {
+test('parse `sbt dependencies` output: single configuration', (t) => {
   t.plan(9);
   const sbtOutput = fs.readFileSync(path.join(
     __dirname, '..', 'fixtures', 'sbt-single-config-dependency-output.txt'),
@@ -96,12 +96,12 @@ test('parse `sbt dependencies` output: single configuration', function (t) {
 
   const depSet = flatten(depTree);
   t.equal(depSet
-    .some(dep => dep.includes('scala-library')),
+    .some((dep) => dep.includes('scala-library')),
   false, 'output does NOT include scala-library');
 });
 
 test('parse `sbt dependencies` output: couriser single configuration',
-  function (t) {
+  (t) => {
     t.plan(10);
     const sbtOutput = fs.readFileSync(path.join(
       __dirname, '..', 'fixtures',
@@ -154,12 +154,12 @@ test('parse `sbt dependencies` output: couriser single configuration',
 
     const depSet = flatten(depTree);
     t.equal(depSet
-      .some(dep => dep.includes('scala-library')),
+      .some((dep) => dep.includes('scala-library')),
     true, 'output includes scala-library');
   });
 
 test('parse `sbt dependencies` output: couriser multiple configuration',
-  function (t) {
+  (t) => {
     t.plan(12);
     const sbtOutput = fs.readFileSync(path.join(
       __dirname, '..', 'fixtures',
@@ -175,42 +175,42 @@ test('parse `sbt dependencies` output: couriser multiple configuration',
     t.equal(depTree.multiBuild, true, 'multi build flag set');
 
     t.equal(depTree
-      .dependencies['root']
+      .dependencies.root
       .version,
     undefined, 'root project');
 
     t.equal(depTree
-      .dependencies['common']
+      .dependencies.common
       .version,
     undefined, 'common project');
 
     t.equal(depTree
-      .dependencies['common']
+      .dependencies.common
       .dependencies['com.amazonaws:aws-java-sdk-dynamodb']
       .version,
     '1.11.125', 'first common dependency');
 
     t.equal(depTree
-      .dependencies['common']
+      .dependencies.common
       .dependencies['org.scala-lang:scala-library']
       .version,
     '2.11.8', 'last common dependency');
 
     t.equal(depTree
-      .dependencies['common']
+      .dependencies.common
       .dependencies['com.google.api-client:google-api-client']
       .dependencies['com.google.http-client:google-http-client-jackson2']
       .version, '1.22.0', 'transient dependency');
 
     t.equal(depTree
-      .dependencies['common']
+      .dependencies.common
       .dependencies['com.google.api-client:google-api-client']
       .dependencies['com.google.http-client:google-http-client-jackson2']
       .dependencies['com.google.http-client:google-http-client'].version,
     '1.22.0', 'transient dependency');
 
     t.equal(depTree
-      .dependencies['common']
+      .dependencies.common
       .dependencies['com.google.api-client:google-api-client']
       .dependencies['com.google.http-client:google-http-client-jackson2']
       .dependencies['com.google.http-client:google-http-client']
@@ -218,7 +218,7 @@ test('parse `sbt dependencies` output: couriser multiple configuration',
     '1.3.9', 'transient dependency');
 
     t.equal(depTree
-      .dependencies['common']
+      .dependencies.common
       .dependencies['com.google.api-client:google-api-client']
       .dependencies['com.google.http-client:google-http-client-jackson2']
       .dependencies['com.google.http-client:google-http-client']
@@ -227,7 +227,6 @@ test('parse `sbt dependencies` output: couriser multiple configuration',
 
     const depSet = flatten(depTree);
     t.equal(depSet
-      .some(dep => dep.includes('scala-library')),
+      .some((dep) => dep.includes('scala-library')),
     true, 'output includes scala-library');
   });
-

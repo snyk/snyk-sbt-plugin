@@ -6,17 +6,34 @@
     "type": "git",
     "url": "https://github.com/snyk/snyk-sbt-plugin"
   },
-  "main": "lib/index.js",
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "npm run lint && npm run test-functional",
-    "lint": "eslint -c .eslintrc lib test",
-    "test-functional": "tap -R spec ./test/functional/*.test.js",
-    "test-system": "tap -R spec --timeout=300 ./test/system/*.test.js"
+    "lint": "tslint -p tsconfig.json",
+    "test-functional": "tap -R spec ./test/functional/*.test.ts",
+    "test-system": "tap -R spec --timeout=300 ./test/system/*.test.js",
+    "build": "tsc",
+    "build-watch": "tsc -w",
+    "prepare": "npm run build"
   },
   "author": "snyk.io",
   "license": "Apache-2.0",
+  "dependencies": {
+    "tslib": "^1.9.3"
+  },
   "devDependencies": {
-    "eslint": "^4.11.0",
+    "@types/node": "^6.14.4",
+    "ts-node": "7.0.0",
+    "tslint": "5.11.0",
+    "typescript": "3.0.1",
     "sinon": "^2.4.1",
     "tap": "^12.0.1",
     "tap-only": "0.0.5"

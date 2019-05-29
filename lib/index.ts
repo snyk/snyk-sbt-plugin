@@ -1,18 +1,10 @@
-var path = require('path');
-var fs = require('fs');
-var subProcess = require('./sub-process');
-var parser = require('./parse-sbt');
-var packageFormatVersion = 'mvn:0.0.1';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as subProcess from './sub-process';
+import * as parser from './parse-sbt';
+const packageFormatVersion = 'mvn:0.0.1';
 
-module.exports = {
-  inspect: inspect,
-};
-
-module.exports.__tests = {
-  buildArgs: buildArgs,
-};
-
-function inspect(root, targetFile, options) {
+export function inspect(root, targetFile, options) {
   if (!options) {
     options = {dev: false};
   }
@@ -22,22 +14,25 @@ function inspect(root, targetFile, options) {
   let useCoursier = detectedCoursier;
 
   const sbtArgs = buildArgs(options.args, useCoursier);
-
+  console.log('executing sbt');
+  console.log(sbtArgs);
+  console.log(targetFilePath);
   return subProcess.execute('sbt', sbtArgs, {cwd: targetFilePath})
-    .catch(function (error) {
+    .catch((error) => {
+      console.log(error);
       if (detectedCoursier) {
         // if we've tried coursier already, we'll fallback to dependency-graph
         // in case we've failed to parse the files correctly #paranoid
         useCoursier = false;
-        const sbtArgs = buildArgs(options.args, useCoursier);
-        return subProcess.execute('sbt', sbtArgs, {cwd: targetFilePath});
+        const newSbtArgs = buildArgs(options.args, useCoursier);
+        return subProcess.execute('sbt', newSbtArgs, {cwd: targetFilePath});
       }
       // otherwise cascade the reject
       return new Promise((resolve, reject) => {
         reject(error);
       });
     })
-    .then(function (result) {
+    .then((result) => {
       const packageName = path.basename(root);
       const packageVersion = '0.0.0';
       const depTree = parser
@@ -52,8 +47,8 @@ function inspect(root, targetFile, options) {
         package: depTree,
       };
     })
-    .catch(function (error) {
-      const dgArgs = '`sbt '+ buildArgs(options.args, false).join(' ') + '`';
+    .catch((error) => {
+      const dgArgs = '`sbt ' + buildArgs(options.args, false).join(' ') + '`';
       const csArgs = '`sbt ' + buildArgs(options.args, true).join(' ') + '`';
       error.message = error.message + '\n\n' +
         'Please make sure that the `sbt-dependency-graph` plugin ' +
@@ -77,7 +72,7 @@ function inspect(root, targetFile, options) {
 function coursierPluginInProject(basePath) {
   const sbtFileList = sbtFiles(path.join(basePath, 'project'))
     .concat(sbtFiles(path.join(basePath, 'project', 'project')));
-  const searchResults = sbtFileList.map ( function (file) {
+  const searchResults = sbtFileList.map ( (file) => {
     return searchWithFs(file);
   });
   return searchResults.includes(true);
@@ -86,9 +81,9 @@ function coursierPluginInProject(basePath) {
 // provide a list of .sbt files in the specified directory
 function sbtFiles(basePath) {
   if (fs.existsSync(basePath) && fs.lstatSync(basePath).isDirectory()) {
-    return fs.readdirSync(basePath).filter(function (fileName) {
+    return fs.readdirSync(basePath).filter((fileName) => {
       return path.extname(fileName) === '.sbt';
-    }).map(function (file) {
+    }).map((file) => {
       return path.join(basePath, file);
     });
   }
@@ -100,7 +95,7 @@ function searchWithFs( filename ) {
   return buffer.indexOf('sbt-coursier') > -1;
 }
 
-function buildArgs(sbtArgs, isCoursierProject) {
+export function buildArgs(sbtArgs, isCoursierProject?: boolean) {
   // force plain output so we don't have to parse colour codes
   let args = ['-Dsbt.log.noformat=true'];
   if (sbtArgs) {

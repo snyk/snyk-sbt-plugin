@@ -1,16 +1,26 @@
-var tabdown = require('./tabdown');
+import * as tabdown from './tabdown';
+
+export function parse(text: string, name: string, version: string, isCoursier?: boolean) {
+  if (isCoursier) {
+    const coursierRootTree = convertCoursierStrToTree(text);
+    return createCoursierSnykTree(coursierRootTree, name, version);
+  }
+
+  const rootTree = convertStrToTree(text);
+  return createSnykTree(rootTree, name, version);
+}
 
 function convertStrToTree(dependenciesTextTree) {
-  var lines = dependenciesTextTree.toString().split('\n') || [];
-  var newLines = lines
-    .map(function (line) {
+  const lines = dependenciesTextTree.toString().split('\n') || [];
+  const newLines = lines
+    .map((line) => {
       return line.replace(/\u001b\[0m/g, '');
     })
-    .filter(function (line) {
+    .filter((line) => {
       if (line.indexOf('[info] ') === 0 && line.indexOf('+-') > -1) {
         return true;
       }
-      var match = line.match(/\[info\]\s[\w_\.\-]+:[\w_\.\-]+:[\w_\.\-]+/);
+      let match = line.match(/\[info\]\s[\w_\.\-]+:[\w_\.\-]+:[\w_\.\-]+/);
       if (match && match[0].length === line.length) {
         return true;
       }
@@ -20,7 +30,7 @@ function convertStrToTree(dependenciesTextTree) {
       }
       return false;
     })
-    .map(function (line) {
+    .map((line) => {
       return line
         .slice(7, line.length) // slice off '[info] '
         .replace(' [S]', '')
@@ -28,51 +38,45 @@ function convertStrToTree(dependenciesTextTree) {
         .replace('+-', '')
         .replace(/\s\s/g, '\t');
     });
-  var tree = tabdown.parse(newLines, '\t');
-  return tree;
+  return tabdown.parse(newLines, '\t');
 }
 
 function convertCoursierStrToTree(dependenciesTextTree) {
   const lines = dependenciesTextTree.toString().split('\n') || [];
   const newLines = lines
-    .map(function (line) {
+    .map((line) => {
       return line.replace(/\u001b\[0m/g, '');
     })
-    .filter(function (line) {
+    .filter((line) => {
       if (line.match(/[│├└].*/)) {
         return true;
       }
-      if (line.match(/[^\s]+\s\(configurations.*/)) {
-        return true;
-      }
-      return false;
+      return line.match(/[^\s]+\s\(configurations.*/);
     })
-    .map(function (line) {
+    .map((line) => {
       return line
         .replace(/\│/g, ' ')
         .replace('├─ ', '   ')
         .replace('└─ ', '   ')
         .replace(/\s\s\s/g, '\t');
     });
-  const tree = tabdown.parse(newLines, '\t');
-  return tree;
+  return tabdown.parse(newLines, '\t');
 }
 
 function walkInTree(toNode, fromNode) {
   if (fromNode.children && fromNode.children.length > 0) {
-    for (var j = 0; j < fromNode.children.length; j++) {
-      var externalNode = getPackageNameAndVersion(
-        fromNode.children[j].data);
+    for (const child of fromNode.children) {
+      const externalNode = getPackageNameAndVersion(
+        child.data);
       if (externalNode) {
-        var newNode = {
+        const newNode = {
           version: externalNode.version,
           name: externalNode.name,
           dependencies: [],
         };
         toNode.dependencies.push(newNode);
         walkInTree(toNode.dependencies[toNode.dependencies.length - 1],
-          fromNode.children[j],
-          toNode);
+          child);
       }
     }
   }
@@ -80,7 +84,9 @@ function walkInTree(toNode, fromNode) {
 }
 
 function getPackageNameAndVersion(packageDependency) {
-  var splited, version, app;
+  let splited;
+  let version;
+  let app;
   if (packageDependency.indexOf('(evicted by:') > -1) {
     return null;
   }
@@ -93,14 +99,14 @@ function getPackageNameAndVersion(packageDependency) {
   app = app.split('\t').join('');
   app = app.trim();
   version = version.trim();
-  return {name: app, version: version};
+  return {name: app, version};
 }
 
 function convertDepArrayToObject(depsArr) {
   if (!depsArr) {
     return null;
   }
-  return depsArr.reduce(function (acc, dep) {
+  return depsArr.reduce((acc, dep) => {
     dep.dependencies = convertDepArrayToObject(dep.dependencies);
     acc[dep.name] = dep;
     return acc;
@@ -124,8 +130,8 @@ function createSnykTree(rootTree, name, version) {
     appTree = rootTree;
     snykTree = {
       multiBuild: true, // multi build == fake broken diamond! == beware
-      name: name,
-      version: version,
+      name,
+      version,
       dependencies: [],
     };
   }
@@ -153,40 +159,26 @@ function createCoursierSnykTree(rootTree, name, version) {
     // multi build configuration
     // - use provided package name and version
     // - use complete tree as root
-    const dependencies = rootTree.root.map(function(appTree){
-      const subTree = getProjectName(getKeys(appTree).pop());
+    const dependencies = rootTree.root.map((appTree) => {
+      const subTree: any = getProjectName(getKeys(appTree).pop());
       subTree.dependencies = [];
       walkInTree(subTree, appTree);
       return subTree;
     });
     snykTree = {
       multiBuild: true, // multi build == fake broken diamond! == beware
-      name: name,
-      version: version,
-      dependencies: dependencies,
+      name,
+      version,
+      dependencies,
     };
   }
   snykTree.dependencies = convertDepArrayToObject(snykTree.dependencies);
   return snykTree;
 }
 
-function parse(text, name, version, isCoursier) {
-  if (isCoursier) {
-    const coursierRootTree = convertCoursierStrToTree(text);
-    return createCoursierSnykTree(coursierRootTree, name, version);
-  }
-
-  const rootTree = convertStrToTree(text);
-  return createSnykTree(rootTree, name, version);
-}
-
-module.exports = {
-  parse: parse,
-};
-
 function getKeys(obj) {
-  var keys = [];
-  for (var key in obj) {
+  const keys = [];
+  for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       keys.push(key);
     }

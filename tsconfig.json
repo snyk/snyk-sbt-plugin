@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "pretty": true,
+    "lib": ["es2017", "es5", "es2015.promise"],
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "declaration": true,
+    "importHelpers": true,
+    "strict": false,
+    "strictNullChecks": false,
+    "downlevelIteration": true
+  },
+  "include": [
+    "./lib/**/*"
+  ]
+}
