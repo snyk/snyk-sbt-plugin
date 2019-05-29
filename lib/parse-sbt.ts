@@ -42,6 +42,7 @@ function convertStrToTree(dependenciesTextTree) {
 }
 
 function convertCoursierStrToTree(dependenciesTextTree) {
+  const quirkyCoursier = dependenciesTextTree.match(/│   [│├└]/);
   const lines = dependenciesTextTree.toString().split('\n') || [];
   const newLines = lines
     .map((line) => {
@@ -51,13 +52,16 @@ function convertCoursierStrToTree(dependenciesTextTree) {
       if (line.match(/[│├└].*/)) {
         return true;
       }
-      return line.match(/[^\s]+\s\(configurations.*/);
+      return line.match(/^[^\s\[\]]+(:?\s\(configurations)?.*/);
     })
     .map((line) => {
+      if (quirkyCoursier) {
+        line = line.replace(/│   /g, '│  ');
+      }
       return line
-        .replace(/\│/g, ' ')
-        .replace('├─ ', '   ')
-        .replace('└─ ', '   ')
+        .replace(/│/g, ' ')
+        .replace(/├──? /, '   ')
+        .replace(/└──? /, '   ')
         .replace(/\s\s\s/g, '\t');
     });
   return tabdown.parse(newLines, '\t');
@@ -84,21 +88,18 @@ function walkInTree(toNode, fromNode) {
 }
 
 function getPackageNameAndVersion(packageDependency) {
-  let splited;
-  let version;
-  let app;
   if (packageDependency.indexOf('(evicted by:') > -1) {
     return null;
   }
   if (packageDependency.indexOf('->') > -1) {
     return null;
   }
-  splited = packageDependency.split(':');
-  version = splited[splited.length - 1];
-  app = splited[0] + ':' + splited[1];
-  app = app.split('\t').join('');
-  app = app.trim();
-  version = version.trim();
+  const split = packageDependency.split(':');
+  const version = split.length > 1 ? split[split.length - 1].trim() : undefined;
+  const app = `${split[0]}${split[1] ? ':' + split[1] : ''}`
+    .split('\t')
+    .join('')
+    .trim();
   return {name: app, version};
 }
 

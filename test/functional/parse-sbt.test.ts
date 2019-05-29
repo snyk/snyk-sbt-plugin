@@ -100,8 +100,7 @@ test('parse `sbt dependencies` output: single configuration', (t) => {
   false, 'output does NOT include scala-library');
 });
 
-test('parse `sbt dependencies` output: couriser single configuration',
-  (t) => {
+test('parse `sbt dependencies` output: couriser single configuration', (t) => {
     t.plan(10);
     const sbtOutput = fs.readFileSync(path.join(
       __dirname, '..', 'fixtures',
@@ -158,8 +157,7 @@ test('parse `sbt dependencies` output: couriser single configuration',
     true, 'output includes scala-library');
   });
 
-test('parse `sbt dependencies` output: couriser multiple configuration',
-  (t) => {
+test('parse `sbt dependencies` output: couriser multiple configuration', (t) => {
     t.plan(12);
     const sbtOutput = fs.readFileSync(path.join(
       __dirname, '..', 'fixtures',
@@ -229,4 +227,24 @@ test('parse `sbt dependencies` output: couriser multiple configuration',
     t.equal(depSet
       .some((dep) => dep.includes('scala-library')),
     true, 'output includes scala-library');
+  });
+
+test('parse `sbt dependencies` output: quirky coursier', (t) => {
+    t.plan(4);
+    const sbtOutput = fs.readFileSync(path.join(
+      __dirname, '..', 'fixtures', 'coursier-project',
+      'dependecies.output'), 'utf8');
+
+    const depTree = parser.parse(sbtOutput, 'unused', 'unused', true);
+
+    t.equal(depTree.name,
+      'root',
+      'package name');
+    t.equal(depTree.version, undefined, 'package version');
+    t.equal(depTree.multiBuild, undefined, 'multi build flag not set');
+
+    t.equal(depTree
+        .dependencies.bin
+        .version,
+      undefined, 'no versions in this project');
   });

@@ -1,0 +1,23 @@
+root
+├── bin
+└── client
+    ├── php
+    │   └── src
+    │       └── Snyk
+    │           └── Services
+    │               └── Claim
+    │                   └── Client
+    └── scala
+        ├── src
+        │   └── main
+        │       └── scala
+        │           └── com
+        │               └── snyk
+        │                   └── claim
+        └── target
+            └── scala-2.12
+                └── resolution-cache
+                    ├── com.snyk
+                    │   └── claim-scala-client_2.12
+                    │       └── 1.0.0
+                    └── reports

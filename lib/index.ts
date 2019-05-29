@@ -4,7 +4,7 @@ import * as subProcess from './sub-process';
 import * as parser from './parse-sbt';
 const packageFormatVersion = 'mvn:0.0.1';
 
-export function inspect(root, targetFile, options) {
+export function inspect(root, targetFile, options?) {
   if (!options) {
     options = {dev: false};
   }
@@ -14,12 +14,8 @@ export function inspect(root, targetFile, options) {
   let useCoursier = detectedCoursier;
 
   const sbtArgs = buildArgs(options.args, useCoursier);
-  console.log('executing sbt');
-  console.log(sbtArgs);
-  console.log(targetFilePath);
   return subProcess.execute('sbt', sbtArgs, {cwd: targetFilePath})
     .catch((error) => {
-      console.log(error);
       if (detectedCoursier) {
         // if we've tried coursier already, we'll fallback to dependency-graph
         // in case we've failed to parse the files correctly #paranoid
