@@ -24,6 +24,7 @@
   "author": "snyk.io",
   "license": "Apache-2.0",
   "devDependencies": {
+    "debug": "^4.1.1",
     "sinon": "^2.4.1",
     "tap": "12.6.1",
     "tap-only": "0.0.5",
