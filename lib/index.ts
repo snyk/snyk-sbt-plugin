@@ -46,6 +46,9 @@ export async function inspect(root, targetFile, options): Promise<types.PluginRe
 
 async function legacyInspect(root: string, targetFile: string, options: any) {
   const targetFilePath = path.dirname(path.resolve(root, targetFile));
+  if (!fs.existsSync(targetFilePath)) {
+    debug(`build.sbt not found at location: ${targetFilePath}. This may result in no dependencies`);
+  }
   const detectedCoursier = coursierPluginInProject(targetFilePath);
   let useCoursier = detectedCoursier;
 
