@@ -2,3 +2,4 @@
 .jscsrc
 .travis.yml
 /test
+npm-debug.log
