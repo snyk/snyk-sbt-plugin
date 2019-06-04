@@ -34,6 +34,7 @@
   "dependencies": {
     "@types/node": "6.14.6",
     "@types/sinon": "7.0.11",
+    "tree-kill": "^1.2.1",
     "tslib": "1.9.3"
   }
 }

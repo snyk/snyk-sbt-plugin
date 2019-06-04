@@ -4,5 +4,3 @@ dist/
 test/fixtures/testproj*/project/project/
 test/fixtures/testproj*/project/target/
 test/fixtures/testproj*/target/
-.idea
-package-lock.json
