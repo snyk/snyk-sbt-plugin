@@ -72,6 +72,17 @@ test('run inspect() with commented out coursier on 0.13', async (t) => {
   'correct version found');
 });
 
+test('run inspect() on bad project requiring user input', async (t) => {
+  try {
+    await plugin.inspect(path.join(__dirname, '..', 'fixtures', 'bad-project'), 'build.sbt');
+    t.fail('Expected to fail');
+  } catch (error) {
+    t.match(error.message, 'code: 1');
+    t.match(error.message, '(q)uit');
+    t.pass('Error thrown correctly');
+  }
+});
+
 test('run inspect() with failing `sbt` execution', async (t) => {
   stubSubProcessExec(t);
   try {
