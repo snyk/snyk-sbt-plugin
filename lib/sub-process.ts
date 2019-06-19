@@ -4,8 +4,9 @@ import * as debugModule from 'debug';
 
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
 const debugLogging = debugModule('snyk-sbt-plugin');
-// 5 minutes default, 0 to disable
-const TIMEOUT = process.env.PROC_TIMEOUT || '300000';
+
+// Disabled by default, to set run the CLI as `PROC_TIMEOUT=100000 snyk ...`
+const TIMEOUT = process.env.PROC_TIMEOUT || '0';
 const PROC_TIMEOUT = parseInt(TIMEOUT, 10);
 
 export const execute = (
