@@ -6,6 +6,7 @@
       "lib": [
         "es2015",
       ],
+      "noImplicitThis": false,
       "module": "commonjs",
       "allowJs": true,
       "sourceMap": true,

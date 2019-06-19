@@ -63,7 +63,7 @@ test('run inspect() with no sbt plugin on 0.13', async (t) => {
 test('run inspect() with commented out coursier on 0.13', async (t) => {
   const result: any  = await plugin.inspect(path.join(
     __dirname, '..', 'fixtures', 'testproj-faux-coursier-0.13'),
-  'build.sbt');
+  'build.sbt', {});
   t.equal(result.package
     .dependencies['axis:axis']
     .dependencies['axis:axis-jaxrpc']
@@ -74,7 +74,8 @@ test('run inspect() with commented out coursier on 0.13', async (t) => {
 
 test('run inspect() on bad project requiring user input', async (t) => {
   try {
-    await plugin.inspect(path.join(__dirname, '..', 'fixtures', 'bad-project'), 'build.sbt');
+    await plugin.inspect(path.join(__dirname, '..', 'fixtures',
+    'bad-project'), 'build.sbt', {});
     t.fail('Expected to fail');
   } catch (error) {
     t.match(error.message, 'code: 1');
@@ -87,7 +88,7 @@ test('run inspect() with failing `sbt` execution', async (t) => {
   stubSubProcessExec(t);
   try {
     await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
-    'testproj-0.13/build.sbt');
+    'testproj-0.13/build.sbt', {});
     t.fail('should not be reached');
   } catch (error) {
     t.match(error.message, 'abort');

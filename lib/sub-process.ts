@@ -1,14 +1,19 @@
-const treeKill = require('tree-kill');
-const childProcess = require('child_process');
-const debugModule = require('debug');
+import * as childProcess from 'child_process';
+import * as treeKill from 'tree-kill';
+import * as debugModule from 'debug';
 
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
 const debugLogging = debugModule('snyk-sbt-plugin');
+// 5 minutes default, 0 to disable
+const TIMEOUT = process.env.PROC_TIMEOUT || '300000';
+const PROC_TIMEOUT = parseInt(TIMEOUT, 10);
 
-const PROC_TIMEOUT = parseInt(process.env.PROC_TIMEOUT, 10) || 300000; // 5 minutes default, 0 to disable
-
-module.exports.execute = (command, args, options) => {
-  const spawnOptions = {shell: true};
+export const execute = (
+  command: string,
+  args: string[],
+  options: {cwd?: string},
+): Promise<string>  => {
+  const spawnOptions: {cwd?: string, shell: boolean} = {shell: true};
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
   }
@@ -33,7 +38,6 @@ module.exports.execute = (command, args, options) => {
         debugLogging(str);
       });
       if (strData.includes('(q)uit')) {
-        proc.stdin.setEncoding('utf-8');
         proc.stdin.write('q\n');
         debugLogging('sbt is requiring input. Provided (q)uit signal. ' +
           'There is no current workaround for this, see: https://stackoverflow.com/questions/21484166');
