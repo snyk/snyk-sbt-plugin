@@ -7,7 +7,8 @@ test('check build args with array not coursier', (t) => {
     '-Pjaxen',
   ], false);
   t.deepEqual(result, [
-    '-Dsbt.log.noformat=true',
+    '-debug',
+    '"-J-Dsbt.log.noformat=true"',
     '-Paxis',
     '-Pjaxen',
     'dependencyTree',
@@ -15,10 +16,11 @@ test('check build args with array not coursier', (t) => {
   t.end();
 });
 
-test('check build args with string not coursie', (t) => {
+test('check build args with string not coursier', (t) => {
   const result = plugin.buildArgs('-Paxis -Pjaxen', false);
   t.deepEqual(result, [
-    '-Dsbt.log.noformat=true',
+    '-debug',
+    '"-J-Dsbt.log.noformat=true"',
     '-Paxis -Pjaxen',
     'dependencyTree',
   ]);
@@ -31,7 +33,8 @@ test('check build args with array for coursier', (t) => {
     '-Pjaxen',
   ], true);
   t.deepEqual(result, [
-    '-Dsbt.log.noformat=true',
+    '-debug',
+    '"-J-Dsbt.log.noformat=true"',
     '-Paxis',
     '-Pjaxen',
     'coursierDependencyTree',
@@ -42,7 +45,8 @@ test('check build args with array for coursier', (t) => {
 test('check build args with string for coursier', (t) => {
   const result = plugin.buildArgs('-Paxis -Pjaxen', true);
   t.deepEqual(result, [
-    '-Dsbt.log.noformat=true',
+    '-debug',
+    '"-J-Dsbt.log.noformat=true"',
     '-Paxis -Pjaxen',
     'coursierDependencyTree',
   ]);

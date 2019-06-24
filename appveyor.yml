@@ -4,10 +4,10 @@ init:
   - git config --global core.autocrlf input
 
 install:
-  - cinst jdk8 -params 'installdir=C:\\jdk8'
+  - java -version
   - SET JAVA_HOME=C:\jdk8
   - SET PATH=C:\jdk8\bin;%PATH%
-  - cmd: choco install sbt --version 1.2.8 -ia "INSTALLDIR=""C:\sbt""" -y
+  - cmd: choco install sbt --version 0.13.15 -ia "INSTALLDIR=""C:\sbt""" -y -v -d
   - cmd: choco upgrade sbt -y
   - cmd: SET PATH=C:\sbt\bin;%JAVA_HOME%\bin;%PATH%
   - cmd: SET SBT_OPTS=-XX:MaxPermSize=2g -Xmx4g
@@ -39,3 +39,4 @@ environment:
 test_script:
   - npm test
   - npm run test-system
+
