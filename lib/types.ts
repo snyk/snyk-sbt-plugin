@@ -1,6 +1,8 @@
+import {DepGraph} from '@snyk/dep-graph';
+
 export interface PluginResult {
   plugin: PluginMetadata;
-  package: DepTree;
+  package: DepTree|DepGraph[];
 }
 
 export interface DepDict {

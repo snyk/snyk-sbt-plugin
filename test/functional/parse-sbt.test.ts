@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as test from 'tap-only';
 import * as parser from '../../lib/parse-sbt';
+import * as DepGraphLib from '@snyk/dep-graph';
+import * as types from '../../lib/types';
 
 function flatten(dependencies) {
   const acc = new Set();
@@ -98,7 +100,8 @@ test('parse `sbt dependencies` output: plugin 1.2.8', async (t) => {
       __dirname, '..', 'fixtures',
       'sbt-plugin-1.2.8-output.txt'),
     'utf8');
-  const depTree = parser.parseSbtPluginResults(sbtOutput);
+  const depGraph = parser.parseSbtPluginResults(sbtOutput)[0];
+  const depTree = await DepGraphLib.legacy.graphToDepTree(depGraph, 'sbt');
 
   t.equal(depTree.name, 'com.example:hello_2.12');
   t.equal(depTree.version, '0.1.0-SNAPSHOT');
@@ -121,7 +124,8 @@ test('parse `sbt dependencies` output: plugin 0.13', async (t) => {
     __dirname, '..', 'fixtures',
     'sbt-plugin-0.13-output.txt'),
     'utf8');
-  const depTree = parser.parseSbtPluginResults(sbtOutput);
+  const depGraph = parser.parseSbtPluginResults(sbtOutput)[0];
+  const depTree = await DepGraphLib.legacy.graphToDepTree(depGraph, 'sbt');
 
   t.equal(depTree.name, 'com.example:hello_2.12');
   t.equal(depTree.version, '0.1.0-SNAPSHOT');

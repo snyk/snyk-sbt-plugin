@@ -1,7 +1,8 @@
-import {DepDict, DepTree} from './types';
+import {DepTree} from './types';
 
 const tabdown = require('./tabdown');
 import * as types from './types';
+import * as DepGraphLib from '@snyk/dep-graph';
 
 export {
   parse,
@@ -189,7 +190,7 @@ function parse(text, name, version, isCoursier): DepTree {
   return createSnykTree(rootTree, name, version);
 }
 
-function parseSbtPluginResults(sbtOutput: string): DepTree {
+function parseSbtPluginResults(sbtOutput: string): DepGraphLib.DepGraph[] {
   // remove all other output
   const outputStart = 'Snyk Output Start';
   const outputEnd = 'Snyk Output End';
@@ -197,55 +198,53 @@ function parseSbtPluginResults(sbtOutput: string): DepTree {
     sbtOutput.indexOf(outputStart) + outputStart.length,
     sbtOutput.indexOf(outputEnd));
   const sbtOutputJson: types.SbtModulesGraph = JSON.parse(sbtProjectOutput);
-
-  if (Object.keys(sbtOutputJson).length === 1) {
-    const project = Object.keys(sbtOutputJson)[0];
-    return parseSbtPluginProjectResultToDepTree(project, sbtOutputJson[project]);
-  }
-
-  const depTree = {
-    name: '.',
-    version: '1.0.0',
-    dependencies: {},
-  };
+  const depGraphs: DepGraphLib.DepGraph[] = [];
 
   // iterating over different project
   for (const project of Object.keys(sbtOutputJson)) {
-    depTree.dependencies[project] = parseSbtPluginProjectResultToDepTree(project, sbtOutputJson[project]);
+    depGraphs.push(buildDepGraphFromSbtProjectModulesGraph(project, sbtOutputJson[project]));
   }
 
-  return depTree;
+  return depGraphs;
 }
 
-function parseSbtPluginProjectResultToDepTree(
-  projectKey: string,
-  sbtProjectOutput: types.SbtModulesGraph): DepTree {
+function buildDepGraphFromSbtProjectModulesGraph(
+    projectKey: string, sbtProjectOutput: types.SbtModulesGraph): DepGraphLib.DepGraph {
+  const rootPkgInfo = {name: projectKey, version: sbtProjectOutput.modules[projectKey].version};
+  const graphBuilder = new DepGraphLib.DepGraphBuilder({name: 'sbt'}, rootPkgInfo);
 
-  const pkgs = Object.keys(sbtProjectOutput.modules)
-    .filter((module) => {
-      // filtering for the `compile` configuration only, otherwise, there can be multiple graph roots
-      return sbtProjectOutput.modules[module].configurations.includes('compile');
-    });
+  const pkgs: Map<string, string> = new Map(
+    Object.keys(sbtProjectOutput.modules)
+      .filter((module) => {
+        // filtering for the `compile` configuration only, otherwise, there can be multiple graph roots
+        // TODO: Pass required configuration or handle or configurations
+        // WARN: all configurations can result in disconnected graph
+        return sbtProjectOutput.modules[module].configurations.includes('compile');
+      })
+      .map((pkg) => {
+        return [pkg, sbtProjectOutput.modules[pkg].version];
+      }),
+  );
 
-  const getDependenciesFor = (name: string): DepTree => {
-    if (!sbtProjectOutput.dependencies[name]) {
-      return {
-        name,
-        version: sbtProjectOutput.modules[name].version,
-      };
+  for (const [name, version] of pkgs) {
+    // 'root-node' is hardcoded in DepGraph lib as a node id for root-node and it's already there
+    // TODO: update this in @snyk/dep-graph and propagate it here
+    if (name !== rootPkgInfo.name) {
+      graphBuilder.addPkgNode({name, version}, `${name}@${version}`);
     }
-    const dependencies: DepDict = {};
-    for (const subDepName of sbtProjectOutput.dependencies[name]) {
-      if (pkgs.indexOf(subDepName) > -1) { // dependency is in compile configuration
-        dependencies[subDepName] = getDependenciesFor(subDepName);
+  }
+
+  for (const parentName of Object.keys(sbtProjectOutput.dependencies)) {
+    if (pkgs.has(parentName)) {
+      for (const dep of sbtProjectOutput.dependencies[parentName]) {
+        const depVersion = sbtProjectOutput.modules[dep].version;
+        // 'root-node' is hardcoded in DepGraph lib as a node id for root-node
+        // TODO: update this in @snyk/dep-graph and propagate it here
+        const parentNodeId = parentName === rootPkgInfo.name ? 'root-node' : `${parentName}@${pkgs.get(parentName)}`;
+        graphBuilder.connectDep(parentNodeId, `${dep}@${depVersion}`);
       }
     }
-    return {
-      name,
-      version: sbtProjectOutput.modules[name].version,
-      dependencies,
-    };
-  };
+  }
 
-  return getDependenciesFor(projectKey);
+  return graphBuilder.build();
 }

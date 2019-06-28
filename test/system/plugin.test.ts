@@ -3,6 +3,8 @@ import * as test from 'tap-only';
 import * as sinon from 'sinon';
 import * as plugin from '../../lib';
 import * as subProcess from '../../lib/sub-process';
+import {DepGraph} from "@snyk/dep-graph";
+import * as types from "../../lib/types";
 
 test('run inspect() 0.13', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
@@ -136,23 +138,37 @@ function stubSubProcessExec(t) {
 }
 
 test('run inspect() on 0.13 with custom-plugin', async (t) => {
-  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+  const result: types.PluginResult = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-0.13/build.sbt', {'sbt-graph': true});
-  t.equal(result.package
-      .dependencies['axis:axis']
-      .dependencies['axis:axis-jaxrpc']
-      .dependencies['org.apache.axis:axis-jaxrpc'].version,
-    '1.4',
-    'correct version found');
+  t.equal((result.package as DepGraph[]).length, 1, 'only one graph');
+
+  const json = (result.package as DepGraph[])[0].toJSON();
+
+  t.equal(json.pkgManager.name, 'sbt', 'correct package manager');
+
+  t.true(json.graph.nodes.some((node) =>
+    node.nodeId === json.graph.rootNodeId &&
+    node.pkgId === 'com.example:hello_2.12@0.1.0-SNAPSHOT' ), 'correct root dep');
+
+  t.true(json.pkgs.some((pkg) =>
+    pkg.info.name === 'org.apache.axis:axis-jaxrpc' &&
+    pkg.info.version === '1.4' ), 'found expected dep');
 });
 
 test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-1.2.8/build.sbt', {'sbt-graph': true});
-  t.equal(result.package
-      .dependencies['axis:axis']
-      .dependencies['axis:axis-jaxrpc']
-      .dependencies['org.apache.axis:axis-jaxrpc'].version,
-    '1.4',
-    'correct version found');
+  t.equal((result.package as DepGraph[]).length, 1, 'only one graph');
+
+  const json = (result.package as DepGraph[])[0].toJSON();
+
+  t.equal(json.pkgManager.name, 'sbt', 'correct package manager');
+
+  t.true(json.graph.nodes.some((node) =>
+    node.nodeId === json.graph.rootNodeId &&
+    node.pkgId === 'com.example:hello_2.12@0.1.0-SNAPSHOT' ), 'correct root dep');
+
+  t.true(json.pkgs.some((pkg) =>
+    pkg.info.name === 'org.apache.axis:axis-jaxrpc' &&
+    pkg.info.version === '1.4' ), 'found expected dep');
 });
