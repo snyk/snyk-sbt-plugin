@@ -1,33 +1,28 @@
 build: off
+os: Windows Server 2012
 
 init:
   - git config --global core.autocrlf input
 
 install:
-  - java -version
-  - SET JAVA_HOME=C:\jdk8
-  - SET PATH=C:\jdk8\bin;%PATH%
-
-  - ps: |
-      Add-Type -AssemblyName System.IO.Compression.FileSystem
-      if (!(Test-Path -Path "C:\sbt" )) {
-        (new-object System.Net.WebClient).DownloadFile(
-          'https://piccolo.link/sbt-0.13.18.zip',
-          'C:\sbt-bin.zip'
-        )
-        [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\sbt-bin.zip", "C:\sbt")
-      }
-  - SET PATH=C:\sbt\sbt\bin;%PATH%
-  - SET SBT_OPTS=-Xmx4g -Dfile.encoding=UTF8
+  - cmd: choco install zulu8 -ia "INSTALLDIR=""C:\zulu"""
+  - cmd: SET JAVA_HOME="C:\zulu"
+  - cmd: choco install sbt -ia "INSTALLDIR=""C:\sbt"""
+  - cmd: SET PATH=C:\sbt\bin;%JAVA_HOME%\bin;%PATH%
+  - cmd: SET SBT_OPTS=-Xms4g -Xmx4g
+  - cmd: SET COURSIER_VERBOSITY=-1
+  - cmd: SET JAVA_OPTS=-Xms4g -Xmx4g
   - ps: Install-Product node $env:nodejs_version
+  - java -version
   - node --version
   - npm --version
   - npm install
 
 cache:
-  - '%USERPROFILE%\.ivy2\cache'
+  - '%USERPROFILE%\.ivy2'
   - '%USERPROFILE%\.sbt'
   - node_modules -> package.json
+  - C:\Users\appveyor\.m2
 
 
 branches:
@@ -44,5 +39,4 @@ environment:
 
 test_script:
   - npm test
-  # TODO: fix setu and re-enable
-  # - npm run test-system
+  - npm run test-system-windows

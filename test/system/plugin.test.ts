@@ -4,10 +4,13 @@ import * as sinon from 'sinon';
 import * as plugin from '../../lib';
 import * as subProcess from '../../lib/sub-process';
 
-test('run inspect()', async (t) => {
+test('run inspect() 0.13', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-0.13/build.sbt', { debug: true});
-  t.equal(result.package
+  t.equal(result.package.version, '0.1.0-SNAPSHOT');
+  t.match(result.package.name, 'hello');
+
+  t.deepEqual(result.package
     .dependencies['axis:axis']
     .dependencies['axis:axis-jaxrpc']
     .dependencies['org.apache.axis:axis-jaxrpc'].version,
@@ -18,7 +21,9 @@ test('run inspect()', async (t) => {
 test('run inspect() on 1.2.8', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
   'testproj-1.2.8/build.sbt', {});
-  t.equal(result.package
+  t.equal(result.package.version, '0.1.0-SNAPSHOT');
+  t.match(result.package.name, 'hello');
+  t.deepEqual(result.package
     .dependencies['axis:axis']
     .dependencies['axis:axis-jaxrpc']
     .dependencies['org.apache.axis:axis-jaxrpc'].version,
@@ -29,7 +34,12 @@ test('run inspect() on 1.2.8', async (t) => {
 test('run inspect() with coursier on 0.17', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-coursier-0.13/build.sbt', {});
-  t.equal(result.package
+  // TODO: fix to get the project name from build.sbt
+  // for coursier project
+  // t.equal(result.package.version, '0.1.0-SNAPSHOT')
+  // t.match(result.package.name, 'hello');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
     .dependencies['axis:axis']
     .dependencies['axis:axis-jaxrpc']
     .dependencies['org.apache.axis:axis-jaxrpc'].version,
@@ -40,7 +50,12 @@ test('run inspect() with coursier on 0.17', async (t) => {
 test('run inspect() with coursier on 1.2.8', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-coursier-1.2.8/build.sbt', {});
-  t.equal(result.package
+  // TODO: fix to get the project name from build.sbt
+  // for coursier project
+  // t.equal(result.package.version, '0.1.0-SNAPSHOT');
+  // t.match(result.package.name, 'hello');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
     .dependencies['axis:axis']
     .dependencies['axis:axis-jaxrpc']
     .dependencies['org.apache.axis:axis-jaxrpc'].version,
@@ -64,7 +79,11 @@ test('run inspect() with commented out coursier on 0.13', async (t) => {
   const result: any  = await plugin.inspect(path.join(
     __dirname, '..', 'fixtures', 'testproj-faux-coursier-0.13'),
   'build.sbt', {});
-  t.equal(result.package
+  // TODO: fix to get the project name from build.sbt
+  // t.equal(result.package.version, '0.1.0-SNAPSHOT');
+  t.match(result.package.name, 'hello');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
     .dependencies['axis:axis']
     .dependencies['axis:axis-jaxrpc']
     .dependencies['org.apache.axis:axis-jaxrpc'].version,
