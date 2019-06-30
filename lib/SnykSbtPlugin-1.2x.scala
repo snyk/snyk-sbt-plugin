@@ -50,7 +50,7 @@ object SnykSbtPlugin extends AutoPlugin {
 
     Def.task {
       val allProjectDatas = snykExtractProjectData.all(filter).value
-
+      println("Snyk Output Start")
       println(PrettyPrinter(JObject(allProjectDatas.map {
         case SnykProjectData(projectId, modules, deps) =>
           projectId -> JObject(
@@ -71,12 +71,13 @@ object SnykSbtPlugin extends AutoPlugin {
             )
           )
       }.toMap).toUnsafe))
+      println("Snyk Output End")
     }
   }.value)
 
   override lazy val projectSettings = Seq(
     snykExtractProjectData := Def.taskDyn {
-      def formatModuleId(m: ModuleId) = s"${m.organisation}::${m.name}"
+      def formatModuleId(m: ModuleId) = s"${m.organisation}:${m.name}"
 
       val thisProjectId      = formatModuleId((Compile / moduleGraph).value.roots.head.id)
       val thisProjectConfigs = thisProject.value.configurations

@@ -17,9 +17,19 @@ export interface DepTree {
   version: string;
   dependencies?: DepDict;
   packageFormatVersion?: string;
+  multiBuild?: boolean;
 }
 
 export interface PluginMetadata {
   name: string;
   runtime: string;
+}
+
+export interface SbtModulesGraph {
+  modules: {
+    string: string;
+  };
+  dependencies: {
+    string: string[];
+  };
 }

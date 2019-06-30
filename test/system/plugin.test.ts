@@ -84,6 +84,18 @@ test('run inspect() on bad project requiring user input', async (t) => {
   }
 });
 
+test('run inspect() on bad-project cascade through all parsing options', async (t) => {
+  try {
+    await plugin.inspect(path.join(__dirname, '..', 'fixtures',
+      'bad-project'), 'build.sbt', {'sbt-graph': true});
+    t.fail('Expected to fail');
+  } catch (error) {
+    t.match(error.message, 'code: 1');
+    t.match(error.message, '(q)uit');
+    t.pass('Error thrown correctly');
+  }
+});
+
 test('run inspect() with failing `sbt` execution', async (t) => {
   stubSubProcessExec(t);
   try {
@@ -103,3 +115,25 @@ function stubSubProcessExec(t) {
     });
   t.teardown(executeStub.restore);
 }
+
+test('run inspect() on 0.13 with custom-plugin', async (t) => {
+  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-0.13/build.sbt', {'sbt-graph': true});
+  t.equal(result.package
+      .dependencies['axis:axis']
+      .dependencies['axis:axis-jaxrpc']
+      .dependencies['org.apache.axis:axis-jaxrpc'].version,
+    '1.4',
+    'correct version found');
+});
+
+test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
+  const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-1.2.8/build.sbt', {'sbt-graph': true});
+  t.equal(result.package
+      .dependencies['axis:axis']
+      .dependencies['axis:axis-jaxrpc']
+      .dependencies['org.apache.axis:axis-jaxrpc'].version,
+    '1.4',
+    'correct version found');
+});
