@@ -1,0 +1,57 @@
+[info] Loading settings for project testproj-1-2-8-build from site.sbt ...
+[info] Loading project definition from /Users/orsagie/snyk/snyk-sbt-plugin/test/fixtures/testproj-1.2.8/project
+[info] Compiling 1 Scala source to /Users/orsagie/snyk/snyk-sbt-plugin/test/fixtures/testproj-1.2.8/project/target/scala-2.12/sbt-1.0/classes ...
+[info] Done compiling.
+[info] Loading settings for project root from build.sbt ...
+[info] Set current project to Hello (in build file:/Users/orsagie/snyk/snyk-sbt-plugin/test/fixtures/testproj-1.2.8/)
+Snyk Output Start
+{
+  "com.example:hello_2.12": {
+    "modules": {
+      "com.example:hello_2.12": {
+        "version": "0.1.0-SNAPSHOT",
+        "configurations": ["test", "provided", "optional", "compile", "runtime"]
+      },
+      "axis:axis-saaj": {
+        "version": "1.4",
+        "configurations": ["test", "runtime", "compile"]
+      },
+      "commons-discovery:commons-discovery": {
+        "version": "0.2",
+        "configurations": ["test", "runtime", "compile"]
+      },
+      "axis:axis": {
+        "version": "1.4",
+        "configurations": ["test", "runtime", "compile"]
+      },
+      "org.apache.axis:axis-jaxrpc": {
+        "version": "1.4",
+        "configurations": ["test", "runtime", "compile"]
+      },
+      "axis:axis-wsdl4j": {
+        "version": "1.5.1",
+        "configurations": ["test", "runtime", "compile"]
+      },
+      "org.apache.axis:axis-saaj": {
+        "version": "1.4",
+        "configurations": ["test", "runtime", "compile"]
+      },
+      "commons-logging:commons-logging": {
+        "version": "1.0.4",
+        "configurations": ["test", "runtime", "compile"]
+      },
+      "axis:axis-jaxrpc": {
+        "version": "1.4",
+        "configurations": ["test", "runtime", "compile"]
+      }
+    },
+    "dependencies": {
+      "com.example:hello_2.12": ["axis:axis"],
+      "axis:axis-saaj": ["org.apache.axis:axis-saaj"],
+      "commons-discovery:commons-discovery": ["commons-logging:commons-logging"],
+      "axis:axis": ["axis:axis-saaj", "commons-discovery:commons-discovery", "axis:axis-wsdl4j", "commons-logging:commons-logging", "axis:axis-jaxrpc"],
+      "axis:axis-jaxrpc": ["org.apache.axis:axis-jaxrpc"]
+    }
+  }
+}
+Snyk Output End

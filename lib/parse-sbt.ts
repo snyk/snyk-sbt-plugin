@@ -1,5 +1,12 @@
+import {DepDict, DepTree} from './types';
+
 const tabdown = require('./tabdown');
 import * as types from './types';
+
+export {
+  parse,
+  parseSbtPluginResults,
+};
 
 function convertStrToTree(dependenciesTextTree) {
   const lines = dependenciesTextTree.toString().split('\n') || [];
@@ -172,7 +179,7 @@ function createCoursierSnykTree(rootTree, name, version) {
   return snykTree;
 }
 
-export function parse(text, name, version, isCoursier) {
+function parse(text, name, version, isCoursier): DepTree {
   if (isCoursier) {
     const coursierRootTree = convertCoursierStrToTree(text);
     return createCoursierSnykTree(coursierRootTree, name, version);
@@ -180,4 +187,65 @@ export function parse(text, name, version, isCoursier) {
 
   const rootTree = convertStrToTree(text);
   return createSnykTree(rootTree, name, version);
+}
+
+function parseSbtPluginResults(sbtOutput: string): DepTree {
+  // remove all other output
+  const outputStart = 'Snyk Output Start';
+  const outputEnd = 'Snyk Output End';
+  const sbtProjectOutput = sbtOutput.substring(
+    sbtOutput.indexOf(outputStart) + outputStart.length,
+    sbtOutput.indexOf(outputEnd));
+  const sbtOutputJson: types.SbtModulesGraph = JSON.parse(sbtProjectOutput);
+
+  if (Object.keys(sbtOutputJson).length === 1) {
+    const project = Object.keys(sbtOutputJson)[0];
+    return parseSbtPluginProjectResultToDepTree(project, sbtOutputJson[project]);
+  }
+
+  const depTree = {
+    name: '.',
+    version: '1.0.0',
+    dependencies: {},
+  };
+
+  // iterating over different project
+  for (const project of Object.keys(sbtOutputJson)) {
+    depTree.dependencies[project] = parseSbtPluginProjectResultToDepTree(project, sbtOutputJson[project]);
+  }
+
+  return depTree;
+}
+
+function parseSbtPluginProjectResultToDepTree(
+  projectKey: string,
+  sbtProjectOutput: types.SbtModulesGraph): DepTree {
+
+  const pkgs = Object.keys(sbtProjectOutput.modules)
+    .filter((module) => {
+      // filtering for the `compile` configuration only, otherwise, there can be multiple graph roots
+      return sbtProjectOutput.modules[module].configurations.includes('compile');
+    });
+
+  const getDependenciesFor = (name: string): DepTree => {
+    if (!sbtProjectOutput.dependencies[name]) {
+      return {
+        name,
+        version: sbtProjectOutput.modules[name].version,
+      };
+    }
+    const dependencies: DepDict = {};
+    for (const subDepName of sbtProjectOutput.dependencies[name]) {
+      if (pkgs.indexOf(subDepName) > -1) { // dependency is in compile configuration
+        dependencies[subDepName] = getDependenciesFor(subDepName);
+      }
+    }
+    return {
+      name,
+      version: sbtProjectOutput.modules[name].version,
+      dependencies,
+    };
+  };
+
+  return getDependenciesFor(projectKey);
 }

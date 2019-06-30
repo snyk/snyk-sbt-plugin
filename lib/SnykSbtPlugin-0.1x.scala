@@ -74,14 +74,15 @@ object SnykSbtPlugin extends AutoPlugin {
           }
         )
       )
-
+      println("Snyk Output Start")
       println(writer.result.toString)
+      println("Snyk Output End")
     }
   }.value)
 
   override lazy val projectSettings = Seq(
     snykExtractProjectData := Def.taskDyn {
-      def formatModuleId(m: ModuleId) = s"${m.organisation}::${m.name}"
+      def formatModuleId(m: ModuleId) = s"${m.organisation}:${m.name}"
 
       val thisProjectId = formatModuleId((moduleGraph in Compile).value.roots.head.id)
       val thisProjectConfigs = thisProject.value.configurations
