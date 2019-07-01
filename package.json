@@ -19,7 +19,8 @@
     "prepare": "npm run build",
     "test": "npm run lint && npm run build && npm run test-functional",
     "test-functional": "tap -Rspec ./test/functional/*.test.[tj]s",
-    "test-system": "tap -Rspec --timeout=600 ./test/system/*.test.[tj]s"
+    "test-system": "tap -Rspec --timeout=600 ./test/system/*.test.[tj]s",
+    "test-system-windows": "tap -Rspec --timeout=600 ./test/system-windows/*.test.[tj]s"
   },
   "author": "snyk.io",
   "license": "Apache-2.0",
