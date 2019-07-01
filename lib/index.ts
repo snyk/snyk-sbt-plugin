@@ -136,7 +136,7 @@ async function pluginInspect(root: string, targetFile: string, options: any): Pr
 
     return {
       plugin: {
-        name: 'bundled:sbt',
+        name: 'snyk:sbt',
         runtime: 'unknown',
       },
       package: parser.parseSbtPluginResults(stdout),
