@@ -102,12 +102,8 @@ function generateSbtPluginPath(sbtVersion: string): string {
   if (semver.gte(sbtVersion, '0.1.0') && semver.lt(sbtVersion, '1.1.0')) {
     pluginName = 'SnykSbtPlugin-0.1x.scala';
   }
-  if (/index.js$/.test(__filename)) {
-    // running from ./dist
-    return path.join(__dirname, `../lib/${pluginName}`);
-  } else if (/index.ts$/.test(__filename)) {
-    // running from ./lib
-    return path.join(__dirname, pluginName);
+  if (/index.[tj]s$/.test(__filename)) {
+    return path.join(__dirname, `../scala/${pluginName}`);
   } else {
     throw new Error(`Cannot locate ${pluginName} script`);
   }
