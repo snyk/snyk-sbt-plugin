@@ -116,7 +116,7 @@ function generateSbtPluginPath(sbtVersion: string): string {
 async function pluginInspect(root: string, targetFile: string, options: any): Promise<types.PluginResult | null> {
   try {
     const targetFilePath = path.dirname(path.resolve(root, targetFile));
-    const sbtArgs = buildArgs(options.args);
+    const sbtArgs = buildArgs(options.args, false, true);
     const sbtVersion = getSbtVersion(root, targetFile);
     const sbtPluginPath = generateSbtPluginPath(sbtVersion);
 
@@ -134,7 +134,7 @@ async function pluginInspect(root: string, targetFile: string, options: any): Pr
         'Failed to create a temporary file to host Snyk script for SBT build analysis.';
       throw error;
     }
-    sbtArgs.push('snykRenderTree');
+
     const stdout = await subProcess.execute('sbt', sbtArgs, {cwd: targetFilePath});
 
     return {
@@ -186,17 +186,20 @@ function searchWithFs( filename ) {
   return buffer.indexOf('sbt-coursier') > -1;
 }
 
-export function buildArgs(sbtArgs, isCoursierProject?: boolean) {
+export function buildArgs(sbtArgs, isCoursierProject?: boolean, isOutputGraph?: boolean) {
   // force plain output so we don't have to parse colour codes
   let args = ['\"-Dsbt.log.noformat=true\"'];
   if (sbtArgs) {
     args = args.concat(sbtArgs);
   }
 
-  if (isCoursierProject) {
+  if (isOutputGraph) {
+    args.push('snykRenderTree');
+  } else if (isCoursierProject) {
     args.push('coursierDependencyTree');
-  } else if (!isCoursierProject) {
+  } else {
     args.push('dependencyTree');
   }
+
   return args;
 }
