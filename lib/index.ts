@@ -99,7 +99,7 @@ function generateSbtPluginPath(sbtVersion: string): string {
     throw new Error('Snyk does not support sbt with version less than 0.1.0');
   }
 
-  if (semver.gte(sbtVersion, '0.1.0') && semver.lt(sbtVersion, '1.2.0')) {
+  if (semver.gte(sbtVersion, '0.1.0') && semver.lt(sbtVersion, '1.1.0')) {
     pluginName = 'SnykSbtPlugin-0.1x.scala';
   }
   if (/index.js$/.test(__filename)) {
