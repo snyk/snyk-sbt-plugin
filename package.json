@@ -7,7 +7,8 @@
     "url": "https://github.com/snyk/snyk-sbt-plugin"
   },
   "files": [
-    "dist"
+    "dist",
+    "scala"
   ],
   "directories": {
     "test": "test"
