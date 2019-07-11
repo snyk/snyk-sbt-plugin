@@ -9,6 +9,7 @@ test('run inspect() 0.13', async (t) => {
     'testproj-0.13/build.sbt', { debug: true});
   t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
 
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.equal(result.package.version, '0.1.0-SNAPSHOT');
   t.match(result.package.name, 'hello');
 
@@ -25,6 +26,7 @@ test('run inspect() on 1.2.8', async (t) => {
   'testproj-1.2.8/build.sbt', {});
   t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
 
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.equal(result.package.version, '0.1.0-SNAPSHOT');
   t.match(result.package.name, 'hello');
   t.deepEqual(result.package
@@ -44,6 +46,7 @@ test('run inspect() with coursier on 0.17', async (t) => {
   // t.match(result.package.name, 'hello');
   t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
 
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.ok(result.package.dependencies['axis:axis']);
   t.deepEqual(result.package
     .dependencies['axis:axis']
@@ -61,6 +64,8 @@ test('run inspect() with coursier on 1.2.8', async (t) => {
   // t.equal(result.package.version, '0.1.0-SNAPSHOT');
   // t.match(result.package.name, 'hello');
   t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.ok(result.package.dependencies['axis:axis']);
   t.deepEqual(result.package
     .dependencies['axis:axis']
@@ -90,6 +95,8 @@ test('run inspect() with commented out coursier on 0.13', async (t) => {
   // TODO: fix to get the project name from build.sbt
   // t.equal(result.package.version, '0.1.0-SNAPSHOT');
   t.match(result.package.name, 'hello');
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.ok(result.package.dependencies['axis:axis']);
   t.deepEqual(result.package
     .dependencies['axis:axis']
@@ -147,6 +154,8 @@ test('run inspect() on 0.13 with custom-plugin', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-0.13/build.sbt', {'sbt-graph': true});
   t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.equal(result.package
       .dependencies['axis:axis']
       .dependencies['axis:axis-jaxrpc']
@@ -159,6 +168,8 @@ test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-1.2.8/build.sbt', {'sbt-graph': true});
   t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.equal(result.package
       .dependencies['axis:axis']
       .dependencies['axis:axis-jaxrpc']
