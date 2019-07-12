@@ -14,7 +14,7 @@ import * as tmp from 'tmp';
 tmp.setGracefulCleanup();
 
 const packageFormatVersion = 'mvn:0.0.1';
-
+export const help: string = path.resolve(__dirname, '../help.txt');
 export async function inspect(root, targetFile, options): Promise<types.PluginResult> {
   if (!options) {
     options = {dev: false};
