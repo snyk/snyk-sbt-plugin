@@ -9,6 +9,8 @@ import Keys._
 import org.json4s._
 
 object SnykSbtPlugin extends AutoPlugin {
+  val ConfigBlacklist: Set[String] =
+    Set("windows", "universal", "universal-docs", "debian", "rpm", "universal-src", "docker", "linux")
 
   case class SnykModuleInfo(version: String, configurations: Set[String])
 
@@ -85,7 +87,9 @@ object SnykSbtPlugin extends AutoPlugin {
       def formatModuleId(m: ModuleId) = s"${m.organisation}:${m.name}"
 
       val thisProjectId = formatModuleId((moduleGraph in Compile).value.roots.head.id)
-      val thisProjectConfigs = thisProject.value.configurations
+      val thisProjectConfigs = thisProject.value.configurations.filterNot { c =>
+        ConfigBlacklist.contains(c.name)
+      }
       val filter = ScopeFilter(configurations = inConfigurations(thisProjectConfigs: _*))
       val configAndModuleGraph = Def.task {
         val graph = moduleGraph.value
