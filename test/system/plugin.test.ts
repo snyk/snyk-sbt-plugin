@@ -164,6 +164,21 @@ test('run inspect() on 0.13 with custom-plugin', async (t) => {
     'correct version found');
 });
 
+// test for new plugin solving issue where native configurations were failing to build for snyk
+test('run inspect() on 0.13 with custom-plugin native-packages', async (t) => {
+  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-0.13-native-packager/build.sbt', {'sbt-graph': true});
+  t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.equal(result.package
+      .dependencies['org.apache.spark:spark-sql_2.12']
+      .dependencies['com.fasterxml.jackson.core:jackson-databind']
+      .dependencies['com.fasterxml.jackson.core:jackson-core'].version,
+    '2.7.9',
+    'correct version found');
+});
+
 test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-1.2.8/build.sbt', {'sbt-graph': true});
