@@ -98,7 +98,7 @@ test('parse `sbt dependencies` output: plugin 1.2.8', async (t) => {
       __dirname, '..', 'fixtures',
       'sbt-plugin-1.2.8-output.txt'),
     'utf8');
-  const depTree = parser.parseSbtPluginResults(sbtOutput);
+  const depTree = parser.parseSbtPluginResults(sbtOutput, 'com.example:hello_2.12', '1.0.0');
 
   t.equal(depTree.name, 'com.example:hello_2.12');
   t.equal(depTree.version, '0.1.0-SNAPSHOT');
@@ -121,7 +121,7 @@ test('parse `sbt dependencies` output: plugin 0.13', async (t) => {
     __dirname, '..', 'fixtures',
     'sbt-plugin-0.13-output.txt'),
     'utf8');
-  const depTree = parser.parseSbtPluginResults(sbtOutput);
+  const depTree = parser.parseSbtPluginResults(sbtOutput, 'com.example:hello_2.12', '1.0.0');
 
   t.equal(depTree.name, 'com.example:hello_2.12');
   t.equal(depTree.version, '0.1.0-SNAPSHOT');
