@@ -189,7 +189,7 @@ function parse(text, name, version, isCoursier): DepTree {
   return createSnykTree(rootTree, name, version);
 }
 
-function parseSbtPluginResults(sbtOutput: string): DepTree {
+function parseSbtPluginResults(sbtOutput: string, packageName: string, packageVersion: string): DepTree {
   // remove all other output
   const outputStart = 'Snyk Output Start';
   const outputEnd = 'Snyk Output End';
@@ -204,8 +204,8 @@ function parseSbtPluginResults(sbtOutput: string): DepTree {
   }
 
   const depTree = {
-    name: '.',
-    version: '1.0.0',
+    name: packageName,
+    version: packageVersion,
     dependencies: {},
   };
 
