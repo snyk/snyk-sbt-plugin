@@ -152,8 +152,8 @@ function getSbtVersion(root: string, targetFile: string): string {
   const buildPropsPath = path.join(root, path.dirname(targetFile), 'project/build.properties');
   return fs.readFileSync(buildPropsPath, 'utf-8')
     .split('\n') // split into lines
-    .find((line) => line.startsWith('sbt.version='))! // locate version line
-    .split('=')[1]; // return only the version
+    .find((line) => !!line.match(/sbt\.version\s*=/))! // locate version line
+    .split(/=\s*/)[1].trim(); // return only the version
 }
 
  // guess whether we have the couriser plugin by looking for sbt-coursier
