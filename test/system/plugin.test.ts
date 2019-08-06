@@ -192,3 +192,17 @@ test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
     '1.4',
     'correct version found');
 });
+
+test('run inspect() on play-scala-seed 1.2.8 with custom-plugin', async (t) => {
+  const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-play-scala-seed-1.2.8/build.sbt', {'sbt-graph': true});
+  t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.equal(result.package
+      .dependencies['com.typesafe.play:play-guice_2.13']
+      .dependencies['com.typesafe.play:play_2.13']
+      .dependencies['com.fasterxml.jackson.datatype:jackson-datatype-jsr310'].version,
+    '2.9.8',
+    'correct version found');
+});
