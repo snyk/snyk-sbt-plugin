@@ -1,7 +1,12 @@
 package-lock.json
 dist/
 /node_modules/
-test/fixtures/testproj*/project/project/
-test/fixtures/testproj*/project/target/
-test/fixtures/testproj*/target/
 .idea
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+.history
+.cache
+.lib/

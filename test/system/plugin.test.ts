@@ -155,6 +155,29 @@ test('run inspect() on 0.13 with custom-plugin', async (t) => {
     'correct version found');
 });
 
+test('run inspect() with & without custom-plugin on a project with sub-projects', async (t) => {
+  const customPlugin: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'with-subprojects-scala-dependencies', {'sbt-graph': true});
+  t.equal(customPlugin.plugin.name, 'snyk:sbt', 'correct handler');
+
+  const oldPlugin: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'with-subprojects-scala-dependencies', {});
+  t.equal(oldPlugin.plugin.name, 'bundled:sbt', 'correct handler');
+  t.deepEqual(oldPlugin, customPlugin);
+});
+
+test('run inspect() with & without custom-plugin on a project with many sub-projects', async (t) => {
+  const customPlugin: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'sbt-multi-project-example', {'sbt-graph': true});
+  t.equal(customPlugin.plugin.name, 'snyk:sbt', 'correct handler');
+
+  const oldPlugin: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'sbt-multi-project-example', {debug: true});
+  t.equal(oldPlugin.plugin.name, 'bundled:sbt', 'correct handler');
+
+  t.deepEqual(oldPlugin, customPlugin);
+});
+
 test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-1.2.8/build.sbt', {'sbt-graph': true});

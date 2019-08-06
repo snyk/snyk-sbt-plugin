@@ -1,0 +1,3780 @@
+{
+  "schemaVersion": "1.2.0",
+  "pkgManager": {
+    "name": "sbt"
+  },
+  "pkgs": [
+    {
+      "id": ".@1.0.0",
+      "info": {
+        "name": ".",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "a@1.0.0",
+      "info": {
+        "name": "a",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "b@1.0.0",
+      "info": {
+        "name": "b",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "c@1.0.0",
+      "info": {
+        "name": "c",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "d@1.0.0",
+      "info": {
+        "name": "d",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "e@1.0.0",
+      "info": {
+        "name": "e",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "f@1.0.0",
+      "info": {
+        "name": "f",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "g@1.0.0",
+      "info": {
+        "name": "g",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "h@1.0.0",
+      "info": {
+        "name": "h",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "i@1.0.0",
+      "info": {
+        "name": "i",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "j@1.0.0",
+      "info": {
+        "name": "j",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "aa@1.0.0",
+      "info": {
+        "name": "aa",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "id": "com.github.ben-manes.caffeine:caffeine@2.3.4",
+      "info": {
+        "name": "com.github.ben-manes.caffeine:caffeine",
+        "version": "2.3.4"
+      }
+    },
+    {
+      "id": "com.google.code.findbugs:jsr305@2.0.1",
+      "info": {
+        "name": "com.google.code.findbugs:jsr305",
+        "version": "2.0.1"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-init_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-init_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.fasterxml.jackson.core:jackson-core@2.9.8",
+      "info": {
+        "name": "com.fasterxml.jackson.core:jackson-core",
+        "version": "2.9.8"
+      }
+    },
+    {
+      "id": "com.fasterxml.jackson.core:jackson-annotations@2.9.8",
+      "info": {
+        "name": "com.fasterxml.jackson.core:jackson-annotations",
+        "version": "2.9.8"
+      }
+    },
+    {
+      "id": "com.fasterxml.jackson.core:jackson-databind@2.9.8",
+      "info": {
+        "name": "com.fasterxml.jackson.core:jackson-databind",
+        "version": "2.9.8"
+      }
+    },
+    {
+      "id": "com.thoughtworks.paranamer:paranamer@2.8",
+      "info": {
+        "name": "com.thoughtworks.paranamer:paranamer",
+        "version": "2.8"
+      }
+    },
+    {
+      "id": "com.fasterxml.jackson.module:jackson-module-paranamer@2.9.8",
+      "info": {
+        "name": "com.fasterxml.jackson.module:jackson-module-paranamer",
+        "version": "2.9.8"
+      }
+    },
+    {
+      "id": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8",
+      "info": {
+        "name": "com.fasterxml.jackson.module:jackson-module-scala_2.12",
+        "version": "2.9.8"
+      }
+    },
+    {
+      "id": "com.twitter:util-function_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-function_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "org.scala-lang.modules:scala-parser-combinators_2.12@1.0.4",
+      "info": {
+        "name": "org.scala-lang.modules:scala-parser-combinators_2.12",
+        "version": "1.0.4"
+      }
+    },
+    {
+      "id": "org.scala-lang:scala-reflect@2.12.8",
+      "info": {
+        "name": "org.scala-lang:scala-reflect",
+        "version": "2.12.8"
+      }
+    },
+    {
+      "id": "com.twitter:util-core_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-core_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-registry_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-registry_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-app_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-app_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-lint_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-lint_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-stats_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-stats_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-logging_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-logging_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-toggle_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-toggle_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-cache_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-cache_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-codec_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-codec_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-hashing_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-hashing_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-jvm_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-jvm_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-security_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-security_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:util-tunable_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:util-tunable_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "org.hdrhistogram:HdrHistogram@2.1.11",
+      "info": {
+        "name": "org.hdrhistogram:HdrHistogram",
+        "version": "2.1.11"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-core_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-core_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "io.netty:netty-common@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-common",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-buffer@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-buffer",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-resolver@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-resolver",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-transport@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-transport",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-codec@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-codec",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-handler@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-handler",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-codec-http@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-codec-http",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-codec-socks@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-codec-socks",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-handler-proxy@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-handler-proxy",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-transport-native-unix-common@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-transport-native-unix-common",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-transport-native-epoll@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-transport-native-epoll",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-base-http_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-base-http_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-netty4_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-netty4_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:scrooge-core_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:scrooge-core_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "org.apache.thrift:libthrift@0.10.0",
+      "info": {
+        "name": "org.apache.thrift:libthrift",
+        "version": "0.10.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-thrift_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-thrift_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-benchmark-thrift_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-benchmark-thrift_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "commons-codec:commons-codec@1.9",
+      "info": {
+        "name": "commons-codec:commons-codec",
+        "version": "1.9"
+      }
+    },
+    {
+      "id": "commons-logging:commons-logging@1.2",
+      "info": {
+        "name": "commons-logging:commons-logging",
+        "version": "1.2"
+      }
+    },
+    {
+      "id": "org.apache.httpcomponents:httpcore@4.4.1",
+      "info": {
+        "name": "org.apache.httpcomponents:httpcore",
+        "version": "4.4.1"
+      }
+    },
+    {
+      "id": "org.apache.httpcomponents:httpclient@4.4.1",
+      "info": {
+        "name": "org.apache.httpcomponents:httpclient",
+        "version": "4.4.1"
+      }
+    },
+    {
+      "id": "org.slf4j:slf4j-api@1.7.12",
+      "info": {
+        "name": "org.slf4j:slf4j-api",
+        "version": "1.7.12"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-exp_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-exp_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-netty4-http_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-netty4-http_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "io.netty:netty-codec-http2@4.1.35.Final",
+      "info": {
+        "name": "io.netty:netty-codec-http2",
+        "version": "4.1.35.Final"
+      }
+    },
+    {
+      "id": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final",
+      "info": {
+        "name": "io.netty:netty-tcnative-boringssl-static",
+        "version": "2.0.25.Final"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-http2_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-http2_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-http_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-http_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:bijection-core_2.12@0.9.4",
+      "info": {
+        "name": "com.twitter:bijection-core_2.12",
+        "version": "0.9.4"
+      }
+    },
+    {
+      "id": "com.google.code.gson:gson@2.3.1",
+      "info": {
+        "name": "com.google.code.gson:gson",
+        "version": "2.3.1"
+      }
+    },
+    {
+      "id": "commons-lang:commons-lang@2.6",
+      "info": {
+        "name": "commons-lang:commons-lang",
+        "version": "2.6"
+      }
+    },
+    {
+      "id": "commons-cli:commons-cli@1.2",
+      "info": {
+        "name": "commons-cli:commons-cli",
+        "version": "1.2"
+      }
+    },
+    {
+      "id": "io.netty:netty@3.7.0.Final",
+      "info": {
+        "name": "io.netty:netty",
+        "version": "3.7.0.Final"
+      }
+    },
+    {
+      "id": "log4j:log4j@1.2.16",
+      "info": {
+        "name": "log4j:log4j",
+        "version": "1.2.16"
+      }
+    },
+    {
+      "id": "net.java.dev.javacc:javacc@5.0",
+      "info": {
+        "name": "net.java.dev.javacc:javacc",
+        "version": "5.0"
+      }
+    },
+    {
+      "id": "org.slf4j:slf4j-log4j12@1.7.5",
+      "info": {
+        "name": "org.slf4j:slf4j-log4j12",
+        "version": "1.7.5"
+      }
+    },
+    {
+      "id": "org.apache.zookeeper:zookeeper@3.5.0-alpha",
+      "info": {
+        "name": "org.apache.zookeeper:zookeeper",
+        "version": "3.5.0-alpha"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-serversets_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-serversets_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-tunable_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-tunable_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-stats-core_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-stats-core_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-stats_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-stats_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-memcached_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-memcached_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-mux_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-mux_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-mysql_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-mysql_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-thriftmux_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-thriftmux_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-zipkin-core_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-zipkin-core_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-zipkin-scribe_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-zipkin-scribe_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.google.guava:guava@16.0.1",
+      "info": {
+        "name": "com.google.guava:guava",
+        "version": "16.0.1"
+      }
+    },
+    {
+      "id": "org.apache.curator:curator-client@2.8.0",
+      "info": {
+        "name": "org.apache.curator:curator-client",
+        "version": "2.8.0"
+      }
+    },
+    {
+      "id": "org.apache.curator:curator-framework@2.8.0",
+      "info": {
+        "name": "org.apache.curator:curator-framework",
+        "version": "2.8.0"
+      }
+    },
+    {
+      "id": "org.apache.commons:commons-math@2.2",
+      "info": {
+        "name": "org.apache.commons:commons-math",
+        "version": "2.2"
+      }
+    },
+    {
+      "id": "org.javassist:javassist@3.18.1-GA",
+      "info": {
+        "name": "org.javassist:javassist",
+        "version": "3.18.1-GA"
+      }
+    },
+    {
+      "id": "org.apache.curator:curator-test@2.8.0",
+      "info": {
+        "name": "org.apache.curator:curator-test",
+        "version": "2.8.0"
+      }
+    },
+    {
+      "id": "net.sf.jopt-simple:jopt-simple@4.6",
+      "info": {
+        "name": "net.sf.jopt-simple:jopt-simple",
+        "version": "4.6"
+      }
+    },
+    {
+      "id": "org.apache.commons:commons-math3@3.2",
+      "info": {
+        "name": "org.apache.commons:commons-math3",
+        "version": "3.2"
+      }
+    },
+    {
+      "id": "org.openjdk.jmh:jmh-core@1.21",
+      "info": {
+        "name": "org.openjdk.jmh:jmh-core",
+        "version": "1.21"
+      }
+    },
+    {
+      "id": "org.openjdk.jmh:jmh-generator-reflection@1.21",
+      "info": {
+        "name": "org.openjdk.jmh:jmh-generator-reflection",
+        "version": "1.21"
+      }
+    },
+    {
+      "id": "org.ow2.asm:asm@5.0.3",
+      "info": {
+        "name": "org.ow2.asm:asm",
+        "version": "5.0.3"
+      }
+    },
+    {
+      "id": "org.openjdk.jmh:jmh-generator-asm@1.21",
+      "info": {
+        "name": "org.openjdk.jmh:jmh-generator-asm",
+        "version": "1.21"
+      }
+    },
+    {
+      "id": "org.openjdk.jmh:jmh-generator-bytecode@1.21",
+      "info": {
+        "name": "org.openjdk.jmh:jmh-generator-bytecode",
+        "version": "1.21"
+      }
+    },
+    {
+      "id": "pl.project13.scala:sbt-jmh-extras@0.3.4",
+      "info": {
+        "name": "pl.project13.scala:sbt-jmh-extras",
+        "version": "0.3.4"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-benchmark_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-benchmark_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-doc_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-doc_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-example_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-example_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-exception_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-exception_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "io.grpc:grpc-context@1.13.2",
+      "info": {
+        "name": "io.grpc:grpc-context",
+        "version": "1.13.2"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-grpc-context_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-grpc-context_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-integration_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-integration_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.google.code.findbugs:jsr305@3.0.2",
+      "info": {
+        "name": "com.google.code.findbugs:jsr305",
+        "version": "3.0.2"
+      }
+    },
+    {
+      "id": "io.grpc:grpc-context@1.18.0",
+      "info": {
+        "name": "io.grpc:grpc-context",
+        "version": "1.18.0"
+      }
+    },
+    {
+      "id": "io.opencensus:opencensus-api@0.19.1",
+      "info": {
+        "name": "io.opencensus:opencensus-api",
+        "version": "0.19.1"
+      }
+    },
+    {
+      "id": "com.lmax:disruptor@3.4.2",
+      "info": {
+        "name": "com.lmax:disruptor",
+        "version": "3.4.2"
+      }
+    },
+    {
+      "id": "com.google.errorprone:error_prone_annotations@2.1.3",
+      "info": {
+        "name": "com.google.errorprone:error_prone_annotations",
+        "version": "2.1.3"
+      }
+    },
+    {
+      "id": "com.google.j2objc:j2objc-annotations@1.1",
+      "info": {
+        "name": "com.google.j2objc:j2objc-annotations",
+        "version": "1.1"
+      }
+    },
+    {
+      "id": "org.checkerframework:checker-compat-qual@2.0.0",
+      "info": {
+        "name": "org.checkerframework:checker-compat-qual",
+        "version": "2.0.0"
+      }
+    },
+    {
+      "id": "org.codehaus.mojo:animal-sniffer-annotations@1.14",
+      "info": {
+        "name": "org.codehaus.mojo:animal-sniffer-annotations",
+        "version": "1.14"
+      }
+    },
+    {
+      "id": "com.google.guava:guava@25.1-android",
+      "info": {
+        "name": "com.google.guava:guava",
+        "version": "25.1-android"
+      }
+    },
+    {
+      "id": "io.opencensus:opencensus-impl-core@0.19.1",
+      "info": {
+        "name": "io.opencensus:opencensus-impl-core",
+        "version": "0.19.1"
+      }
+    },
+    {
+      "id": "io.opencensus:opencensus-impl@0.19.1",
+      "info": {
+        "name": "io.opencensus:opencensus-impl",
+        "version": "0.19.1"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-opencensus-tracing_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-opencensus-tracing_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "com.twitter:finagle-redis_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle-redis_2.12",
+        "version": "19.6.0"
+      }
+    },
+    {
+      "id": "org.slf4j:slf4j-api@1.7.5",
+      "info": {
+        "name": "org.slf4j:slf4j-api",
+        "version": "1.7.5"
+      }
+    },
+    {
+      "id": "com.twitter:finagle_2.12@19.6.0",
+      "info": {
+        "name": "com.twitter:finagle_2.12",
+        "version": "19.6.0"
+      }
+    }
+  ],
+  "graph": {
+    "rootNodeId": "root",
+    "nodes": [
+      {
+        "nodeId": "root",
+        "pkgId": ".@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root1"
+          },
+          {
+            "nodeId": "root2"
+          },
+          {
+            "nodeId": "root3"
+          },
+          {
+            "nodeId": "root4"
+          },
+          {
+            "nodeId": "root5"
+          },
+          {
+            "nodeId": "root6"
+          },
+          {
+            "nodeId": "root7"
+          },
+          {
+            "nodeId": "root8"
+          },
+          {
+            "nodeId": "root9"
+          },
+          {
+            "nodeId": "root10"
+          }
+        ]
+      },
+      {
+        "nodeId": "root1",
+        "pkgId": "a@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root2",
+        "pkgId": "b@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root3",
+        "pkgId": "c@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root4",
+        "pkgId": "d@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root5",
+        "pkgId": "e@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root6",
+        "pkgId": "f@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root7",
+        "pkgId": "g@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root8",
+        "pkgId": "h@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root9",
+        "pkgId": "i@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root10",
+        "pkgId": "j@1.0.0",
+        "deps": [
+          {
+            "nodeId": "root-node"
+          }
+        ]
+      },
+      {
+        "nodeId": "root-node",
+        "pkgId": "aa@1.0.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-benchmark-thrift_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-benchmark_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-doc_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-example_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-exception_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-exp_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-grpc-context_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http2_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-init_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-integration_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-memcached_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mux_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mysql_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-opencensus-tracing_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-redis_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-serversets_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-stats-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thriftmux_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-tunable_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-zipkin-core_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-zipkin-scribe_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4",
+        "pkgId": "com.github.ben-manes.caffeine:caffeine@2.3.4",
+        "deps": []
+      },
+      {
+        "nodeId": "com.google.code.findbugs:jsr305@2.0.1",
+        "pkgId": "com.google.code.findbugs:jsr305@2.0.1",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:finagle-init_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-init_2.12@19.6.0",
+        "deps": []
+      },
+      {
+        "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8",
+        "pkgId": "com.fasterxml.jackson.core:jackson-core@2.9.8",
+        "deps": []
+      },
+      {
+        "nodeId": "com.fasterxml.jackson.core:jackson-annotations@2.9.8",
+        "pkgId": "com.fasterxml.jackson.core:jackson-annotations@2.9.8",
+        "deps": []
+      },
+      {
+        "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8",
+        "pkgId": "com.fasterxml.jackson.core:jackson-databind@2.9.8",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-annotations@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.thoughtworks.paranamer:paranamer@2.8",
+        "pkgId": "com.thoughtworks.paranamer:paranamer@2.8",
+        "deps": []
+      },
+      {
+        "nodeId": "com.fasterxml.jackson.module:jackson-module-paranamer@2.9.8",
+        "pkgId": "com.fasterxml.jackson.module:jackson-module-paranamer@2.9.8",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.thoughtworks.paranamer:paranamer@2.8"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8",
+        "pkgId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-annotations@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-paranamer@2.9.8"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-function_2.12@19.6.0",
+        "pkgId": "com.twitter:util-function_2.12@19.6.0",
+        "deps": []
+      },
+      {
+        "nodeId": "org.scala-lang.modules:scala-parser-combinators_2.12@1.0.4",
+        "pkgId": "org.scala-lang.modules:scala-parser-combinators_2.12@1.0.4",
+        "deps": []
+      },
+      {
+        "nodeId": "org.scala-lang:scala-reflect@2.12.8",
+        "pkgId": "org.scala-lang:scala-reflect@2.12.8",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:util-core_2.12@19.6.0",
+        "pkgId": "com.twitter:util-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-function_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.scala-lang.modules:scala-parser-combinators_2.12@1.0.4"
+          },
+          {
+            "nodeId": "org.scala-lang:scala-reflect@2.12.8"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-registry_2.12@19.6.0",
+        "pkgId": "com.twitter:util-registry_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-app_2.12@19.6.0",
+        "pkgId": "com.twitter:util-app_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-registry_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-lint_2.12@19.6.0",
+        "pkgId": "com.twitter:util-lint_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-stats_2.12@19.6.0|1",
+        "pkgId": "com.twitter:util-stats_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@2.0.1"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-stats_2.12@19.6.0|2",
+        "pkgId": "com.twitter:util-stats_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@3.0.2"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-logging_2.12@19.6.0|1",
+        "pkgId": "com.twitter:util-logging_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-logging_2.12@19.6.0|2",
+        "pkgId": "com.twitter:util-logging_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-toggle_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-toggle_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-cache_2.12@19.6.0|1",
+        "pkgId": "com.twitter:util-cache_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@2.0.1"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-cache_2.12@19.6.0|2",
+        "pkgId": "com.twitter:util-cache_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@3.0.2"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-codec_2.12@19.6.0",
+        "pkgId": "com.twitter:util-codec_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-hashing_2.12@19.6.0",
+        "pkgId": "com.twitter:util-hashing_2.12@19.6.0",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:util-jvm_2.12@19.6.0|1",
+        "pkgId": "com.twitter:util-jvm_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-jvm_2.12@19.6.0|2",
+        "pkgId": "com.twitter:util-jvm_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-security_2.12@19.6.0|1",
+        "pkgId": "com.twitter:util-security_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-security_2.12@19.6.0|2",
+        "pkgId": "com.twitter:util-security_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:util-tunable_2.12@19.6.0",
+        "pkgId": "com.twitter:util-tunable_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.hdrhistogram:HdrHistogram@2.1.11",
+        "pkgId": "org.hdrhistogram:HdrHistogram@2.1.11",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@2.0.1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-init_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-hashing_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-jvm_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-registry_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-security_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-tunable_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.hdrhistogram:HdrHistogram@2.1.11"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-core_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@2.0.1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-init_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-hashing_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-jvm_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-registry_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-security_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-tunable_2.12@19.6.0"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "org.hdrhistogram:HdrHistogram@2.1.11"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-core_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@3.0.2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-init_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-hashing_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-jvm_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-registry_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-security_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-tunable_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.hdrhistogram:HdrHistogram@2.1.11"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-common@4.1.35.Final",
+        "pkgId": "io.netty:netty-common@4.1.35.Final",
+        "deps": []
+      },
+      {
+        "nodeId": "io.netty:netty-buffer@4.1.35.Final",
+        "pkgId": "io.netty:netty-buffer@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-resolver@4.1.35.Final",
+        "pkgId": "io.netty:netty-resolver@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-transport@4.1.35.Final",
+        "pkgId": "io.netty:netty-transport@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-resolver@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-codec@4.1.35.Final",
+        "pkgId": "io.netty:netty-codec@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-handler@4.1.35.Final",
+        "pkgId": "io.netty:netty-handler@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-codec-http@4.1.35.Final",
+        "pkgId": "io.netty:netty-codec-http@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-codec-socks@4.1.35.Final",
+        "pkgId": "io.netty:netty-codec-socks@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final",
+        "pkgId": "io.netty:netty-handler-proxy@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-socks@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final",
+        "pkgId": "io.netty:netty-transport-native-unix-common@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final",
+        "pkgId": "io.netty:netty-transport-native-epoll@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-base-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-base-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-base-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-netty4_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-netty4_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-netty4_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:scrooge-core_2.12@19.6.0",
+        "pkgId": "com.twitter:scrooge-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.apache.thrift:libthrift@0.10.0|1",
+        "pkgId": "org.apache.thrift:libthrift@0.10.0",
+        "deps": []
+      },
+      {
+        "nodeId": "org.apache.thrift:libthrift@0.10.0|2",
+        "pkgId": "org.apache.thrift:libthrift@0.10.0",
+        "deps": [
+          {
+            "nodeId": "org.apache.httpcomponents:httpclient@4.4.1"
+          },
+          {
+            "nodeId": "org.apache.httpcomponents:httpcore@4.4.1"
+          },
+          {
+            "nodeId": "org.slf4j:slf4j-api@1.7.12"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-thrift_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-thrift_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-thrift_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-benchmark-thrift_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-benchmark-thrift_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-benchmark-thrift_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-benchmark-thrift_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "commons-codec:commons-codec@1.9",
+        "pkgId": "commons-codec:commons-codec@1.9",
+        "deps": []
+      },
+      {
+        "nodeId": "commons-logging:commons-logging@1.2",
+        "pkgId": "commons-logging:commons-logging@1.2",
+        "deps": []
+      },
+      {
+        "nodeId": "org.apache.httpcomponents:httpcore@4.4.1",
+        "pkgId": "org.apache.httpcomponents:httpcore@4.4.1",
+        "deps": []
+      },
+      {
+        "nodeId": "org.apache.httpcomponents:httpclient@4.4.1",
+        "pkgId": "org.apache.httpcomponents:httpclient@4.4.1",
+        "deps": [
+          {
+            "nodeId": "commons-codec:commons-codec@1.9"
+          },
+          {
+            "nodeId": "commons-logging:commons-logging@1.2"
+          },
+          {
+            "nodeId": "org.apache.httpcomponents:httpcore@4.4.1"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.slf4j:slf4j-api@1.7.12",
+        "pkgId": "org.slf4j:slf4j-api@1.7.12",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:finagle-exp_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-exp_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-exp_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-exp_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-netty4-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-jvm_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-netty4-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-jvm_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-netty4-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-jvm_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-codec-http2@4.1.35.Final",
+        "pkgId": "io.netty:netty-codec-http2@4.1.35.Final",
+        "deps": [
+          {
+            "nodeId": "io.netty:netty-buffer@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-common@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final",
+        "pkgId": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:finagle-http2_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-http2_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http2@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-http2_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-http2_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http2@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-http2_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-http2_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-codec-http2@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-handler-proxy@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-epoll@4.1.35.Final"
+          },
+          {
+            "nodeId": "io.netty:netty-transport-native-unix-common@4.1.35.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-http_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http2_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-http_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http2_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-http_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-http_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-base-http_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http2_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "io.netty:netty-tcnative-boringssl-static@2.0.25.Final"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:bijection-core_2.12@0.9.4",
+        "pkgId": "com.twitter:bijection-core_2.12@0.9.4",
+        "deps": []
+      },
+      {
+        "nodeId": "com.google.code.gson:gson@2.3.1",
+        "pkgId": "com.google.code.gson:gson@2.3.1",
+        "deps": []
+      },
+      {
+        "nodeId": "commons-lang:commons-lang@2.6",
+        "pkgId": "commons-lang:commons-lang@2.6",
+        "deps": []
+      },
+      {
+        "nodeId": "commons-cli:commons-cli@1.2",
+        "pkgId": "commons-cli:commons-cli@1.2",
+        "deps": []
+      },
+      {
+        "nodeId": "io.netty:netty@3.7.0.Final",
+        "pkgId": "io.netty:netty@3.7.0.Final",
+        "deps": []
+      },
+      {
+        "nodeId": "log4j:log4j@1.2.16",
+        "pkgId": "log4j:log4j@1.2.16",
+        "deps": []
+      },
+      {
+        "nodeId": "net.java.dev.javacc:javacc@5.0",
+        "pkgId": "net.java.dev.javacc:javacc@5.0",
+        "deps": []
+      },
+      {
+        "nodeId": "org.slf4j:slf4j-log4j12@1.7.5|1",
+        "pkgId": "org.slf4j:slf4j-log4j12@1.7.5",
+        "deps": [
+          {
+            "nodeId": "log4j:log4j@1.2.16"
+          },
+          {
+            "nodeId": "org.slf4j:slf4j-api@1.7.12"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.slf4j:slf4j-log4j12@1.7.5|2",
+        "pkgId": "org.slf4j:slf4j-log4j12@1.7.5",
+        "deps": [
+          {
+            "nodeId": "log4j:log4j@1.2.16"
+          },
+          {
+            "nodeId": "org.slf4j:slf4j-api@1.7.5"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.apache.zookeeper:zookeeper@3.5.0-alpha|1",
+        "pkgId": "org.apache.zookeeper:zookeeper@3.5.0-alpha",
+        "deps": [
+          {
+            "nodeId": "commons-cli:commons-cli@1.2"
+          },
+          {
+            "nodeId": "io.netty:netty@3.7.0.Final"
+          },
+          {
+            "nodeId": "log4j:log4j@1.2.16"
+          },
+          {
+            "nodeId": "net.java.dev.javacc:javacc@5.0"
+          },
+          {
+            "nodeId": "org.slf4j:slf4j-api@1.7.12"
+          },
+          {
+            "nodeId": "org.slf4j:slf4j-log4j12@1.7.5|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.apache.zookeeper:zookeeper@3.5.0-alpha|2",
+        "pkgId": "org.apache.zookeeper:zookeeper@3.5.0-alpha",
+        "deps": [
+          {
+            "nodeId": "commons-cli:commons-cli@1.2"
+          },
+          {
+            "nodeId": "io.netty:netty@3.7.0.Final"
+          },
+          {
+            "nodeId": "log4j:log4j@1.2.16"
+          },
+          {
+            "nodeId": "net.java.dev.javacc:javacc@5.0"
+          },
+          {
+            "nodeId": "org.slf4j:slf4j-api@1.7.5"
+          },
+          {
+            "nodeId": "org.slf4j:slf4j-log4j12@1.7.5|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-serversets_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-serversets_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.gson:gson@2.3.1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "commons-lang:commons-lang@2.6"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          },
+          {
+            "nodeId": "org.apache.zookeeper:zookeeper@3.5.0-alpha|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-serversets_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-serversets_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.gson:gson@2.3.1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "commons-lang:commons-lang@2.6"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          },
+          {
+            "nodeId": "org.apache.zookeeper:zookeeper@3.5.0-alpha|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-serversets_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-serversets_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.gson:gson@2.3.1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "commons-lang:commons-lang@2.6"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          },
+          {
+            "nodeId": "org.apache.zookeeper:zookeeper@3.5.0-alpha|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-tunable_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-tunable_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-tunable_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-stats-core_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-stats-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-tunable_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-registry_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-tunable_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-stats-core_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-stats-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-tunable_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-lint_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-registry_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-tunable_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-stats_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-stats_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-stats-core_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-stats_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-stats_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-stats-core_2.12@19.6.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-memcached_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-memcached_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:bijection-core_2.12@0.9.4"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-serversets_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-hashing_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-memcached_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-memcached_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:bijection-core_2.12@0.9.4"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-serversets_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-stats_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-hashing_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-mux_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-mux_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-mux_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-mux_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-app_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-mysql_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-mysql_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.github.ben-manes.caffeine:caffeine@2.3.4"
+          },
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@2.0.1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-toggle_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-cache_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-thriftmux_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-thriftmux_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mux_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-thriftmux_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-thriftmux_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mux_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-thriftmux_2.12@19.6.0|3",
+        "pkgId": "com.twitter:finagle-thriftmux_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mux_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-zipkin-core_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-zipkin-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-zipkin-core_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-zipkin-core_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-zipkin-scribe_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-zipkin-scribe_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-zipkin-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-zipkin-scribe_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-zipkin-scribe_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-zipkin-core_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.google.guava:guava@16.0.1",
+        "pkgId": "com.google.guava:guava@16.0.1",
+        "deps": []
+      },
+      {
+        "nodeId": "org.apache.curator:curator-client@2.8.0",
+        "pkgId": "org.apache.curator:curator-client@2.8.0",
+        "deps": [
+          {
+            "nodeId": "com.google.guava:guava@16.0.1"
+          },
+          {
+            "nodeId": "org.apache.zookeeper:zookeeper@3.5.0-alpha|1"
+          },
+          {
+            "nodeId": "org.slf4j:slf4j-api@1.7.12"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.apache.curator:curator-framework@2.8.0",
+        "pkgId": "org.apache.curator:curator-framework@2.8.0",
+        "deps": [
+          {
+            "nodeId": "com.google.guava:guava@16.0.1"
+          },
+          {
+            "nodeId": "org.apache.curator:curator-client@2.8.0"
+          },
+          {
+            "nodeId": "org.apache.zookeeper:zookeeper@3.5.0-alpha|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.apache.commons:commons-math@2.2",
+        "pkgId": "org.apache.commons:commons-math@2.2",
+        "deps": []
+      },
+      {
+        "nodeId": "org.javassist:javassist@3.18.1-GA",
+        "pkgId": "org.javassist:javassist@3.18.1-GA",
+        "deps": []
+      },
+      {
+        "nodeId": "org.apache.curator:curator-test@2.8.0",
+        "pkgId": "org.apache.curator:curator-test@2.8.0",
+        "deps": [
+          {
+            "nodeId": "com.google.guava:guava@16.0.1"
+          },
+          {
+            "nodeId": "org.apache.commons:commons-math@2.2"
+          },
+          {
+            "nodeId": "org.apache.zookeeper:zookeeper@3.5.0-alpha|1"
+          },
+          {
+            "nodeId": "org.javassist:javassist@3.18.1-GA"
+          }
+        ]
+      },
+      {
+        "nodeId": "net.sf.jopt-simple:jopt-simple@4.6",
+        "pkgId": "net.sf.jopt-simple:jopt-simple@4.6",
+        "deps": []
+      },
+      {
+        "nodeId": "org.apache.commons:commons-math3@3.2",
+        "pkgId": "org.apache.commons:commons-math3@3.2",
+        "deps": []
+      },
+      {
+        "nodeId": "org.openjdk.jmh:jmh-core@1.21",
+        "pkgId": "org.openjdk.jmh:jmh-core@1.21",
+        "deps": [
+          {
+            "nodeId": "net.sf.jopt-simple:jopt-simple@4.6"
+          },
+          {
+            "nodeId": "org.apache.commons:commons-math3@3.2"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.openjdk.jmh:jmh-generator-reflection@1.21",
+        "pkgId": "org.openjdk.jmh:jmh-generator-reflection@1.21",
+        "deps": [
+          {
+            "nodeId": "org.openjdk.jmh:jmh-core@1.21"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.ow2.asm:asm@5.0.3",
+        "pkgId": "org.ow2.asm:asm@5.0.3",
+        "deps": []
+      },
+      {
+        "nodeId": "org.openjdk.jmh:jmh-generator-asm@1.21",
+        "pkgId": "org.openjdk.jmh:jmh-generator-asm@1.21",
+        "deps": [
+          {
+            "nodeId": "org.openjdk.jmh:jmh-core@1.21"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-generator-reflection@1.21"
+          },
+          {
+            "nodeId": "org.ow2.asm:asm@5.0.3"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.openjdk.jmh:jmh-generator-bytecode@1.21",
+        "pkgId": "org.openjdk.jmh:jmh-generator-bytecode@1.21",
+        "deps": [
+          {
+            "nodeId": "org.openjdk.jmh:jmh-core@1.21"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-generator-asm@1.21"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-generator-reflection@1.21"
+          }
+        ]
+      },
+      {
+        "nodeId": "pl.project13.scala:sbt-jmh-extras@0.3.4",
+        "pkgId": "pl.project13.scala:sbt-jmh-extras@0.3.4",
+        "deps": [
+          {
+            "nodeId": "org.openjdk.jmh:jmh-core@1.21"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-generator-asm@1.21"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-generator-bytecode@1.21"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-generator-reflection@1.21"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-benchmark_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-benchmark_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-benchmark-thrift_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-exp_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-memcached_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mux_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mysql_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-stats_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thriftmux_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-zipkin-scribe_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.curator:curator-framework@2.8.0"
+          },
+          {
+            "nodeId": "org.apache.curator:curator-test@2.8.0"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-core@1.21"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-generator-bytecode@1.21"
+          },
+          {
+            "nodeId": "org.openjdk.jmh:jmh-generator-reflection@1.21"
+          },
+          {
+            "nodeId": "pl.project13.scala:sbt-jmh-extras@0.3.4"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-doc_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-doc_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mysql_2.12@19.6.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-example_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-example_2.12@19.6.0",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:finagle-exception_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-exception_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-core@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.core:jackson-databind@2.9.8"
+          },
+          {
+            "nodeId": "com.fasterxml.jackson.module:jackson-module-scala_2.12@2.9.8"
+          },
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-codec_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.grpc:grpc-context@1.13.2",
+        "pkgId": "io.grpc:grpc-context@1.13.2",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:finagle-grpc-context_2.12@19.6.0|1",
+        "pkgId": "com.twitter:finagle-grpc-context_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "io.grpc:grpc-context@1.13.2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-grpc-context_2.12@19.6.0|2",
+        "pkgId": "com.twitter:finagle-grpc-context_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "io.grpc:grpc-context@1.18.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-integration_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-integration_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http2_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-memcached_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-mux_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4-http_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thrift_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "com.twitter:util-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|2"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.google.code.findbugs:jsr305@3.0.2",
+        "pkgId": "com.google.code.findbugs:jsr305@3.0.2",
+        "deps": []
+      },
+      {
+        "nodeId": "io.grpc:grpc-context@1.18.0",
+        "pkgId": "io.grpc:grpc-context@1.18.0",
+        "deps": []
+      },
+      {
+        "nodeId": "io.opencensus:opencensus-api@0.19.1",
+        "pkgId": "io.opencensus:opencensus-api@0.19.1",
+        "deps": [
+          {
+            "nodeId": "io.grpc:grpc-context@1.18.0"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.lmax:disruptor@3.4.2",
+        "pkgId": "com.lmax:disruptor@3.4.2",
+        "deps": []
+      },
+      {
+        "nodeId": "com.google.errorprone:error_prone_annotations@2.1.3",
+        "pkgId": "com.google.errorprone:error_prone_annotations@2.1.3",
+        "deps": []
+      },
+      {
+        "nodeId": "com.google.j2objc:j2objc-annotations@1.1",
+        "pkgId": "com.google.j2objc:j2objc-annotations@1.1",
+        "deps": []
+      },
+      {
+        "nodeId": "org.checkerframework:checker-compat-qual@2.0.0",
+        "pkgId": "org.checkerframework:checker-compat-qual@2.0.0",
+        "deps": []
+      },
+      {
+        "nodeId": "org.codehaus.mojo:animal-sniffer-annotations@1.14",
+        "pkgId": "org.codehaus.mojo:animal-sniffer-annotations@1.14",
+        "deps": []
+      },
+      {
+        "nodeId": "com.google.guava:guava@25.1-android",
+        "pkgId": "com.google.guava:guava@25.1-android",
+        "deps": [
+          {
+            "nodeId": "com.google.code.findbugs:jsr305@3.0.2"
+          },
+          {
+            "nodeId": "com.google.errorprone:error_prone_annotations@2.1.3"
+          },
+          {
+            "nodeId": "com.google.j2objc:j2objc-annotations@1.1"
+          },
+          {
+            "nodeId": "org.checkerframework:checker-compat-qual@2.0.0"
+          },
+          {
+            "nodeId": "org.codehaus.mojo:animal-sniffer-annotations@1.14"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.opencensus:opencensus-impl-core@0.19.1",
+        "pkgId": "io.opencensus:opencensus-impl-core@0.19.1",
+        "deps": [
+          {
+            "nodeId": "com.google.guava:guava@25.1-android"
+          },
+          {
+            "nodeId": "io.opencensus:opencensus-api@0.19.1"
+          }
+        ]
+      },
+      {
+        "nodeId": "io.opencensus:opencensus-impl@0.19.1",
+        "pkgId": "io.opencensus:opencensus-impl@0.19.1",
+        "deps": [
+          {
+            "nodeId": "com.lmax:disruptor@3.4.2"
+          },
+          {
+            "nodeId": "io.opencensus:opencensus-api@0.19.1"
+          },
+          {
+            "nodeId": "io.opencensus:opencensus-impl-core@0.19.1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-opencensus-tracing_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-opencensus-tracing_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-grpc-context_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:finagle-http_2.12@19.6.0|3"
+          },
+          {
+            "nodeId": "com.twitter:finagle-thriftmux_2.12@19.6.0|2"
+          },
+          {
+            "nodeId": "com.twitter:scrooge-core_2.12@19.6.0"
+          },
+          {
+            "nodeId": "io.opencensus:opencensus-api@0.19.1"
+          },
+          {
+            "nodeId": "io.opencensus:opencensus-impl@0.19.1"
+          },
+          {
+            "nodeId": "org.apache.thrift:libthrift@0.10.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "com.twitter:finagle-redis_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle-redis_2.12@19.6.0",
+        "deps": [
+          {
+            "nodeId": "com.twitter:finagle-core_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:finagle-netty4_2.12@19.6.0|1"
+          },
+          {
+            "nodeId": "com.twitter:util-logging_2.12@19.6.0|1"
+          }
+        ]
+      },
+      {
+        "nodeId": "org.slf4j:slf4j-api@1.7.5",
+        "pkgId": "org.slf4j:slf4j-api@1.7.5",
+        "deps": []
+      },
+      {
+        "nodeId": "com.twitter:finagle_2.12@19.6.0",
+        "pkgId": "com.twitter:finagle_2.12@19.6.0",
+        "deps": []
+      }
+    ]
+  }
+}
