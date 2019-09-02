@@ -37,8 +37,8 @@ This plugin provides dependency metadata for SBT projects that use `sbt` and hav
 
 ## Supported Java & Sbt versions
 
-| Java / Sbt  | 0.13.*  | 1.1.*  |  1.2.* |
-|---|---|---|---|---|
+| Java Sbt|0.13.* |1.1.*|1.2.* |
+|---|---|---|---|
 | 8  |  ✅ |  ❓ |  ✅ |
 | 9  | ✅  | ❓ |  ✅ |
 | 10  |  ✅ | ❓ |  ✅ |
