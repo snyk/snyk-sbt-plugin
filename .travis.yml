@@ -6,9 +6,7 @@ language: node_js
 node_js:
   - "8"
 
-cache:
-  directories:
-    - node_modules
+cache: npm
 
 before_install:
   # Install a later version of sbt-extras to support SBT >=1.0
