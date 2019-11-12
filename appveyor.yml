@@ -7,7 +7,7 @@ init:
 install:
   - cmd: choco install zulu8 -ia "INSTALLDIR=""C:\zulu"""
   - cmd: SET JAVA_HOME="C:\zulu"
-  - cmd: choco install sbt -ia "INSTALLDIR=""C:\sbt"""
+  - cmd: choco install sbt --version=1.3.2 -ia "INSTALLDIR=""C:\sbt"""
   - cmd: SET PATH=C:\sbt\bin;%JAVA_HOME%\bin;%PATH%
   - cmd: SET SBT_OPTS=-Xms4g -Xmx4g
   - cmd: SET COURSIER_VERBOSITY=-1
