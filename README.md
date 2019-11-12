@@ -41,13 +41,13 @@ This plugin provides dependency metadata for SBT projects that use `sbt` and hav
 
 ## Supported Java & Sbt versions
 
-| Java Sbt|0.13.* |1.1.*|1.2.* |
-|---|---|---|---|
-| 8  |  ✅ |  ❓ |  ✅ |
-| 9  | ✅  | ❓ |  ✅ |
-| 10  |  ✅ | ❓ |  ✅ |
-| 11  |  ✅ |  ❓ |  ✅ |
-| 12  |  ✅ |  ❓ |  ✅ |
-| 13  |  🚫 |  ❓ |  🚫 |
+| Java Sbt|0.13.* |1.1.*|1.2.* |1.3.2 |1.3.3|
+|---|---|---|---|---|---|
+| 8   |  ✅ | ❓ |  ✅ | ✅ | 🚫 |
+| 9   |  ✅ | ❓ |  ✅ | ✅ | 🚫 |
+| 10  |  ✅ | ❓ |  ✅ | ✅ | 🚫 |
+| 11  |  ✅ | ❓ |  ✅ | ✅ | 🚫 |
+| 12  |  ✅ | ❓ |  ✅ | ✅ | 🚫 |
+| 13  |  🚫 | ❓ |  🚫 | ✅ | 🚫 |
 
 `jdk13` is not currently supported (See this [comment](https://github.com/snyk/snyk-sbt-plugin/pull/61#issuecomment-521356342) for more details)
