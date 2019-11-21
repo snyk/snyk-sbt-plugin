@@ -20,15 +20,13 @@ export async function inspect(root, targetFile, options): Promise<types.PluginRe
     options = {dev: false};
   }
 
-  if (options['sbt-graph']) {
-    const res = await pluginInspect(root, targetFile, options);
-    if (res) {
-      res.package.packageFormatVersion = packageFormatVersion;
+  const res = await pluginInspect(root, targetFile, options);
+  if (res) {
+    res.package.packageFormatVersion = packageFormatVersion;
 
-      return res;
-    } else {
-      debug('Falling back to legacy inspect');
-    }
+    return res;
+  } else {
+    debug('Falling back to legacy inspect');
   }
 
   const result = await legacyInspect(root, targetFile, options);
