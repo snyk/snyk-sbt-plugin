@@ -1,5 +1,5 @@
 import * as childProcess from 'child_process';
-import * as treeKill from 'tree-kill';
+import * as treeKill from './vendor/tree-kill';
 import * as debugModule from 'debug';
 
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
@@ -12,9 +12,9 @@ const PROC_TIMEOUT = parseInt(TIMEOUT, 10);
 export const execute = (
   command: string,
   args: string[],
-  options: {cwd?: string},
-): Promise<string>  => {
-  const spawnOptions: {cwd?: string, shell: boolean} = {shell: true};
+  options: { cwd?: string },
+): Promise<string> => {
+  const spawnOptions: { cwd?: string; shell: boolean } = { shell: true };
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
   }
@@ -40,28 +40,36 @@ export const execute = (
       });
       if (strData.includes('(q)uit')) {
         proc.stdin.write('q\n');
-        debugLogging('sbt is requiring input. Provided (q)uit signal. ' +
-          'There is no current workaround for this, see: https://stackoverflow.com/questions/21484166');
+        debugLogging(
+          'sbt is requiring input. Provided (q)uit signal. ' +
+            'There is no current workaround for this, see: https://stackoverflow.com/questions/21484166',
+        );
       }
     });
 
     proc.stderr.on('data', (data) => {
       out.stderr = out.stderr + data;
-      data.toString().split('\n').forEach((str) => {
-        debugLogging(str);
-      });
+      data
+        .toString()
+        .split('\n')
+        .forEach((str) => {
+          debugLogging(str);
+        });
     });
 
     proc.on('close', (code) => {
       if (code !== 0) {
-        const errorMessage = `>>> command: ${fullCommand} ` +
+        const errorMessage =
+          `>>> command: ${fullCommand} ` +
           (code ? `>>> exit code: ${code} ` : '') +
           (out.stdout ? `>>> stdout: ${out.stdout} ` : '') +
           (out.stderr ? `>>> stderr: ${out.stderr}` : 'null');
         return reject(new Error(errorMessage));
       }
       if (out.stderr) {
-        debugLogging('subprocess exit code = 0, but stderr was not empty: ' + out.stderr);
+        debugLogging(
+          'subprocess exit code = 0, but stderr was not empty: ' + out.stderr,
+        );
       }
       resolve(out.stdout);
     });
@@ -70,7 +78,9 @@ export const execute = (
 
 function kill(id, out) {
   return () => {
-    out.stderr = out.stderr + 'Process timed out. To set longer timeout run with `PROC_TIMEOUT=value_in_ms`\n';
+    out.stderr =
+      out.stderr +
+      'Process timed out. To set longer timeout run with `PROC_TIMEOUT=value_in_ms`\n';
     return treeKill(id);
   };
 }
