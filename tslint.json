@@ -1,23 +1,24 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-      "tslint:recommended"
-  ],
+  "extends": ["tslint:recommended"],
   "jsRules": {
     "quotemark": {
-        "options": "single"
+      "options": "single"
     },
     "object-literal-sort-keys": false
   },
   "rules": {
-      "interface-name": false,
-      "no-var-requires": false,
-      "quotemark": {
-          "options": "single"
-      },
-      "object-literal-sort-keys": false,
-      "no-shadowed-variable": false,
-      "ordered-imports": false
+    "interface-name": false,
+    "no-var-requires": false,
+    "quotemark": {
+      "options": "single"
+    },
+    "object-literal-sort-keys": false,
+    "no-shadowed-variable": false,
+    "ordered-imports": false
+  },
+  "linterOptions": {
+    "exclude": ["lib/vendor/**/*"]
   },
   "rulesDirectory": []
 }
