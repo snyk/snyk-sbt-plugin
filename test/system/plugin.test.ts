@@ -7,7 +7,7 @@ import * as subProcess from '../../lib/sub-process';
 test('run inspect() 0.13', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-0.13/build.sbt', { debug: true});
-  t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
+  t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.equal(result.package.version, '0.1.0-SNAPSHOT');
@@ -24,7 +24,7 @@ test('run inspect() 0.13', async (t) => {
 test('run inspect() on 1.2.8', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
   'testproj-1.2.8/build.sbt', {});
-  t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
+  t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.equal(result.package.version, '0.1.0-SNAPSHOT');
@@ -121,7 +121,7 @@ test('run inspect() on bad project requiring user input', async (t) => {
 test('run inspect() on bad-project cascade through all parsing options', async (t) => {
   try {
     await plugin.inspect(path.join(__dirname, '..', 'fixtures',
-      'bad-project'), 'build.sbt', {'sbt-graph': true});
+      'bad-project'), 'build.sbt', {});
     t.fail('Expected to fail');
   } catch (error) {
     t.match(error.message, 'code: 1');
@@ -152,7 +152,7 @@ function stubSubProcessExec(t) {
 
 test('run inspect() on 0.13 with custom-plugin', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
-    'testproj-0.13/build.sbt', {'sbt-graph': true});
+    'testproj-0.13/build.sbt', {});
   t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
@@ -167,7 +167,7 @@ test('run inspect() on 0.13 with custom-plugin', async (t) => {
 // test for new plugin solving issue where native configurations were failing to build for snyk
 test('run inspect() on 0.13 with custom-plugin native-packages', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
-    'testproj-0.13-native-packager/build.sbt', {'sbt-graph': true});
+    'testproj-0.13-native-packager/build.sbt', {});
   t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
@@ -181,7 +181,7 @@ test('run inspect() on 0.13 with custom-plugin native-packages', async (t) => {
 
 test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
-    'testproj-1.2.8/build.sbt', {'sbt-graph': true});
+    'testproj-1.2.8/build.sbt', {});
   t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
@@ -195,7 +195,7 @@ test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
 
 test('run inspect() on play-scala-seed 1.2.8 with custom-plugin', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
-    'testproj-play-scala-seed-1.2.8/build.sbt', {'sbt-graph': true});
+    'testproj-play-scala-seed-1.2.8/build.sbt', {});
   t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
