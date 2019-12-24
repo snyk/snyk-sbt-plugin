@@ -206,3 +206,43 @@ test('run inspect() on play-scala-seed 1.2.8 with custom-plugin', async (t) => {
     '2.9.8',
     'correct version found');
 });
+
+test('run inspect() with coursier on 1.3.3', async (t) => {
+  const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-coursier-1.3.3/build.sbt', {});
+
+  // TODO: fix to get the project name from build.sbt
+  // for coursier project
+  // t.equal(result.package.version, '0.1.0-SNAPSHOT');
+  // t.match(result.package.name, 'hello');
+  t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
+        .dependencies['axis:axis']
+        .dependencies['axis:axis-jaxrpc']
+        .dependencies['org.apache.axis:axis-jaxrpc'].version,
+    '1.4',
+    'correct version found');
+});
+
+test('run inspect() with coursier on 1.3.5', async (t) => {
+    const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+        'testproj-coursier-1.3.5/build.sbt', {});
+
+    // TODO: fix to get the project name from build.sbt
+    // for coursier project
+    // t.equal(result.package.version, '0.1.0-SNAPSHOT');
+    // t.match(result.package.name, 'hello');
+    t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
+
+    t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+    t.ok(result.package.dependencies['axis:axis']);
+    t.deepEqual(result.package
+            .dependencies['axis:axis']
+            .dependencies['axis:axis-jaxrpc']
+            .dependencies['org.apache.axis:axis-jaxrpc'].version,
+        '1.4',
+        'correct version found');
+});

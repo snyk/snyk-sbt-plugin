@@ -20,7 +20,7 @@
     "prepare": "npm run build",
     "test": "npm run lint && npm run build && npm run test-functional",
     "test-functional": "tap -Rspec ./test/functional/*.test.[tj]s",
-    "test-system": "tap -Rspec --timeout=700 ./test/system/*.test.[tj]s",
+    "test-system": "tap -Rspec --timeout=1000 ./test/system/*.test.[tj]s",
     "test-system-windows": "tap -Rspec --timeout=700 ./test/system-windows/*.test.[tj]s"
   },
   "author": "snyk.io",
