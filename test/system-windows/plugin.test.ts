@@ -8,9 +8,10 @@ test('run inspect() 0.13', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-0.13/build.sbt', { debug: true});
   // top level package is not added as a dep on windows
-  t.equal(result.package.version, '1.4');
-  t.match(result.package.name, 'axis:axis');
+  t.equal(result.package.version, '0.1.0-SNAPSHOT');
+  t.match(result.package.name, 'hello');
   t.deepEqual(result.package
+    .dependencies['axis:axis']
     .dependencies['axis:axis-jaxrpc']
     .dependencies['org.apache.axis:axis-jaxrpc'].version,
   '1.4',
@@ -21,9 +22,10 @@ test('run inspect() on 1.2.8', async (t) => {
   const result: any  = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
   'testproj-1.2.8/build.sbt', {});
   // top level package is not added as a dep on windows
-  t.equal(result.package.version, '1.4');
-  t.match(result.package.name, 'axis:axis');
+  t.equal(result.package.version, '0.1.0-SNAPSHOT');
+  t.match(result.package.name, 'hello');
   t.deepEqual(result.package
+    .dependencies['axis:axis']
     .dependencies['axis:axis-jaxrpc']
     .dependencies['org.apache.axis:axis-jaxrpc'].version,
   '1.4',

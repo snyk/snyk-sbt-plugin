@@ -19,8 +19,6 @@ export const execute = (
     spawnOptions.cwd = options.cwd;
   }
 
-  const fullCommand = command + ' ' + args.join(' ');
-
   return new Promise((resolve, reject) => {
     const out = {
       stdout: '',
@@ -54,6 +52,7 @@ export const execute = (
 
     proc.on('close', (code) => {
       if (code !== 0) {
+        const fullCommand = command + ' ' + args.join(' ');
         const errorMessage = `>>> command: ${fullCommand} ` +
           (code ? `>>> exit code: ${code} ` : '') +
           (out.stdout ? `>>> stdout: ${out.stdout} ` : '') +
