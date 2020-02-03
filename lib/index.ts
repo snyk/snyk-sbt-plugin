@@ -146,7 +146,7 @@ async function pluginInspect(root: string, targetFile: string, options: any): Pr
 
     injectedScripPathPromise = await getInjectedScriptPath(sbtPluginPath, targetFilePath);
     debug('injectedScripPath: ' + injectedScripPathPromise.injectedScripPath);
-    const stdout = await subProcess.execute('sbt', sbtArgs, {cwd: targetFilePath});
+    const stdout = await subProcess.execute('./sbt', sbtArgs, {cwd: targetFilePath});
     return {
       plugin: {
         name: 'snyk:sbt',
