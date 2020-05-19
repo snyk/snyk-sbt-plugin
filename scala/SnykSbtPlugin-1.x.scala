@@ -4,8 +4,9 @@ package snyk
 import Keys._
 
 object SnykSbtPlugin extends AutoPlugin {
-  import collection.SortedMap
-  import scala.util.parsing.json._
+  import collection.{SortedMap, SortedSet}
+  import sjsonnew.shaded.scalajson.ast._
+  import sjsonnew.support.scalajson.unsafe.PrettyPrinter
 
   object data {
     case class SnykModuleInfo(version: String, configurations: Set[String])
@@ -29,24 +30,26 @@ object SnykSbtPlugin extends AutoPlugin {
     }
 
     def snykProjectDataToJson(projectDatas: Seq[SnykProjectData]): String = {
-      JSONObject(projectDatas.map {
+      PrettyPrinter(JObject(projectDatas.map {
         case SnykProjectData(projectId, modules) =>
-          projectId -> JSONObject(
+          projectId -> JObject(
             Map(
-              "modules" -> JSONObject(
+              "modules" -> JObject(
                 modules.mapValues { moduleInfo =>
-                  JSONObject(
+                  JObject(
                     Map(
-                      "version"        -> moduleInfo.version,
-                      "configurations" -> JSONArray(moduleInfo.configurations.toList)
+                      "version"        -> JString(moduleInfo.version),
+                      "configurations" -> JArray(moduleInfo.configurations.toVector.map(JString))
                     )
                   )
                 }.toMap
               ),
-              "dependencies" -> JSONObject(Map(projectId -> JSONArray(modules.keys.toList)))
+              "dependencies" -> JObject(
+                Map(projectId -> JArray(modules.keys.map(JString).toVector))
+              )
             )
           )
-      }.toMap).toString()
+      }.toMap).toUnsafe)
     }
   }
 
@@ -113,17 +116,17 @@ object SnykSbtPlugin extends AutoPlugin {
   )
 
   override lazy val projectSettings = Seq(
-    updateOptions in snykUpdateReport := updateOptions.value.withCachedResolution(false).withLatestSnapshots(true).withCircularDependencyLevel(CircularDependencyLevel.Ignore),
-    updateConfiguration in snykUpdateReport := updateConfiguration.value.copy(missingOk = true),
-    ivyConfiguration in snykUpdateReport :=
+    snykUpdateReport / updateOptions := updateOptions.value.withCachedResolution(false).withLatestSnapshots(true).withCircularDependencyLevel(CircularDependencyLevel.Ignore),
+    snykUpdateReport / updateConfiguration := updateConfiguration.value.withMissingOk(true),
+    snykUpdateReport / ivyConfiguration :=
       // inTask will make sure the new definition will pick up `updateOptions in ignoreMissingUpdate`
       inTask(snykUpdateReport, Classpaths.mkIvyConfiguration).value,
-    ivyModule in snykUpdateReport := {
+    snykUpdateReport / ivyModule := {
       import internal.librarymanagement.IvySbt
       // concatenating & inlining ivySbt & ivyModule default task implementations, as `SbtAccess.inTask` does
       // NOT correctly force the scope when applied to `TaskKey.toTask` instances (as opposed to raw
       // implementations like `Classpaths.mkIvyConfiguration` or `Classpaths.updateTask`)
-      val is = new IvySbt((ivyConfiguration in snykUpdateReport).value)
+      val is = new IvySbt((snykUpdateReport / ivyConfiguration).value)
       new is.Module(moduleSettings.value)
     },
     snykUpdateReport := inTask(snykUpdateReport, Def.taskDyn {
@@ -135,7 +138,7 @@ object SnykSbtPlugin extends AutoPlugin {
       println(snykProjectDataToJson(Vector(projectData)))
       println("Snyk Output End")
     },
-    snykConfigurationBlacklist := Seq(Test.name, IntegrationTest.name, "smoke", "jmh", "gatling", "gatling-it", "pom", "windows", "universal", "universal-docs", "debian", "rpm", "universal-src", "docker", "linux", "web-assets", "web-plugin", "web-assets-test"),
+    snykConfigurationBlacklist := Seq(Test.name, IntegrationTest.name, "smoke", "gatling", "gatling-it", "pom", "windows", "universal", "universal-docs", "debian", "rpm", "universal-src", "docker", "linux", "web-assets", "web-plugin", "web-assets-test"),
     snykExtractProjectData := Def.taskDyn[SnykProjectData] {
       val blacklistedConfigurations = snykConfigurationBlacklist.value
 
@@ -148,7 +151,7 @@ object SnykSbtPlugin extends AutoPlugin {
       val configAndDependencyGraph =
         Def.task {
           val config = configuration.value
-          val dependencyGraph = snykUpdateReport.value.configuration(config.name).map(fromReport(projId)).getOrElse(DependencyGraph())
+          val dependencyGraph = snykUpdateReport.value.configuration(config).map(fromReport(projId)).getOrElse(DependencyGraph())
           config.name -> dependencyGraph
         }
 

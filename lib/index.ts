@@ -24,9 +24,12 @@ export async function inspect(root, targetFile, options): Promise<types.PluginRe
 
   const isCoursierPresent = isPluginInProject(root, targetFile, sbtCoursierPluginName);
   const isSbtDependencyGraphPresent = isPluginInProject(root, targetFile, sbtDependencyGraphPluginName);
+  const sbtVersion = getSbtVersion(root, targetFile);
+  const isSupportedVersion = semver.gte(sbtVersion, '0.13.16');
+
   Object.assign(options, { isCoursierPresent });
   // in order to apply the pluginInspect, coursier should *not* be present and sbt-dependency-graph should be present
-  if (!isCoursierPresent && isSbtDependencyGraphPresent) {
+  if (isSupportedVersion) {
     debug('applying plugin inspect');
     const res = await pluginInspect(root, targetFile, options);
     if (res) {
@@ -40,6 +43,7 @@ export async function inspect(root, targetFile, options): Promise<types.PluginRe
       // tslint:disable-next-line:no-console
       console.log(buildHintMessage(options));
     }
+
   } else {
     debug('falling back to legacy inspect');
   }
@@ -113,7 +117,8 @@ async function getInjectedScriptPath(sbtPluginPath: string, targetFilePath: stri
 }
 
 function generateSbtPluginPath(sbtVersion: string): string {
-  let pluginName = 'SnykSbtPlugin-1.2x.scala';
+  let pluginName = 'SnykSbtPlugin-1.x.scala';
+
   if (semver.lt(sbtVersion, '0.1.0')) {
     throw new Error('Snyk does not support sbt with version less than 0.1.0');
   }
@@ -121,6 +126,7 @@ function generateSbtPluginPath(sbtVersion: string): string {
   if (semver.gte(sbtVersion, '0.1.0') && semver.lt(sbtVersion, '1.1.0')) {
     pluginName = 'SnykSbtPlugin-0.1x.scala';
   }
+
   if (/index.[tj]s$/.test(__filename)) {
     return path.join(__dirname, `../scala/${pluginName}`);
   } else {

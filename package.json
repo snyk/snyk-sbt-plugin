@@ -32,7 +32,7 @@
     "tap": "12.6.1",
     "tap-only": "0.0.5",
     "tslint": "5.16.0",
-    "typescript": "3.4.5"
+    "typescript": "^3.4.5"
   },
   "dependencies": {
     "debug": "^4.1.1",
