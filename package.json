@@ -26,13 +26,13 @@
   "author": "snyk.io",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/node": "6.14.6",
-    "@types/sinon": "7.0.11",
+    "@types/node": "^6.14.10",
+    "@types/sinon": "^2.3.7",
     "sinon": "^2.4.1",
-    "tap": "12.6.1",
-    "tap-only": "0.0.5",
-    "tslint": "5.16.0",
-    "typescript": "3.4.5"
+    "tap": "^12.6.1",
+    "tap-only": "^0.0.5",
+    "tslint": "^5.16.0",
+    "typescript": "~3.8.3"
   },
   "dependencies": {
     "debug": "^4.1.1",

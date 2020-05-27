@@ -4,7 +4,7 @@ import * as test from 'tap-only';
 import * as parser from '../../lib/parse-sbt';
 
 function flatten(dependencies) {
-  const acc = new Set();
+  const acc = new Set<string>();
   function rec(deps) {
     acc.add(deps.name);
     Object.keys(deps.dependencies).forEach((key) => {
