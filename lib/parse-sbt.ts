@@ -2,6 +2,10 @@ import {DepDict, DepTree} from './types';
 
 const tabdown = require('./tabdown');
 import * as types from './types';
+import * as debugModule from 'debug';
+
+// To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
+const debug = debugModule('snyk-sbt-plugin');
 
 export {
   parse,
@@ -234,12 +238,24 @@ function parseSbtPluginProjectResultToDepTree(
         version: sbtProjectOutput.modules[name].version,
       };
     }
+
+    // Assumes a *flattened* tree.
+    //   The Snyk SBT plugin outputs a 1-level deep tree with the project ID and
+    //   a flattened list of dependencies. This allows us to avoid any potential
+    //   cycles in a dependency graph as well as preserve stack space so we don't
+    //   blow our stack size in node.
+
     const dependencies: DepDict = {};
+
     for (const subDepName of sbtProjectOutput.dependencies[name]) {
-      if (pkgs.indexOf(subDepName) > -1) { // dependency is in compile configuration
-        dependencies[subDepName] = getDependenciesFor(subDepName);
+      if (sbtProjectOutput.modules[subDepName]) { // dependency is in compile configuration
+        dependencies[subDepName] = {
+          name: subDepName,
+          version: sbtProjectOutput.modules[subDepName].version,
+        };
       }
     }
+
     return {
       name,
       version: sbtProjectOutput.modules[name].version,
@@ -247,5 +263,7 @@ function parseSbtPluginProjectResultToDepTree(
     };
   };
 
-  return getDependenciesFor(projectKey);
+  const dependencies = getDependenciesFor(projectKey);
+  debug(dependencies);
+  return dependencies;
 }
