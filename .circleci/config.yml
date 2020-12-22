@@ -165,7 +165,7 @@ workflows:
     - test-unix:
         name: Unix Tests for SBT JDK=9 Node=6
         context: nodejs-install
-        jdk_version: "11"
+        jdk_version: "9"
         node_version: "6"
         requires:
           - Lint
@@ -176,8 +176,8 @@ workflows:
     - test-unix:
         name: Unix Tests for SBT JDK=10 Node=8
         context: nodejs-install
-        jdk_version: "11"
-        node_version: "6"
+        jdk_version: "10"
+        node_version: "8"
         requires:
           - Lint
         filters:
@@ -188,7 +188,7 @@ workflows:
         name: Unix Tests for SBT JDK=11 Node=10
         context: nodejs-install
         jdk_version: "11"
-        node_version: "6"
+        node_version: "10"
         requires:
           - Lint
         filters:
@@ -223,7 +223,7 @@ workflows:
     - test-windows:
         name: Windows Tests for SBT JDK=9 Node=6
         context: nodejs-install
-        jdk_version: "11"
+        jdk_version: "9"
         node_version: "6"
         requires:
           - Lint
@@ -234,8 +234,8 @@ workflows:
     - test-windows:
         name: Windows Tests for SBT JDK=10 Node=8
         context: nodejs-install
-        jdk_version: "11"
-        node_version: "6"
+        jdk_version: "10"
+        node_version: "8"
         requires:
           - Lint
         filters:
@@ -246,7 +246,7 @@ workflows:
         name: Windows Tests for SBT JDK=11 Node=10
         context: nodejs-install
         jdk_version: "11"
-        node_version: "6"
+        node_version: "10"
         requires:
           - Lint
         filters:
