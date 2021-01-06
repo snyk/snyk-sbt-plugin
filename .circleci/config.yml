@@ -48,12 +48,6 @@ commands:
       - run:
           name: NPM version
           command: npm --version
-  show_java_version:
-    description: Log Java version
-    steps:
-      - run:
-          name: Java version
-          command: java -version
   install_sbt_windows:
     description: Install sbt
     steps:
@@ -101,7 +95,6 @@ jobs:
       - checkout
       - install_deps
       - show_node_version
-      - show_java_version
       - run:
           name: Run lint
           command: npm run lint
@@ -121,7 +114,6 @@ jobs:
       - install_sbt_windows
       - install_deps
       - show_node_version
-      - show_java_version
       - run:
           name: Run tests
           command: npm test
@@ -156,51 +148,97 @@ jobs:
           name: Publish to GitHub
           command: semantic-release
 
-  workflows:
-    version: 2
-    test_and_release:
-      jobs:
-      - lint:
-          name: Lint
-          context: nodejs-install
-          node_version: "10"
-          filters:
-            branches:
-              ignore:
-                - master
+workflows:
+  version: 2
+  test_and_release:
+    jobs:
+    - lint:
+        name: Lint
+        context: nodejs-install
+        node_version: "8"
+        filters:
+          branches:
+            ignore:
+              - master
 
-      # UNIX tests
-      - test-unix:
-          name: Unix Tests for SBT JDK=9 Node=6
-          context: nodejs-install
-          jdk_version: "9"
-          node_version: "6"
-          requires:
-            - Lint
-          filters:
-            branches:
-              ignore:
-                - master
+    # UNIX tests
+    - test-unix:
+        name: Unix Tests for SBT JDK=11 Node=10
+        context: nodejs-install
+        jdk_version: "11"
+        node_version: "10"
+        requires:
+          - Lint
+        filters:
+          branches:
+            ignore:
+              - master
+    # Older and newer Java versions
+    - test-unix:
+        name: Unix Tests for SBT JDK=8 Node=10
+        context: nodejs-install
+        jdk_version: "8"
+        node_version: "10"
+        requires:
+          - Lint
+        filters:
+          branches:
+            ignore:
+              - master
+    - test-unix:
+        name: Unix Tests for SBT JDK=12 Node=10
+        context: nodejs-install
+        jdk_version: "12"
+        node_version: "10"
+        requires:
+          - Lint
+        filters:
+          branches:
+            ignore:
+              - master
 
-      # Windows tests
-      - test-windows:
-          name: Windows Tests for SBT JDK=9 Node=6
-          context: nodejs-install
-          jdk_version: "9"
-          node_version: "6"
-          requires:
-            - Lint
-          filters:
-            branches:
-              ignore:
-                - master
+    # Windows tests
+    - test-windows:
+        name: Windows Tests for SBT JDK=11 Node=10
+        context: nodejs-install
+        jdk_version: "11"
+        node_version: "10"
+        requires:
+          - Lint
+        filters:
+          branches:
+            ignore:
+              - master
+    # Older and newer Java versions
+    - test-windows:
+        name: Windows Tests for SBT JDK=8 Node=10
+        context: nodejs-install
+        jdk_version: "8"
+        node_version: "10"
+        requires:
+          - Lint
+        filters:
+          branches:
+            ignore:
+              - master
+    - test-windows:
+        name: Windows Tests for SBT JDK=12 Node=10
+        context: nodejs-install
+        jdk_version: "12"
+        node_version: "10"
+        requires:
+          - Lint
+        filters:
+          branches:
+            ignore:
+              - master
 
-      # Release
-      - release:
-          name: Release
-          context: nodejs-app-release
-          node_version: "8"
-          filters:
-            branches:
-              only:
-                - master
+    # Release
+    - release:
+        name: Release
+        context: nodejs-app-release
+        node_version: "8"
+        filters:
+          branches:
+            only:
+              - master
