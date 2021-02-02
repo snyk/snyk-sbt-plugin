@@ -4,6 +4,7 @@ import * as sinon from 'sinon';
 import * as plugin from '../../lib';
 import * as subProcess from '../../lib/sub-process';
 
+console.log('Move move shake shake now drop')
 test('run inspect() 0.13', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-0.13/build.sbt', { debug: true});
