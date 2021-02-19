@@ -33,21 +33,22 @@ This plugin provides dependency metadata for SBT projects that use `sbt` and hav
 ## Supported Node versions
 
 | Node  |  Supported |
-|---|---|
-| 6  | ✅|
-| 8  | ✅|
+|----- |---|
+| 6   | ✅|
+| 8   | ✅|
 | 10  | ✅|
-| 12  | ❓|
+| 12  | ✅|
 
 ## Supported Java & Sbt versions
 
-| Java Sbt|0.13.* |1.1.*|1.2.* |1.3.2 |1.3.3|1.3.5|
+This plugin currently only supports sbt 1.4.* and above.
+| Java: | Sbt |0.13.* |1.1.* |1.2.* |1.3.* |1.4.*|
 |---|---|---|---|---|---|---|
-| 8   |  ✅ | ❓ |  ✅ | ✅ | ✅ | ✅ |
-| 9   |  ✅ | ❓ |  ✅ | ✅ | ✅ | ✅ |
-| 10  |  ✅ | ❓ |  ✅ | ✅ | ✅ | ✅ |
-| 11  |  ✅ | ❓ |  ✅ | ✅ | ✅ | ✅ |
-| 12  |  ✅ | ❓ |  ✅ | ✅ | ✅ | ✅ |
-| 13  |  🚫 | ❓ |  🚫 | ✅ | 🚫 | 🚫 |
-
-`jdk13` is not currently supported (See this [comment](https://github.com/snyk/snyk-sbt-plugin/pull/61#issuecomment-521356342) for more details)
+| 8  || 🚫 | 🚫 | 🚫 | 🚫 | ✅ |
+| 9  || 🚫 | 🚫 | 🚫 | 🚫 | ✅ |
+| 10 || 🚫 | 🚫 | 🚫 | 🚫 | ✅ |
+| 11 || 🚫 | 🚫 | 🚫 | 🚫 | ✅ |
+| 12 || 🚫 | 🚫 | 🚫 | 🚫 | ✅ |
+| 13 || 🚫 | 🚫 | 🚫 | 🚫 | ✅ |
+| 14 || 🚫 | 🚫 | 🚫 | 🚫 | ✅ |
+| 15 || 🚫 | 🚫 | 🚫 | 🚫 | ✅ |
