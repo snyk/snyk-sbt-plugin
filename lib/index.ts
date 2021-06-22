@@ -38,7 +38,7 @@ export async function inspect(root, targetFile, options): Promise<types.PluginRe
           + isSbtDependencyGraphPresent);
       debug('Falling back to legacy inspect');
       // tslint:disable-next-line:no-console
-      console.log(buildHintMessage(options));
+      console.warn(buildHintMessage(options));
     }
   } else {
     debug('falling back to legacy inspect');
