@@ -10,37 +10,49 @@ import * as subProcess from './sub-process';
 import * as parser from './parse-sbt';
 import * as types from './types';
 
-import * as tmp from 'tmp';
-tmp.setGracefulCleanup();
-
-interface InjectedScript {
-  path: string;
-  remove: () => void;
-}
+import { determineProjectDetails, ProjectDetails } from './project-details';
+import { SbtPlugin } from './sbt-plugin';
 
 const packageFormatVersion = 'mvn:0.0.1';
-const sbtCoursierPluginName = 'sbt-coursier';
-const sbtDependencyGraphPluginName = 'sbt-dependency-graph';
 
 export async function inspect(root, targetFile, options): Promise<types.PluginResult> {
+  const projectDetails = determineProjectDetails(root, targetFile);
+  debug(`project details: ${JSON.stringify(projectDetails)}`);
+
   if (!options) {
     options = {dev: false};
   }
 
-  const isCoursierPresent = isPluginInProject(root, targetFile, sbtCoursierPluginName);
-  const isSbtDependencyGraphPresent = isPluginInProject(root, targetFile, sbtDependencyGraphPluginName);
-  Object.assign(options, { isCoursierPresent });
-  // in order to apply the pluginInspect, coursier should *not* be present and sbt-dependency-graph should be present
-  if (!isCoursierPresent && isSbtDependencyGraphPresent) {
+  Object.assign(options, { isCoursierPresent: projectDetails.isCoursierPresent });
+
+  const pluginDirPath = path.join(__dirname, `../scala`);
+  const sbtPlugin = new SbtPlugin(pluginDirPath, projectDetails.projectDirPath);
+  // in order to apply the pluginInspect, coursier should *not* be present and
+  // sbt-dependency-graph should be present and
+  // we managed to inject the snyk sbt plugin
+  if (
+    !projectDetails.isCoursierPresent &&
+    projectDetails.isSbtDependencyGraphPresent &&
+    projectDetails.sbtVersion &&
+    semver.gte(projectDetails.sbtVersion, '0.1.0') &&
+    sbtPlugin.inject(projectDetails.sbtVersion)
+  ) {
     debug('applying plugin inspect');
-    const res = await pluginInspect(root, targetFile, options);
+    const res = await pluginInspect(projectDetails, options);
     if (res) {
+      if (!sbtPlugin.remove()) {
+        // tslint:disable-next-line:no-console
+        console.warn(
+          `Failed to remove the snyk sbt plugin at ${sbtPlugin.pluginFileName()}. ` +
+          `Please remove it manually.`,
+        );
+      }
       res.package.packageFormatVersion = packageFormatVersion;
 
       return res;
     } else {
-      debug('coursier present = ' + isCoursierPresent + ', sbt-dependency-graph present = '
-          + isSbtDependencyGraphPresent);
+      debug('coursier present = ' + projectDetails.isCoursierPresent + ', sbt-dependency-graph present = '
+          + projectDetails.isSbtDependencyGraphPresent);
       debug('Falling back to legacy inspect');
       // tslint:disable-next-line:no-console
       console.warn(buildHintMessage(options));
@@ -48,7 +60,11 @@ export async function inspect(root, targetFile, options): Promise<types.PluginRe
   } else {
     debug('falling back to legacy inspect');
   }
-  const result = await legacyInspect(root, targetFile, options);
+  if (!sbtPlugin.remove()) {
+    // tslint:disable-next-line:no-console
+    console.warn(`Failed to remove the snyk sbt plugin at ${sbtPlugin.pluginFileName()}. Please remove it manually.`);
+  }
+  const result = await legacyInspect(projectDetails, options);
   const packageName = path.basename(root);
   const packageVersion = '0.0.0';
   const depTree = parser.parse(result.sbtOutput, packageName, packageVersion, result.coursier);
@@ -63,10 +79,9 @@ export async function inspect(root, targetFile, options): Promise<types.PluginRe
   };
 }
 
-async function legacyInspect(root: string, targetFile: string, options: any) {
-  const targetFilePath = path.dirname(path.resolve(root, targetFile));
-  if (!fs.existsSync(targetFilePath)) {
-    debug(`build.sbt not found at location: ${targetFilePath}. This may result in no dependencies`);
+async function legacyInspect(projectDetails: ProjectDetails, options: any) {
+  if (!fs.existsSync(projectDetails.targetFilePath)) {
+    debug(`build.sbt not found at location: ${projectDetails.targetFilePath}. This may result in no dependencies`);
   }
   let useCoursier = options.isCoursierPresent;
 
@@ -74,7 +89,7 @@ async function legacyInspect(root: string, targetFile: string, options: any) {
 
   try {
     return {
-      sbtOutput: await subProcess.execute('sbt', sbtArgs, {cwd: targetFilePath}),
+      sbtOutput: await subProcess.execute('sbt', sbtArgs, {cwd: projectDetails.targetFilePath}),
       coursier: useCoursier,
     };
   } catch (error) {
@@ -84,7 +99,7 @@ async function legacyInspect(root: string, targetFile: string, options: any) {
       useCoursier = false;
       const sbtArgsNoCoursier = buildArgs(options.args, useCoursier);
       return {
-        sbtOutput: await subProcess.execute('sbt', sbtArgsNoCoursier, {cwd: targetFilePath}),
+        sbtOutput: await subProcess.execute('sbt', sbtArgsNoCoursier, {cwd: projectDetails.targetFilePath}),
         coursier: useCoursier,
       };
     } else {
@@ -97,53 +112,13 @@ async function legacyInspect(root: string, targetFile: string, options: any) {
   }
 }
 
-async function injectSbtScript(sbtPluginPath: string, targetFilePath: string): Promise<InjectedScript> {
+async function pluginInspect(projectDetails: ProjectDetails, options: any): Promise<types.PluginResult | null> {
+  const packageName = path.basename(projectDetails.root);
+  const packageVersion = '1.0.0';
+
   try {
-    // We could be running from a bundled CLI generated by `pkg`.
-    // The Node filesystem in that case is not real: https://github.com/zeit/pkg#snapshot-filesystem
-    // Copying the injectable script into a temp file.
-    const tmpSbtPlugin = tmp.fileSync({
-      postfix: '-SnykSbtPlugin.scala',
-      dir: path.resolve(targetFilePath, 'project/'),
-    });
-    fs.createReadStream(sbtPluginPath).pipe(fs.createWriteStream(tmpSbtPlugin.name));
-    return { path: tmpSbtPlugin.name, remove: tmpSbtPlugin.removeCallback };
-  } catch (error) {
-    error.message = error.message + '\n\n' +
-        'Failed to create a temporary file to host Snyk script for SBT build analysis.';
-    throw error;
-  }
-}
-
-function generateSbtPluginPath(sbtVersion: string): string {
-  let pluginName = 'SnykSbtPlugin-1.2x.scala';
-  if (semver.lt(sbtVersion, '0.1.0')) {
-    throw new Error('Snyk does not support sbt with version less than 0.1.0');
-  }
-
-  if (semver.gte(sbtVersion, '0.1.0') && semver.lt(sbtVersion, '1.1.0')) {
-    pluginName = 'SnykSbtPlugin-0.1x.scala';
-  }
-  if (/index.[tj]s$/.test(__filename)) {
-    return path.join(__dirname, `../scala/${pluginName}`);
-  } else {
-    throw new Error(`Cannot locate ${pluginName} script`);
-  }
-}
-
-async function pluginInspect(root: string, targetFile: string, options: any): Promise<types.PluginResult | null> {
-  let injectedScript: InjectedScript | undefined;
-  try {
-    const targetFilePath = path.dirname(path.resolve(root, targetFile));
     const sbtArgs = buildArgs(options.args, false, true);
-    const sbtVersion = getSbtVersion(root, targetFile);
-    const sbtPluginPath = generateSbtPluginPath(sbtVersion);
-    const packageName = path.basename(root);
-    const packageVersion = '1.0.0';
-
-    injectedScript = await injectSbtScript(sbtPluginPath, targetFilePath);
-    debug('injectedScript.path: ' + injectedScript.path);
-    const stdout = await subProcess.execute('sbt', sbtArgs, {cwd: targetFilePath});
+    const stdout = await subProcess.execute('sbt', sbtArgs, {cwd: projectDetails.targetFilePath});
     return {
       plugin: {
         name: 'snyk:sbt',
@@ -152,52 +127,9 @@ async function pluginInspect(root: string, targetFile: string, options: any): Pr
       package: parser.parseSbtPluginResults(stdout, packageName, packageVersion),
     };
   } catch (error) {
-    debug('Failed to produce dependency tree with custom snyk plugin due to error: ' + error.message);
+    debug(`Failed to produce dependency tree with custom snyk plugin due to error: ${error.message}`);
     return null;
-  } finally {
-    // in case of subProcess.execute failing, perform cleanup here, as putting it after `getInjectScriptPath` might
-    // not be executed because of `sbt` failing
-    if (injectedScript) {
-      injectedScript.remove();
-    }
   }
-}
-
-function getSbtVersion(root: string, targetFile: string): string {
-  const buildPropsPath = path.join(root, path.dirname(targetFile), 'project/build.properties');
-  return fs.readFileSync(buildPropsPath, 'utf-8')
-    .split('\n') // split into lines
-    .find((line) => !!line.match(/sbt\.version\s*=/))! // locate version line
-    .split(/=\s*/)[1].trim(); // return only the version
-}
-
-// guess whether we have a given plugin by looking
-// in project and project/project
-function isPluginInProject(root: string, targetFile: string, plugin: string): boolean {
-  const basePath = path.dirname(path.resolve(root, targetFile));
-  const sbtFileList = sbtFiles(path.join(basePath, 'project'))
-  .concat(sbtFiles(path.join(basePath, 'project', 'project')));
-  const searchResults = sbtFileList.map ((file) => {
-    return searchWithFs(file, plugin);
-  });
-  return searchResults.filter(Boolean).length > 0;
-}
-
- // provide a list of .sbt files in the specified directory
-function sbtFiles(basePath) {
-  if (fs.existsSync(basePath) && fs.lstatSync(basePath).isDirectory()) {
-    return fs.readdirSync(basePath).filter((fileName) => {
-      return path.extname(fileName) === '.sbt';
-    }).map((file) => {
-      return path.join(basePath, file);
-    });
-  }
-  return [];
-}
-
-function searchWithFs(filename, word) {
-  const buffer = fs.readFileSync(filename);
-  return buffer.indexOf(word) > -1;
 }
 
 function buildHintMessage(options) {
