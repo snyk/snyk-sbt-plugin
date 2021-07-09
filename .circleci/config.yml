@@ -11,6 +11,9 @@ defaults: &defaults
     node_version:
       type: string
       default: ""
+    sbt_version:
+      type: string
+      default: ""
   working_directory: ~/snyk-sbt-plugin
 
 windows_defaults: &windows_defaults
@@ -48,10 +51,6 @@ commands:
       - run:
           name: NPM version
           command: npm --version
-  install_sbt_windows:
-    description: Install sbt
-    steps:
-      - run: choco install sbt
   install_sdkman:
     description: Install SDKMAN
     steps:
@@ -61,10 +60,27 @@ commands:
             curl -s "https://get.sdkman.io?rcupdate=false" | bash
             echo -e '\nsource "/home/circleci/.sdkman/bin/sdkman-init.sh"' >> $BASH_ENV
             source $BASH_ENV
+  install_sbt_windows:
+    description: Install sbt
+    parameters:
+      sbt_version:
+        type: string
+        default: ""
+    steps:
+      - run: choco install sbt --version=<< parameters.sbt_version >>
   install_sbt_unix:
     description: Install sbt
+    parameters:
+      sbt_version:
+        type: string
+        default: ""
     steps:
-      - run: sdk install sbt
+      - run:
+          name: Install correct version of sbt
+          command: sdk install sbt << parameters.sbt_version >>
+      - run:
+          name: Use correct version of sbt
+          command: sdk use sbt << parameters.sbt_version >>
   install_jdk_unix:
     description: Install JDK
     parameters:
@@ -73,8 +89,11 @@ commands:
         default: ""
     steps:
       - run:
-          name: Installing JDK
-          command: sdk install java $(sdk list java | grep -o -m1 "<< parameters.jdk_version >>\.[0-9\.]\+hs-adpt")
+          name: Install correct version of JDK
+          command: sdk install java << parameters.jdk_version >>
+      - run:
+          name: Use correct version of JDK
+          command: sdk use java << parameters.jdk_version >>
   install_jdk_windows:
     description: Install JDK
     parameters:
@@ -84,7 +103,7 @@ commands:
     steps:
       - run:
           name: Installing JDK
-          command: choco install openjdk<< parameters.jdk_version >>
+          command: choco install zulu<< parameters.jdk_version >> --allow-downgrade
 
 jobs:
   lint:
@@ -104,6 +123,7 @@ jobs:
     <<: *windows_defaults
     environment:
       JDK: << parameters.jdk_version >>
+      SBT: << parameters.sbt_version >>
     steps:
       - run: git config --global core.autocrlf false
       - checkout
@@ -111,7 +131,8 @@ jobs:
           node_version: << parameters.node_version >>
       - install_jdk_windows:
           jdk_version: << parameters.jdk_version >>
-      - install_sbt_windows
+      - install_sbt_windows:
+          sbt_version: << parameters.sbt_version >>
       - install_deps
       - show_node_version
       - run:
@@ -124,12 +145,14 @@ jobs:
       - image: circleci/node:<< parameters.node_version >>
     environment:
       JDK: << parameters.jdk_version >>
+      SBT: << parameters.sbt_version >>
     steps:
       - checkout
       - install_sdkman
       - install_jdk_unix:
           jdk_version: << parameters.jdk_version >>
-      - install_sbt_unix
+      - install_sbt_unix:
+          sbt_version: << parameters.sbt_version >>
       - install_deps
       - show_node_version
       - run:
@@ -152,93 +175,78 @@ workflows:
   version: 2
   test_and_release:
     jobs:
-    - lint:
-        name: Lint
-        context: nodejs-install
-        node_version: "8"
-        filters:
-          branches:
-            ignore:
-              - master
+      - lint:
+          name: Lint
+          context: nodejs-install
+          node_version: "8"
+          filters:
+            branches:
+              ignore:
+                - master
 
-    # UNIX tests
-    - test-unix:
-        name: Unix Tests for SBT JDK=11 Node=10
-        context: nodejs-install
-        jdk_version: "11"
-        node_version: "10"
-        requires:
-          - Lint
-        filters:
-          branches:
-            ignore:
-              - master
-    # Older and newer Java versions
-    - test-unix:
-        name: Unix Tests for SBT JDK=8 Node=10
-        context: nodejs-install
-        jdk_version: "8"
-        node_version: "10"
-        requires:
-          - Lint
-        filters:
-          branches:
-            ignore:
-              - master
-    - test-unix:
-        name: Unix Tests for SBT JDK=12 Node=10
-        context: nodejs-install
-        jdk_version: "12"
-        node_version: "10"
-        requires:
-          - Lint
-        filters:
-          branches:
-            ignore:
-              - master
+      # UNIX tests
+      - test-unix:
+          name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
+          context: nodejs-install
+          requires:
+            - Lint
+          matrix:
+            parameters:
+              node_version: ["10", "12", "14"]
+              jdk_version:
+                [
+                  "8.0.282-zulu",
+                  "11.0.9.fx-zulu",
+                  "12.0.2-zulu",
+                  "13.0.5.fx-zulu",
+                  "14.0.2.fx-zulu",
+                ]
+              sbt_version:
+                [
+                  "0.13.17",
+                  "1.0.0",
+                  "1.1.4",
+                  "1.2.1",
+                  "1.3.3",
+                  "1.4.1",
+                  "1.5.4",
+                ]
+          filters:
+            branches:
+              ignore:
+                - master
 
-    # Windows tests
-    - test-windows:
-        name: Windows Tests for SBT JDK=11 Node=10
-        context: nodejs-install
-        jdk_version: "11"
-        node_version: "10"
-        requires:
-          - Lint
-        filters:
-          branches:
-            ignore:
-              - master
-    # Older and newer Java versions
-    - test-windows:
-        name: Windows Tests for SBT JDK=8 Node=10
-        context: nodejs-install
-        jdk_version: "8"
-        node_version: "10"
-        requires:
-          - Lint
-        filters:
-          branches:
-            ignore:
-              - master
-    - test-windows:
-        name: Windows Tests for SBT JDK=12 Node=10
-        context: nodejs-install
-        jdk_version: "12"
-        node_version: "10"
-        requires:
-          - Lint
-        filters:
-          branches:
-            ignore:
-              - master
+      # Windows tests
+      - test-windows:
+          name: Windows Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
+          context: nodejs-install
+          requires:
+            - Lint
+          matrix:
+            parameters:
+              node_version: ["10", "12", "14"]
+              jdk_version: ["8", "11", "12", "13", "14"]
+              sbt_version:
+                [
+                  "0.13.15",
+                  "1.0.0",
+                  "1.1.4",
+                  "1.2.1",
+                  "1.3.3",
+                  "1.4.1",
+                  "1.5.4",
+                ]
+          filters:
+            branches:
+              ignore:
+                - master
 
-    # Release
-    - release:
-        name: Release
-        context: nodejs-app-release
-        node_version: "14"
-        filters:
-          branches:
-            only:
-              - master
+      # Release
+      - release:
+          name: Release
+          context: nodejs-app-release
+          node_version: "14"
+          filters:
+            branches:
+              only:
+                - master
