@@ -1,251 +1,89 @@
 version: 2.1
 
-orbs:
-  win: circleci/windows@2.4.0
-
-defaults: &defaults
+params: &params
   parameters:
-    jdk_version:
-      type: string
-      default: ""
     node_version:
       type: string
-      default: ""
+      default: "14"
+    jdk_version:
+      type: string
+      default: "8.0.292.j9-adpt"
     sbt_version:
       type: string
-      default: ""
-  working_directory: ~/snyk-sbt-plugin
+      default: "1.5.5"
+    semantic_release_version:
+      type: string
+      default: "17"
 
-windows_defaults: &windows_defaults
-  environment:
-    npm_config_loglevel: silent
-  executor:
-    name: win/default
-
-commands:
-  install_deps:
-    description: Install dependencies
-    steps:
-      - run:
-          name: Install dependencies
-          command: npm install
-  install_node_npm:
-    description: Install correct Node version
+test_matrix: &test_matrix
+  matrix:
     parameters:
       node_version:
-        type: string
-        default: ""
+        - "10"
+        - "12"
+        - "14"
+      jdk_version:
+        - "8.0.292.j9-adpt"
+        - "11.0.11.j9-adpt"
+      sbt_version:
+        - "1.5.5"
+jobs:
+  test:
+    <<: *params
+    docker:
+      - image: circleci/node:<<parameters.node_version>>
     steps:
+      - checkout
       - run:
-          name: Install correct version of Node
-          command: nvm install << parameters.node_version >>
-      - run:
-          name: Use correct version of Node
-          command: nvm use << parameters.node_version >>
-  show_node_version:
-    description: Log Node and npm version
-    steps:
-      - run:
-          name: Node version
-          command: node --version
-      - run:
-          name: NPM version
-          command: npm --version
-  install_sdkman:
-    description: Install SDKMAN
-    steps:
-      - run:
-          name: Installing SDKMAN
+          name: Install sdkman
           command: |
             curl -s "https://get.sdkman.io?rcupdate=false" | bash
             echo -e '\nsource "/home/circleci/.sdkman/bin/sdkman-init.sh"' >> $BASH_ENV
             source $BASH_ENV
-  install_sbt_windows:
-    description: Install sbt
-    parameters:
-      sbt_version:
-        type: string
-        default: ""
-    steps:
-      - run: choco install sbt --version=<< parameters.sbt_version >>
-  install_sbt_unix:
-    description: Install sbt
-    parameters:
-      sbt_version:
-        type: string
-        default: ""
-    steps:
       - run:
-          name: Install correct version of sbt
-          command: sdk install sbt << parameters.sbt_version >>
+          name: Install JDK <<parameters.jdk_version>>
+          command: sdk install java <<parameters.jdk_version>>
       - run:
-          name: Use correct version of sbt
-          command: sdk use sbt << parameters.sbt_version >>
-  install_jdk_unix:
-    description: Install JDK
-    parameters:
-      jdk_version:
-        type: string
-        default: ""
-    steps:
+          name: Install sbt << parameters.sbt_version >>
+          command: sdk install sbt <<parameters.sbt_version>>
       - run:
-          name: Install correct version of JDK
-          command: sdk install java << parameters.jdk_version >>
+          name: Install dependencies
+          command: npm install
       - run:
-          name: Use correct version of JDK
-          command: sdk use java << parameters.jdk_version >>
-  install_jdk_windows:
-    description: Install JDK
-    parameters:
-      jdk_version:
-        type: string
-        default: ""
-    steps:
-      - run:
-          name: Installing JDK
-          command: choco install zulu<< parameters.jdk_version >> --allow-downgrade
-
-jobs:
-  lint:
-    <<: *defaults
-    docker:
-      - image: circleci/node:<< parameters.node_version >>
-    steps:
-      - checkout
-      - install_deps
-      - show_node_version
-      - run:
-          name: Run lint
+          name: Lint
           command: npm run lint
-
-  test-windows:
-    <<: *defaults
-    <<: *windows_defaults
-    environment:
-      JDK: << parameters.jdk_version >>
-      SBT: << parameters.sbt_version >>
-    steps:
-      - run: git config --global core.autocrlf false
-      - checkout
-      - install_node_npm:
-          node_version: << parameters.node_version >>
-      - install_jdk_windows:
-          jdk_version: << parameters.jdk_version >>
-      - install_sbt_windows:
-          sbt_version: << parameters.sbt_version >>
-      - install_deps
-      - show_node_version
       - run:
-          name: Run tests
+          name: Test
           command: npm test
-
-  test-unix:
-    <<: *defaults
-    docker:
-      - image: circleci/node:<< parameters.node_version >>
-    environment:
-      JDK: << parameters.jdk_version >>
-      SBT: << parameters.sbt_version >>
-    steps:
-      - checkout
-      - install_sdkman
-      - install_jdk_unix:
-          jdk_version: << parameters.jdk_version >>
-      - install_sbt_unix:
-          sbt_version: << parameters.sbt_version >>
-      - install_deps
-      - show_node_version
-      - run:
-          name: Run tests
-          command: npm test
-
   release:
-    <<: *defaults
+    <<: *params
+    resource_class: small
     docker:
-      - image: circleci/node:<< parameters.node_version >>
+      - image: circleci/node:<<parameters.node_version>>
     steps:
       - checkout
-      - install_deps
-      - run: sudo npm i -g semantic-release @semantic-release/exec pkg
       - run:
-          name: Publish to GitHub
-          command: semantic-release
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Release
+          command: npx semantic-release@<<parameters.semantic_release_version>>
 
 workflows:
   version: 2
   test_and_release:
     jobs:
-      - lint:
-          name: Lint
+      - test:
+          name: Test node=<<matrix.node_version>> jdk=<<matrix.jdk_version>> sbt=<<matrix.sbt_version>>
           context: nodejs-install
-          node_version: "8"
+          <<: *test_matrix
           filters:
             branches:
               ignore:
                 - master
-
-      # UNIX tests
-      - test-unix:
-          name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
-          context: nodejs-install
-          requires:
-            - Lint
-          matrix:
-            parameters:
-              node_version: ["10", "12", "14"]
-              jdk_version:
-                [
-                  "8.0.282-zulu",
-                  "11.0.9.fx-zulu",
-                  "12.0.2-zulu",
-                  "13.0.5.fx-zulu",
-                  "14.0.2.fx-zulu",
-                ]
-              sbt_version:
-                [
-                  "0.13.17",
-                  "1.0.0",
-                  "1.1.4",
-                  "1.2.1",
-                  "1.3.3",
-                  "1.4.1",
-                  "1.5.4",
-                ]
-          filters:
-            branches:
-              ignore:
-                - master
-
-      # Windows tests
-      - test-windows:
-          name: Windows Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
-          context: nodejs-install
-          requires:
-            - Lint
-          matrix:
-            parameters:
-              node_version: ["10", "12", "14"]
-              jdk_version: ["8", "11", "12", "13", "14"]
-              sbt_version:
-                [
-                  "0.13.15",
-                  "1.0.0",
-                  "1.1.4",
-                  "1.2.1",
-                  "1.3.3",
-                  "1.4.1",
-                  "1.5.4",
-                ]
-          filters:
-            branches:
-              ignore:
-                - master
-
-      # Release
       - release:
           name: Release
           context: nodejs-app-release
-          node_version: "14"
           filters:
             branches:
               only:
