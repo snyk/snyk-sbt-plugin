@@ -148,6 +148,13 @@ async function pluginInspect(root: string, targetFile: string, options: any): Pr
       plugin: {
         name: 'snyk:sbt',
         runtime: 'unknown',
+        meta: {
+          versionBuildInfo: {
+            metaBuildVersion: {
+              sbtVersion,
+            },
+          },
+        },
       },
       package: parser.parseSbtPluginResults(stdout, packageName, packageVersion),
     };
@@ -157,14 +164,29 @@ async function pluginInspect(root: string, targetFile: string, options: any): Pr
   } finally {
     // in case of subProcess.execute failing, perform cleanup here, as putting it after `getInjectScriptPath` might
     // not be executed because of `sbt` failing
-    if (injectedScript) {
-      injectedScript.remove();
+    if (injectedScript && injectedScript.remove) {
+      try {
+        injectedScript.remove();
+        debug(`Removed the snyk sbt plugin at '${injectedScript.path}'`);
+      } catch (error) {
+        // NOTE(alexmu): we don't want to kill the whole run because we can still fall back to the legacy
+        // method, but at least tell the user to clean up after the CLI :(.
+        // tslint:disable-next-line:no-console
+        console.warn(`Failed to remove the snyk sbt plugin file at '${injectedScript.path}'`);
+      }
     }
   }
 }
 
 function getSbtVersion(root: string, targetFile: string): string {
-  const buildPropsPath = path.join(root, path.dirname(targetFile), 'project/build.properties');
+  let buildPropsPath = path.join(root, path.dirname(targetFile), 'project/build.properties');
+  if (!fs.existsSync(buildPropsPath)) {
+    // NOTE(alexmu): We've seen this fail with the wrong path.
+    // If the path we derived above doesn't exist, we try to build a more sensible one.
+    // targetFile could be a path, so we need to call resolve()
+    const targetFilePath = path.dirname(path.resolve(root, targetFile));
+    buildPropsPath = path.resolve(targetFilePath, 'project/build.properties');
+  }
   return fs.readFileSync(buildPropsPath, 'utf-8')
     .split('\n') // split into lines
     .find((line) => !!line.match(/sbt\.version\s*=/))! // locate version line
