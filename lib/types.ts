@@ -23,6 +23,13 @@ export interface DepTree {
 export interface PluginMetadata {
   name: string;
   runtime: string;
+  meta?: {
+    versionBuildInfo?: {
+      metaBuildVersion?: {
+        sbtVersion?: string,
+      },
+    },
+  };
 }
 
 export interface SbtModulesGraph {
