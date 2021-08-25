@@ -17,6 +17,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --format stylish",
+    "lint-fix": "tslint --project tsconfig.json --format stylish --fix",
     "prepare": "npm run build",
     "test": "npm run test-functional && npm run test-system && npm run test-jest",
     "test-jest": "jest",
