@@ -6,9 +6,10 @@ test('trigger timeout on inspect()', async (t) => {
   process.env.PROC_TIMEOUT = '10'; // set timeout to very small number before importing plugin
   const plugin = require('../../lib');
   try {
-    await plugin.inspect(path.join(
-      __dirname, '..', 'fixtures', 'testproj-faux-coursier-0.13'),
-      'build.sbt');
+    await plugin.inspect(
+      path.join(__dirname, '..', 'fixtures', 'testproj-faux-coursier-0.13'),
+      'build.sbt',
+    );
     t.fail('expected to timeout');
   } catch (error) {
     t.match(error.message, 'timeout');

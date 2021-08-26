@@ -16,7 +16,10 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --project tsconfig.json --format stylish",
+    "format:check": "prettier --check '{lib,test}/**/*.{js,ts,json,yml}'",
+    "format": "prettier --write '{lib,test}/**/*.{js,ts,json,yml}'",
+    "lint": "npm run format:check && npm run lint:eslint",
+    "lint:eslint": "eslint --color --cache 'lib/**/*.{js,ts}'",
     "prepare": "npm run build",
     "test": "npm run lint && npm run build && npm run test-functional",
     "test-functional": "tap -Rspec ./test/functional/*.test.[tj]s",
@@ -26,13 +29,17 @@
   "author": "snyk.io",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/node": "6.14.6",
+    "@types/node": "^10.17.60",
     "@types/sinon": "7.0.11",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.3.2",
     "sinon": "^2.4.1",
     "tap": "12.6.1",
     "tap-only": "0.0.5",
-    "tslint": "5.16.0",
-    "typescript": "3.4.5"
+    "typescript": "^4.3.5"
   },
   "dependencies": {
     "debug": "^4.1.1",
@@ -40,5 +47,8 @@
     "tmp": "^0.1.0",
     "tree-kill": "^1.2.2",
     "tslib": "^1.10.0"
+  },
+  "engines": {
+    "node": ">=10"
   }
 }

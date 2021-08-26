@@ -1,28 +1,26 @@
-import {DepDict, DepTree} from './types';
+import { DepDict, DepTree } from './types';
 
-const tabdown = require('./tabdown');
+import * as tabdown from './tabdown';
 import * as types from './types';
 
-export {
-  parse,
-  parseSbtPluginResults,
-};
+export { parse, parseSbtPluginResults };
 
 function convertStrToTree(dependenciesTextTree) {
   const lines = dependenciesTextTree.toString().split('\n') || [];
   const newLines = lines
     .map((line) => {
+      // eslint-disable-next-line no-control-regex
       return line.replace(/\u001b\[0m/g, '');
     })
     .filter((line) => {
       if (line.indexOf('[info] ') === 0 && line.indexOf('+-') > -1) {
         return true;
       }
-      let match = line.match(/\[info\]\s[\w_\.\-]+:[\w_\.\-]+:[\w_\.\-]+/);
+      let match = line.match(/\[info\]\s[\w_.-]+:[\w_.-]+:[\w_.-]+/);
       if (match && match[0].length === line.length) {
         return true;
       }
-      match = line.match(/\[info\]\s[\w_\.\-]+:[\w_\.\-]+:[\w_\.\-]+\s\[S\]/);
+      match = line.match(/\[info\]\s[\w_.-]+:[\w_.-]+:[\w_.-]+\s\[S\]/);
       if (match && match[0].length === line.length) {
         return true;
       }
@@ -36,7 +34,7 @@ function convertStrToTree(dependenciesTextTree) {
         .replace('+-', '')
         .replace(/\s\s/g, '\t');
     });
-  const tree = tabdown.parse(newLines, '\t');
+  const tree = tabdown.parse(newLines);
   return tree;
 }
 
@@ -44,6 +42,7 @@ function convertCoursierStrToTree(dependenciesTextTree) {
   const lines = dependenciesTextTree.toString().split('\n') || [];
   const newLines = lines
     .map((line) => {
+      // eslint-disable-next-line no-control-regex
       return line.replace(/\u001b\[0m/g, '');
     })
     .filter((line) => {
@@ -57,20 +56,19 @@ function convertCoursierStrToTree(dependenciesTextTree) {
     })
     .map((line) => {
       return line
-        .replace(/\│/g, ' ')
+        .replace(/│/g, ' ')
         .replace('├─ ', '   ')
         .replace('└─ ', '   ')
         .replace(/\s\s\s/g, '\t');
     });
-  const tree = tabdown.parse(newLines, '\t');
+  const tree = tabdown.parse(newLines);
   return tree;
 }
 
 function walkInTree(toNode, fromNode) {
   if (fromNode.children && fromNode.children.length > 0) {
     for (const j of Object.keys(fromNode.children)) {
-      const externalNode = getPackageNameAndVersion(
-        fromNode.children[j].data);
+      const externalNode = getPackageNameAndVersion(fromNode.children[j].data);
       if (externalNode) {
         const newNode = {
           version: externalNode.version,
@@ -78,8 +76,10 @@ function walkInTree(toNode, fromNode) {
           dependencies: [],
         };
         toNode.dependencies.push(newNode);
-        walkInTree(toNode.dependencies[toNode.dependencies.length - 1],
-          fromNode.children[j]);
+        walkInTree(
+          toNode.dependencies[toNode.dependencies.length - 1],
+          fromNode.children[j],
+        );
       }
     }
   }
@@ -87,7 +87,6 @@ function walkInTree(toNode, fromNode) {
 }
 
 function getPackageNameAndVersion(packageDependency) {
-  let splited;
   let version;
   let app;
   if (packageDependency.indexOf('(evicted by:') > -1) {
@@ -96,13 +95,13 @@ function getPackageNameAndVersion(packageDependency) {
   if (packageDependency.indexOf('->') > -1) {
     return null;
   }
-  splited = packageDependency.split(':');
+  const splited = packageDependency.split(':');
   version = splited[splited.length - 1];
   app = splited[0] + ':' + splited[1];
   app = app.split('\t').join('');
   app = app.trim();
   version = version.trim();
-  return {name: app, version};
+  return { name: app, version };
 }
 
 function convertDepArrayToObject(depsArr) {
@@ -145,7 +144,7 @@ function createSnykTree(rootTree, name, version) {
 
 function getProjectName(root) {
   const app = root.split(' ')[0].trim();
-  return {name: app};
+  return { name: app };
 }
 
 function createCoursierSnykTree(rootTree, name, version) {
@@ -189,18 +188,26 @@ function parse(text, name, version, isCoursier): DepTree {
   return createSnykTree(rootTree, name, version);
 }
 
-function parseSbtPluginResults(sbtOutput: string, packageName: string, packageVersion: string): DepTree {
+function parseSbtPluginResults(
+  sbtOutput: string,
+  packageName: string,
+  packageVersion: string,
+): DepTree {
   // remove all other output
   const outputStart = 'Snyk Output Start';
   const outputEnd = 'Snyk Output End';
   const sbtProjectOutput = sbtOutput.substring(
     sbtOutput.indexOf(outputStart) + outputStart.length,
-    sbtOutput.indexOf(outputEnd));
+    sbtOutput.indexOf(outputEnd),
+  );
   const sbtOutputJson: types.SbtModulesGraph = JSON.parse(sbtProjectOutput);
 
   if (Object.keys(sbtOutputJson).length === 1) {
     const project = Object.keys(sbtOutputJson)[0];
-    return parseSbtPluginProjectResultToDepTree(project, sbtOutputJson[project]);
+    return parseSbtPluginProjectResultToDepTree(
+      project,
+      sbtOutputJson[project],
+    );
   }
 
   const depTree = {
@@ -211,7 +218,10 @@ function parseSbtPluginResults(sbtOutput: string, packageName: string, packageVe
 
   // iterating over different project
   for (const project of Object.keys(sbtOutputJson)) {
-    depTree.dependencies[project] = parseSbtPluginProjectResultToDepTree(project, sbtOutputJson[project]);
+    depTree.dependencies[project] = parseSbtPluginProjectResultToDepTree(
+      project,
+      sbtOutputJson[project],
+    );
   }
 
   return depTree;
@@ -219,13 +229,12 @@ function parseSbtPluginResults(sbtOutput: string, packageName: string, packageVe
 
 function parseSbtPluginProjectResultToDepTree(
   projectKey: string,
-  sbtProjectOutput: types.SbtModulesGraph): DepTree {
-
-  const pkgs = Object.keys(sbtProjectOutput.modules)
-    .filter((module) => {
-      // filtering for the `compile` configuration only, otherwise, there can be multiple graph roots
-      return sbtProjectOutput.modules[module].configurations.includes('compile');
-    });
+  sbtProjectOutput: types.SbtModulesGraph,
+): DepTree {
+  const pkgs = Object.keys(sbtProjectOutput.modules).filter((module) => {
+    // filtering for the `compile` configuration only, otherwise, there can be multiple graph roots
+    return sbtProjectOutput.modules[module].configurations.includes('compile');
+  });
 
   const getDependenciesFor = (name: string): DepTree => {
     if (!sbtProjectOutput.dependencies[name]) {
@@ -236,7 +245,8 @@ function parseSbtPluginProjectResultToDepTree(
     }
     const dependencies: DepDict = {};
     for (const subDepName of sbtProjectOutput.dependencies[name]) {
-      if (pkgs.indexOf(subDepName) > -1) { // dependency is in compile configuration
+      if (pkgs.indexOf(subDepName) > -1) {
+        // dependency is in compile configuration
         dependencies[subDepName] = getDependenciesFor(subDepName);
       }
     }
