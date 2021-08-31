@@ -2,13 +2,16 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as test from 'tap-only';
 import * as parser from '../../lib/parse-sbt';
+import { DepTree } from '../../lib/types';
 
-function flatten(dependencies) {
-  const acc = new Set();
-  function rec(deps) {
+function flatten(dependencies: DepTree): string[] {
+  const acc = new Set<string>();
+  function rec(deps: DepTree): void {
     acc.add(deps.name);
-    Object.keys(deps.dependencies).forEach((key) => {
-      rec(deps.dependencies[key]);
+    Object.keys(deps.dependencies || {}).forEach((key) => {
+      if (deps.dependencies) {
+        rec(deps.dependencies[key]);
+      }
     });
   }
   rec(dependencies);
