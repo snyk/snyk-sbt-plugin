@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as version from '../../lib/version';
 import { isPluginInstalled } from '../../lib/plugin-search';
-import { sbtDependencyGraphPluginName} from '../../lib/constants';
+import { sbtDependencyGraphPluginName, sbtDependencyGraphPluginNameNew } from '../../lib/constants';
 
 describe('plugin-search test', () => {
   describe('isPluginInstalled locally', () => {
@@ -63,7 +63,7 @@ describe('plugin-search test', () => {
     });
   });
 
-  describe('isPluginInstalled globally into 1.0', () => {
+  describe('isPluginInstalled globally into 1.0, using sbt-dependency-graph old naming convention', () => {
     beforeEach(() => {
       const homedir = path.join(__dirname, '..', 'fixtures', 'homedir-1.0');
       jest.spyOn(os, 'homedir').mockReturnValue(homedir);
@@ -74,7 +74,39 @@ describe('plugin-search test', () => {
       it('returns true if ~/.sbt/1.0/plugins directory has sbt file with given plugin name', async () => {
         const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app', 'build.sbt');
-        const received = await isPluginInstalled(root, targetFile, sbtDependencyGraphPluginName)
+        const received = await isPluginInstalled(root, targetFile, sbtDependencyGraphPluginName) ||
+          await isPluginInstalled(
+            root,
+            targetFile,
+            sbtDependencyGraphPluginNameNew
+          );
+        expect(received).toBe(true);
+      });
+      it('returns false if ~/.sbt/1.0/plugins directory has sbt file without plugin name', async () => {
+        const root = path.join(__dirname, '..', 'fixtures');
+        const targetFile = path.join('simple-app', 'build.sbt');
+        const received = await isPluginInstalled(root, targetFile, 'will.not.find');
+        expect(received).toBe(false);
+      });
+    });
+  });
+  describe('isPluginInstalled globally into 1.0, using addDependencyTreePlugin introduced for sbt versions 1.4+', () => {
+    beforeEach(() => {
+      const homedir = path.join(__dirname, '..', 'fixtures', 'homedir-1.0-sbt-1.4+');
+      jest.spyOn(os, 'homedir').mockReturnValue(homedir);
+      jest.spyOn(version, 'getSbtVersion').mockResolvedValue('1.0.0');
+    });
+    afterEach(() => jest.resetAllMocks());
+    describe('in users home directory', () => {
+      it('returns true if ~/.sbt/1.0/plugins directory has sbt file with given plugin name', async () => {
+        const root = path.join(__dirname, '..', 'fixtures');
+        const targetFile = path.join('simple-app', 'build.sbt');
+        const received = await isPluginInstalled(root, targetFile, sbtDependencyGraphPluginName) ||
+          await isPluginInstalled(
+            root,
+            targetFile,
+            sbtDependencyGraphPluginNameNew
+          );
         expect(received).toBe(true);
       });
       it('returns false if ~/.sbt/1.0/plugins directory has sbt file without plugin name', async () => {

@@ -6,7 +6,7 @@ import * as debugModule from 'debug';
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
 const debug = debugModule('snyk-sbt-plugin');
 
-import { sbtCoursierPluginName, sbtDependencyGraphPluginName } from './constants';
+import { sbtCoursierPluginName, sbtDependencyGraphPluginName, sbtDependencyGraphPluginNameNew } from './constants';
 import * as subProcess from './sub-process';
 import * as parser from './parse-sbt';
 import * as types from './types';
@@ -41,7 +41,8 @@ export async function inspect(
     root,
     targetFile,
     sbtDependencyGraphPluginName,
-  );
+  ) || await isPluginInstalled(root,
+    targetFile, sbtDependencyGraphPluginNameNew);
   Object.assign(options, { isCoursierPresent });
   // in order to apply the pluginInspect, coursier should *not* be present and sbt-dependency-graph should be present
   if (!isCoursierPresent && isSbtDependencyGraphPresent) {
@@ -54,9 +55,9 @@ export async function inspect(
     } else {
       debug(
         'coursier present = ' +
-          isCoursierPresent +
-          ', sbt-dependency-graph present = ' +
-          isSbtDependencyGraphPresent,
+        isCoursierPresent +
+        ', sbt-dependency-graph present = ' +
+        isSbtDependencyGraphPresent,
       );
       debug('Falling back to legacy inspect');
       // tslint:disable-next-line:no-console
@@ -206,7 +207,7 @@ async function pluginInspect(
   } catch (error) {
     debug(
       'Failed to produce dependency tree with custom snyk plugin due to error: ' +
-        error.message,
+      error.message,
     );
     return null;
   } finally {
