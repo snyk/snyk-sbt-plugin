@@ -41,11 +41,13 @@ export async function inspect(
     root,
     targetFile,
     sbtDependencyGraphPluginName,
-  ) || await isPluginInstalled(root,
+  );
+  const isNewSbtDependencyGraphPresent = await isPluginInstalled(root,
     targetFile, sbtDependencyGraphPluginNameNew);
   Object.assign(options, { isCoursierPresent });
   // in order to apply the pluginInspect, coursier should *not* be present and sbt-dependency-graph should be present
-  if (!isCoursierPresent && isSbtDependencyGraphPresent) {
+  // we currently don't support the new notation of the sbt-dependency-graph which is 'addDependencyTreePlugin'
+  if (!isCoursierPresent && isSbtDependencyGraphPresent && !isNewSbtDependencyGraphPresent) {
     debug('applying plugin inspect');
     const res = await pluginInspect(root, targetFile, options);
     if (res) {
@@ -64,6 +66,10 @@ export async function inspect(
       console.warn(buildHintMessage(options));
     }
   } else {
+    if (isNewSbtDependencyGraphPresent) {
+      // tslint:disable-next-line:no-console
+      console.warn(buildNewSbtDepGraphWarning());
+    }
     debug('falling back to legacy inspect');
   }
   const result = await legacyInspect(root, targetFile, options);
@@ -275,4 +281,15 @@ export function buildArgs(
   }
 
   return args;
+}
+
+function buildNewSbtDepGraphWarning() {
+  return (
+    '\n\n' +
+    'We currently do not support the new `addDependencyTreePlugin` annotation for the `sbt-dependency-graph` plugin\n' +
+    'Instead, please add the following line to the plugins file: \n' +
+    'addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")\n' +
+    'Further instructions can be found in ' +
+    'https://tinyurl.com/2p9xa3p2\n\n'
+  );
 }

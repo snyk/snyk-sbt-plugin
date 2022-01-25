@@ -90,6 +90,7 @@ describe('plugin-search test', () => {
       });
     });
   });
+
   describe('isPluginInstalled globally into 1.0, using addDependencyTreePlugin introduced for sbt versions 1.4+', () => {
     beforeEach(() => {
       const homedir = path.join(__dirname, '..', 'fixtures', 'homedir-1.0-sbt-1.4+');
@@ -100,7 +101,7 @@ describe('plugin-search test', () => {
     describe('in users home directory', () => {
       it('returns true if ~/.sbt/1.0/plugins directory has sbt file with given plugin name', async () => {
         const root = path.join(__dirname, '..', 'fixtures');
-        const targetFile = path.join('simple-app', 'build.sbt');
+        const targetFile = path.join('simple-app-sbt-1.4.0', 'build.sbt');
         const received = await isPluginInstalled(root, targetFile, sbtDependencyGraphPluginName) ||
           await isPluginInstalled(
             root,
