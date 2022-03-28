@@ -8,7 +8,7 @@ import sjsonnew.support.scalajson.unsafe.PrettyPrinter
 
 object SnykSbtPlugin extends AutoPlugin {
   val ConfigBlacklist: Set[String] =
-    Set("windows", "universal", "universal-docs", "debian", "rpm", "universal-src", "docker", "linux", "web-assets", "web-plugin", "web-assets-test")
+    Set("windows", "universal", "universal-docs", "debian", "rpm", "universal-src", "docker", "linux", "web-assets", "web-plugin", "web-assets-test", "scalafix")
 
   case class SnykModuleInfo(version: String, configurations: Set[String])
   case class SnykProjectData(
