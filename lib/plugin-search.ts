@@ -17,7 +17,7 @@ export async function isPluginInstalled(
 function searchProjectFiles(root: string, targetFile: string, plugin: string): boolean {
   const basePath = path.dirname(path.resolve(root, targetFile));
   const sbtFileList = sbtFiles(path.join(basePath, 'project'))
-  .concat(sbtFiles(path.join(basePath, 'project', 'project')));
+    .concat(sbtFiles(path.join(basePath, 'project', 'project')));
   const searchResults = sbtFileList.map ((file) => {
     return searchWithFs(file, plugin);
   });
