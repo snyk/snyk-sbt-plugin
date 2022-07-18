@@ -55,6 +55,11 @@ function sbtFiles(basePath) {
 }
 
 function searchWithFs(filename, word) {
-  const buffer = fs.readFileSync(filename);
+  let buffer = fs.readFileSync(filename, {encoding: 'utf8'});
+
+  // remove single-line and multi-line comments
+  const singleLineCommentPattern = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm;
+  buffer = buffer.replace(singleLineCommentPattern, '');
+
   return buffer.indexOf(word) > -1;
 }

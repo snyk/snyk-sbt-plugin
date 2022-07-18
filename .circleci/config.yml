@@ -19,9 +19,9 @@ test_matrix: &test_matrix
   matrix:
     parameters:
       node_version:
-        - "10"
         - "12"
         - "14"
+        - "16"
       jdk_version:
         - "8.0.292.j9-adpt"
         - "11.0.11.j9-adpt"
