@@ -24,6 +24,18 @@ describe('plugin-search test', () => {
         const received = await isPluginInstalled(root, targetFile, 'will.not.find')
         expect(received).toBe(false);
       });
+      it('returns false if the project directory has sbt file with plugin name in a single-line comment', async () => {
+        const root = path.join(__dirname, '..', 'fixtures');
+        const targetFile = path.join('single-line-comments', 'build.sbt');
+        const received = await isPluginInstalled(root, targetFile, 'addDependencyTreePlugin')
+        expect(received).toBe(false);
+      });
+      it('returns false if the project directory has sbt file with plugin name in a multi-line comment', async () => {
+        const root = path.join(__dirname, '..', 'fixtures');
+        const targetFile = path.join('multi-line-comments', 'build.sbt');
+        const received = await isPluginInstalled(root, targetFile, 'addDependencyTreePlugin')
+        expect(received).toBe(false);
+      });
     });
     describe('in local project/project folder', () => {
       it('returns true if the project/project directory has sbt file with given plugin name', async () => {

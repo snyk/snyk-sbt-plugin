@@ -104,7 +104,7 @@ test('run inspect() with commented out coursier on 0.13', async (t) => {
   const result: any = await plugin.inspect(path.join(
     __dirname, '..', 'fixtures', 'testproj-faux-coursier-0.13'),
     'build.sbt', {});
-  t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
+  t.equal(result.plugin.name, 'snyk:sbt', 'correct handler');
   // TODO: fix to get the project name from build.sbt
   // t.equal(result.package.version, '0.1.0-SNAPSHOT');
   t.match(result.package.name, 'hello');
