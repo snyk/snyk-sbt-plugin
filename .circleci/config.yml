@@ -27,6 +27,7 @@ test_matrix: &test_matrix
         - "11.0.11.j9-adpt"
       sbt_version:
         - "1.5.5"
+        - "1.7.0"
 jobs:
   test:
     <<: *params
