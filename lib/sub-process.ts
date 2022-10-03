@@ -14,7 +14,7 @@ export const execute = (
   args: string[],
   options: {cwd?: string},
 ): Promise<string>  => {
-  const spawnOptions: {cwd?: string, shell: boolean} = {};
+  const spawnOptions: {cwd?: string, shell?: boolean} = {};
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
   }
