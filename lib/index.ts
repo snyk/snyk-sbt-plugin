@@ -55,13 +55,7 @@ export async function inspect(
 
       return res;
     } else {
-      debug(
-        'coursier present = ' +
-        isCoursierPresent +
-        ', sbt-dependency-graph present = ' +
-        isSbtDependencyGraphPresent,
-      );
-      debug('Falling back to legacy inspect');
+      debug('Scala script failed. Falling back to using sbt command (legacy)');
       // tslint:disable-next-line:no-console
       console.warn(buildHintMessage(options));
     }
@@ -70,7 +64,7 @@ export async function inspect(
       // tslint:disable-next-line:no-console
       console.warn(buildNewSbtDepGraphWarning());
     }
-    debug('falling back to legacy inspect');
+    debug('Falling back to using sbt command (legacy)');
   }
   const result = await legacyInspect(root, targetFile, options);
   const packageName = path.basename(root);
@@ -102,7 +96,7 @@ async function legacyInspect(root: string, targetFile: string, options: any) {
   let useCoursier = options.isCoursierPresent;
 
   const sbtArgs = buildArgs(options.args, useCoursier);
-
+  debug(`running command: sbt ${sbtArgs.join(' ')}`);
   try {
     return {
       sbtOutput: await subProcess.execute('sbt', sbtArgs, {
@@ -116,6 +110,7 @@ async function legacyInspect(root: string, targetFile: string, options: any) {
       // in case we've failed to parse the files correctly #paranoid
       useCoursier = false;
       const sbtArgsNoCoursier = buildArgs(options.args, useCoursier);
+      debug(`running command: sbt ${sbtArgsNoCoursier.join(' ')}`);
       return {
         sbtOutput: await subProcess.execute('sbt', sbtArgsNoCoursier, {
           cwd: targetFilePath,
@@ -175,6 +170,7 @@ function generateSbtPluginPath(sbtVersion: string): string {
     pluginName = 'SnykSbtPlugin-0.1x.scala';
   }
   if (/index.[tj]s$/.test(__filename)) {
+    debug('Applying ', pluginName);
     return path.join(__dirname, `../scala/${pluginName}`);
   } else {
     throw new Error(`Cannot locate ${pluginName} script`);
@@ -197,6 +193,7 @@ async function pluginInspect(
 
     injectedScript = await injectSbtScript(sbtPluginPath, targetFolderPath);
     debug('injectedScript.path: ' + injectedScript.path);
+    debug('args passed to plugin inspect: ', sbtArgs.join(' '));
     const stdout = await subProcess.execute('sbt', sbtArgs, {
       cwd: targetFolderPath,
     });
