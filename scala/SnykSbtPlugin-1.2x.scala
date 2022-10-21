@@ -4,7 +4,7 @@ import net.virtualvoid.sbt.graph.DependencyGraphKeys.moduleGraph
 import net.virtualvoid.sbt.graph.{ DependencyGraphPlugin, ModuleId }
 import sbt._, Keys._
 import sjsonnew.shaded.scalajson.ast._
-import sjsonnew.support.scalajson.unsafe.PrettyPrinter
+import sjsonnew.support.scalajson.unsafe.CompactPrinter
 
 object SnykSbtPlugin extends AutoPlugin {
   val ConfigBlacklist: Set[String] =
@@ -54,7 +54,7 @@ object SnykSbtPlugin extends AutoPlugin {
     Def.task {
       val allProjectDatas = snykExtractProjectData.all(filter).value
       println("Snyk Output Start")
-      println(PrettyPrinter(JObject(allProjectDatas.map {
+      println(CompactPrinter(JObject(allProjectDatas.map {
         case SnykProjectData(projectId, modules, deps) =>
           projectId -> JObject(
             Map(
