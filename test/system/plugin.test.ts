@@ -37,6 +37,21 @@ test('run inspect() on 1.2.8', async (t) => {
     'correct version found');
 });
 
+test('run inspect() on 1.2.8', async (t) => {
+  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-1.2.8-no-plugins/build.sbt', {});
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.equal(result.package.version, '0.1.0-SNAPSHOT');
+  t.match(result.package.name, 'hello');
+  t.deepEqual(result.package
+    .dependencies['axis:axis']
+    .dependencies['axis:axis-jaxrpc']
+    .dependencies['org.apache.axis:axis-jaxrpc'].version,
+    '1.4',
+    'correct version found');
+});
+
 test('run legacy inspect() on sbt 1.4.0 with sbt-dependency-graph new naming- addDependencyTreePlugin', async (t) => {
   const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
     'testproj-1.4.0/build.sbt', {});
@@ -57,7 +72,6 @@ test('run inspect() with coursier on 0.17', async (t) => {
   // for coursier project
   // t.equal(result.package.version, '0.1.0-SNAPSHOT')
   // t.match(result.package.name, 'hello');
-  t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.ok(result.package.dependencies['axis:axis']);
@@ -76,7 +90,6 @@ test('run inspect() with coursier on 1.2.8', async (t) => {
   // for coursier project
   // t.equal(result.package.version, '0.1.0-SNAPSHOT');
   // t.match(result.package.name, 'hello');
-  t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.ok(result.package.dependencies['axis:axis']);
@@ -170,9 +183,7 @@ test('run inspect() on 0.13 with custom-plugin', async (t) => {
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.equal(result.package
-    .dependencies['axis:axis']
-    .dependencies['axis:axis-jaxrpc']
-    .dependencies['org.apache.axis:axis-jaxrpc'].version,
+    .dependencies['axis:axis'].version,
     '1.4',
     'correct version found');
 });
@@ -199,9 +210,7 @@ test('run inspect() on 1.2.8 with custom-plugin', async (t) => {
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.equal(result.package
-    .dependencies['axis:axis']
-    .dependencies['axis:axis-jaxrpc']
-    .dependencies['org.apache.axis:axis-jaxrpc'].version,
+    .dependencies['axis:axis'].version,
     '1.4',
     'correct version found');
 });
@@ -228,15 +237,13 @@ test('run inspect() with coursier on 1.3.3', async (t) => {
   // for coursier project
   // t.equal(result.package.version, '0.1.0-SNAPSHOT');
   // t.match(result.package.name, 'hello');
-  t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.ok(result.package.dependencies['axis:axis']);
   t.deepEqual(result.package
     .dependencies['axis:axis']
-    .dependencies['axis:axis-jaxrpc']
-    .dependencies['org.apache.axis:axis-jaxrpc'].version,
-    '1.4',
+    .dependencies['axis:axis-wsdl4j'].version,
+    '1.5.1',
     'correct version found');
 });
 
@@ -248,14 +255,52 @@ test('run inspect() with coursier on 1.3.5', async (t) => {
   // for coursier project
   // t.equal(result.package.version, '0.1.0-SNAPSHOT');
   // t.match(result.package.name, 'hello');
-  t.equal(result.plugin.name, 'bundled:sbt', 'correct handler');
 
   t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
   t.ok(result.package.dependencies['axis:axis']);
   t.deepEqual(result.package
     .dependencies['axis:axis']
-    .dependencies['axis:axis-jaxrpc']
-    .dependencies['org.apache.axis:axis-jaxrpc'].version,
-    '1.4',
+    .dependencies['axis:axis-wsdl4j'].version,
+    '1.5.1',
+    'correct version found');
+});
+
+
+test('run inspect() on sbt v. 1.5.5 with new sbt dep tree plugin', async (t) => {
+  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-1.5.5-dep-tree-plugin/build.sbt', {});
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
+    .dependencies['axis:axis']
+    .dependencies['axis:axis-wsdl4j'].version,
+    '1.5.1',
+    'correct version found');
+});
+
+test('run inspect() on sbt v. 1.7.0 without any plugins', async (t) => {
+  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-1.7.0-no-plugins/build.sbt', {});
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
+    .dependencies['axis:axis']
+    .dependencies['axis:axis-wsdl4j'].version,
+    '1.5.1',
+    'correct version found');
+});
+
+test('run inspect() on sbt v. 1.7.0 with new sbt dep tree plugin', async (t) => {
+  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-1.7.0-dep-tree-plugin/build.sbt', {});
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
+    .dependencies['axis:axis']
+    .dependencies['axis:axis-wsdl4j'].version,
+    '1.5.1',
     'correct version found');
 });

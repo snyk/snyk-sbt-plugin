@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as version from '../../lib/version';
 import { isPluginInstalled } from '../../lib/plugin-search';
-import { sbtDependencyGraphPluginName, sbtDependencyGraphPluginNameNew } from '../../lib/constants';
+import { sbtDependencyGraphPluginName } from '../../lib/constants';
 
 describe('plugin-search test', () => {
   describe('isPluginInstalled locally', () => {
@@ -83,17 +83,6 @@ describe('plugin-search test', () => {
     });
     afterEach(() => jest.resetAllMocks());
     describe('in users home directory', () => {
-      it('returns true if ~/.sbt/1.0/plugins directory has sbt file with given plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
-        const targetFile = path.join('simple-app', 'build.sbt');
-        const received = await isPluginInstalled(root, targetFile, sbtDependencyGraphPluginName) ||
-          await isPluginInstalled(
-            root,
-            targetFile,
-            sbtDependencyGraphPluginNameNew
-          );
-        expect(received).toBe(true);
-      });
       it('returns false if ~/.sbt/1.0/plugins directory has sbt file without plugin name', async () => {
         const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app', 'build.sbt');
@@ -111,17 +100,6 @@ describe('plugin-search test', () => {
     });
     afterEach(() => jest.resetAllMocks());
     describe('in users home directory', () => {
-      it('returns true if ~/.sbt/1.0/plugins directory has sbt file with given plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
-        const targetFile = path.join('simple-app-sbt-1.4.0', 'build.sbt');
-        const received = await isPluginInstalled(root, targetFile, sbtDependencyGraphPluginName) ||
-          await isPluginInstalled(
-            root,
-            targetFile,
-            sbtDependencyGraphPluginNameNew
-          );
-        expect(received).toBe(true);
-      });
       it('returns false if ~/.sbt/1.0/plugins directory has sbt file without plugin name', async () => {
         const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app', 'build.sbt');

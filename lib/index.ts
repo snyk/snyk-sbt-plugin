@@ -6,7 +6,7 @@ import * as debugModule from 'debug';
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
 const debug = debugModule('snyk-sbt-plugin');
 
-import { sbtCoursierPluginName, sbtDependencyGraphPluginName, sbtDependencyGraphPluginNameNew } from './constants';
+import { sbtCoursierPluginName, sbtDependencyGraphPluginName } from './constants';
 import * as subProcess from './sub-process';
 import * as parser from './parse-sbt';
 import * as types from './types';
@@ -42,29 +42,19 @@ export async function inspect(
     targetFile,
     sbtDependencyGraphPluginName,
   );
-  const isNewSbtDependencyGraphPresent = await isPluginInstalled(root,
-    targetFile, sbtDependencyGraphPluginNameNew);
   Object.assign(options, { isCoursierPresent });
-  // in order to apply the pluginInspect, coursier should *not* be present and sbt-dependency-graph should be present
-  // we currently don't support the new notation of the sbt-dependency-graph which is 'addDependencyTreePlugin'
-  if (!isCoursierPresent && isSbtDependencyGraphPresent && !isNewSbtDependencyGraphPresent) {
+  const sbtVersion = await getSbtVersion(root, targetFile);
+  if (semver.gte(sbtVersion, '1.4.0') || isSbtDependencyGraphPresent){
     debug('applying plugin inspect');
     const res = await pluginInspect(root, targetFile, options);
     if (res) {
       res.package.packageFormatVersion = packageFormatVersion;
-
       return res;
     } else {
       debug('Scala script failed. Falling back to using sbt command (legacy)');
       // tslint:disable-next-line:no-console
       console.warn(buildHintMessage(options));
     }
-  } else {
-    if (isNewSbtDependencyGraphPresent) {
-      // tslint:disable-next-line:no-console
-      console.warn(buildNewSbtDepGraphWarning());
-    }
-    debug('Falling back to using sbt command (legacy)');
   }
   const result = await legacyInspect(root, targetFile, options);
   const packageName = path.basename(root);
@@ -292,8 +282,6 @@ function buildNewSbtDepGraphWarning() {
   return (
     '\n\n' +
     'We currently do not support the new `addDependencyTreePlugin` annotation for the `sbt-dependency-graph` plugin\n' +
-    'Instead, please add the following line to the plugins file: \n' +
-    'addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")\n' +
     'Further instructions can be found in ' +
     'https://tinyurl.com/2p9xa3p2\n\n'
   );
