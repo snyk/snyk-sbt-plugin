@@ -44,7 +44,7 @@ export async function inspect(
   );
   Object.assign(options, { isCoursierPresent });
   const sbtVersion = await getSbtVersion(root, targetFile);
-  if (semver.gte(sbtVersion, '1.4.0') || isSbtDependencyGraphPresent){
+  if (semver.gte(sbtVersion, '1.4.0') || isSbtDependencyGraphPresent) {
     debug('applying plugin inspect');
     const res = await pluginInspect(root, targetFile, options);
     if (res) {
