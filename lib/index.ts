@@ -44,29 +44,63 @@ export async function inspect(
   );
   const isNewSbtDependencyGraphPresent = await isPluginInstalled(root,
     targetFile, sbtDependencyGraphPluginNameNew);
-  Object.assign(options, { isCoursierPresent });
-  // in order to apply the pluginInspect, coursier should *not* be present and sbt-dependency-graph should be present
-  // we currently don't support the new notation of the sbt-dependency-graph which is 'addDependencyTreePlugin'
-  if (!isCoursierPresent && isSbtDependencyGraphPresent && !isNewSbtDependencyGraphPresent) {
-    debug('applying plugin inspect');
-    const res = await pluginInspect(root, targetFile, options);
-    if (res) {
-      res.package.packageFormatVersion = packageFormatVersion;
 
-      return res;
-    } else {
-      debug('Scala script failed. Falling back to using sbt command (legacy)');
-      // tslint:disable-next-line:no-console
-      console.warn(buildHintMessage(options));
+  debug(`isCoursierPresent: ${isCoursierPresent}, isSbtDependencyGraphPresent: ${isSbtDependencyGraphPresent},
+  isNewSbtDependencyGraphPresent: ${isNewSbtDependencyGraphPresent}`);
+  // If coursier is present, use it because it gives different results to sbt dependencyTree
+  let result;
+  if (isCoursierPresent) {
+    try {
+      options.useCoursier = true;
+      result = await legacyInspect(root, targetFile, options);
+      return result;
+    } catch (err) {
+      debug('Coursier failed with error: ', err);
     }
-  } else {
-    if (isNewSbtDependencyGraphPresent) {
-      // tslint:disable-next-line:no-console
-      console.warn(buildNewSbtDepGraphWarning());
-    }
-    debug('Falling back to using sbt command (legacy)');
   }
-  const result = await legacyInspect(root, targetFile, options);
+  // TODO:Legacy path creates a large output that can cause RangeError in bigger projects
+  // We would prefer to use plugin inspect by default but currently it requires sbt-dep-graph plugin
+  if (isSbtDependencyGraphPresent) {
+    try {
+      debug('Applying plugin inspect');
+      result = await pluginInspect(root, targetFile, options);
+    } catch (err) {
+      debug('pluginInspect failed with error: ', err);
+    }
+    if (result) {
+      result.package.packageFormatVersion = packageFormatVersion;
+      return result;
+    }
+  }
+
+  options.useCoursier = false;
+  try {
+    result = await legacyInspect(root, targetFile, options);
+    return result;
+  } catch (err) {
+    const hintMsg = buildHintMessage(options);
+    err.message = err.message + '\n' + hintMsg;
+    throw new Error(err);
+  }
+}
+
+async function legacyInspect(root: string, targetFile: string, options: any) {
+  const targetFilePath = path.dirname(path.resolve(root, targetFile));
+  if (!fs.existsSync(targetFilePath)) {
+    debug(
+      `build.sbt not found at location: ${targetFilePath}. This may result in no dependencies`,
+    );
+  }
+  const useCoursier = options.useCoursier;
+
+  const sbtArgs = buildArgs(options.args, useCoursier);
+  debug(`running command: sbt ${sbtArgs.join(' ')}`);
+  const result = {
+    sbtOutput: await subProcess.execute('sbt', sbtArgs, {
+      cwd: targetFilePath,
+    }),
+    coursier: useCoursier,
+  };
   const packageName = path.basename(root);
   const packageVersion = '0.0.0';
   const depTree = parser.parse(
@@ -84,47 +118,6 @@ export async function inspect(
     },
     package: depTree,
   };
-}
-
-async function legacyInspect(root: string, targetFile: string, options: any) {
-  const targetFilePath = path.dirname(path.resolve(root, targetFile));
-  if (!fs.existsSync(targetFilePath)) {
-    debug(
-      `build.sbt not found at location: ${targetFilePath}. This may result in no dependencies`,
-    );
-  }
-  let useCoursier = options.isCoursierPresent;
-
-  const sbtArgs = buildArgs(options.args, useCoursier);
-  debug(`running command: sbt ${sbtArgs.join(' ')}`);
-  try {
-    return {
-      sbtOutput: await subProcess.execute('sbt', sbtArgs, {
-        cwd: targetFilePath,
-      }),
-      coursier: useCoursier,
-    };
-  } catch (error) {
-    if (useCoursier) {
-      // if we've tried coursier already, we'll fallback to dependency-graph
-      // in case we've failed to parse the files correctly #paranoid
-      useCoursier = false;
-      const sbtArgsNoCoursier = buildArgs(options.args, useCoursier);
-      debug(`running command: sbt ${sbtArgsNoCoursier.join(' ')}`);
-      return {
-        sbtOutput: await subProcess.execute('sbt', sbtArgsNoCoursier, {
-          cwd: targetFilePath,
-        }),
-        coursier: useCoursier,
-      };
-    } else {
-      // otherwise cascade the reject
-
-      error.message = error.message + buildHintMessage(options);
-
-      throw error;
-    }
-  }
 }
 
 async function injectSbtScript(
@@ -256,7 +249,7 @@ function buildHintMessage(options) {
     csArgs +
     ' executes successfully on this project.\n\n' +
     'For this project we guessed that you are using ' +
-    (options.isCoursierPresent ? 'sbt-coursier' : 'sbt-dependency-graph') +
+    (options.useCoursier ? 'sbt-coursier' : 'sbt-dependency-graph') +
     '.\n\n' +
     'If the problem persists, collect the output of ' +
     dgArgs +
@@ -286,15 +279,4 @@ export function buildArgs(
   }
 
   return args;
-}
-
-function buildNewSbtDepGraphWarning() {
-  return (
-    '\n\n' +
-    'We currently do not support the new `addDependencyTreePlugin` annotation for the `sbt-dependency-graph` plugin\n' +
-    'Instead, please add the following line to the plugins file: \n' +
-    'addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1")\n' +
-    'Further instructions can be found in ' +
-    'https://tinyurl.com/2p9xa3p2\n\n'
-  );
 }
