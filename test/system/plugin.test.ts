@@ -259,3 +259,29 @@ test('run inspect() with coursier on 1.3.5', async (t) => {
     '1.4',
     'correct version found');
 });
+
+test('run inspect() on sbt v. 1.7.0 without any plugins', async (t) => {
+  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-1.7.0-no-plugins/build.sbt', {});
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
+    .dependencies['axis:axis']
+    .dependencies['axis:axis-wsdl4j'].version,
+    '1.5.1',
+    'correct version found');
+});
+
+test('run inspect() on sbt v. 1.7.0 with new sbt dep tree plugin', async (t) => {
+  const result: any = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'testproj-1.7.0-dep-tree-plugin/build.sbt', {});
+
+  t.equal(result.package.packageFormatVersion, 'mvn:0.0.1', 'correct package format version');
+  t.ok(result.package.dependencies['axis:axis']);
+  t.deepEqual(result.package
+    .dependencies['axis:axis']
+    .dependencies['axis:axis-wsdl4j'].version,
+    '1.5.1',
+    'correct version found');
+});
