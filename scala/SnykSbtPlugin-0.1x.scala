@@ -88,10 +88,8 @@ object SnykSbtPlugin extends AutoPlugin {
 
       val thisProjectId = formatModuleId((moduleGraph in Compile).value.roots.head.id)
       val thisProjectConfigs = thisProject.value.configurations.filterNot { c =>
-        ConfigBlacklist.contains(c.name)
+        ConfigBlacklist.contains(c.name) || !c.isPublic
       }
-      println(">>> Project's configurations after filtering blacklisted:")
-      println(thisProjectConfigs)
       val filter = ScopeFilter(configurations = inConfigurations(thisProjectConfigs: _*))
       val configAndModuleGraph = Def.task {
         val graph = moduleGraph.value
