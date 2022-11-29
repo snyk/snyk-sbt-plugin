@@ -1,6 +1,7 @@
 import * as childProcess from 'child_process';
 import * as treeKill from 'tree-kill';
 import * as debugModule from 'debug';
+import { quoteAll } from 'shescape';
 
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
 const debugLogging = debugModule('snyk-sbt-plugin');
@@ -18,6 +19,7 @@ export const execute = (
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
   }
+  args = quoteAll(args, spawnOptions);
 
   return new Promise((resolve, reject) => {
     const out = {

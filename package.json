@@ -44,6 +44,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "semver": "^6.1.2",
+    "shescape": "1.6.1",
     "tmp": "^0.1.0",
     "tree-kill": "^1.2.2",
     "tslib": "^1.10.0"
