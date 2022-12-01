@@ -217,14 +217,15 @@ function parseSbtPluginResults(sbtOutput: string, packageName: string, packageVe
   return depTree;
 }
 
+const PRODUCTION_SCOPES: string[] = ['compile', 'runtime', 'provided'];
+
 function parseSbtPluginProjectResultToDepTree(
   projectKey: string,
   sbtProjectOutput: types.SbtModulesGraph): DepTree {
 
   const pkgs = Object.keys(sbtProjectOutput.modules)
     .filter((module) => {
-      // filtering for the `compile` configuration only, otherwise, there can be multiple graph roots
-      return sbtProjectOutput.modules[module].configurations.includes('compile');
+      return sbtProjectOutput.modules[module].configurations.some((c) => PRODUCTION_SCOPES.includes(c));
     });
 
   const getDependenciesFor = (name: string): DepTree => {
@@ -236,7 +237,7 @@ function parseSbtPluginProjectResultToDepTree(
     }
     const dependencies: DepDict = {};
     for (const subDepName of sbtProjectOutput.dependencies[name]) {
-      if (pkgs.indexOf(subDepName) > -1) { // dependency is in compile configuration
+      if (pkgs.indexOf(subDepName) > -1) { // dependency is in production configuration
         dependencies[subDepName] = getDependenciesFor(subDepName);
       }
     }

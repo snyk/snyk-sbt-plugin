@@ -31,7 +31,10 @@ object SnykSbtPlugin extends AutoPlugin {
           }
       }
 
-      val mergedDeps = dependencies ++ otherDeps
+      // merge maps and set values together
+      val mergedDeps = dependencies ++ otherDeps.map { 
+        case (key, value) => key -> (value ++ dependencies.getOrElse(key, Set.empty))
+      }
 
       SnykProjectData(projectId, mergedModules, mergedDeps)
     }

@@ -285,3 +285,22 @@ test('run inspect() on sbt v. 1.7.0 with new sbt dep tree plugin', async (t) => 
     '1.5.1',
     'correct version found');
 });
+
+test('run inspect() proj with provided 1.7', async (t) => {
+  const result = await plugin.inspect(path.join(__dirname, '..', 'fixtures'),
+    'proj-with-provided-1.7/build.sbt', {});
+  if (!result.package.dependencies) {
+    t.fail('project has no dependencies');
+  }
+  else {
+    t.equal(Object.keys(result.package.dependencies).length, 8, '8 direct dependencies of the project');
+    t.equal(result.package.dependencies['org.jsoup:jsoup']?.version, '1.14.2', 'version of jsoup is 1.14.2');
+    t.equal(result.package.dependencies['com.github.etaty:rediscala_2.13']?.version, '1.9.0', 'version of rediscala_2.13 is 1.9.0');
+    t.equal(result.package.dependencies['com.softwaremill.macwire:util_2.13']?.version, '2.3.5', 'version of util_2.13 is 2.3.5');
+    t.equal(result.package.dependencies['com.softwaremill.macwire:macros_2.13']?.version, '2.3.5', 'version of macros_2.13 is 2.3.5');
+    t.equal(result.package.dependencies['com.softwaremill.macwire:macrosakka_2.13']?.version, '2.3.5', 'version of macrosakka_2.13 is 2.3.5');
+    t.equal(result.package.dependencies['com.softwaremill.common:tagging_2.13']?.version, '2.2.1', 'version of tagging is 2.2.1');
+    t.equal(result.package.dependencies['org.apache.santuario:xmlsec']?.version, '2.2.3', 'version of xmlsec is 2.2.3');
+    t.equal(result.package.dependencies['org.apache.commons:commons-text']?.version, '1.9', 'version of commons-text is 1.9');
+  }
+});
