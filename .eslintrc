@@ -1,4 +1,5 @@
 {
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 6
   },
@@ -6,47 +7,37 @@
     "node": true,
     "es6": true
   },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
   "rules": {
-    "array-bracket-spacing": [2, "never"],
-    "block-scoped-var": 2,
-    "brace-style": 2,
-    "camelcase": 1,
-    "comma-dangle": ["error", "always-multiline"],
-    "computed-property-spacing": [2, "never"],
-    "curly": 2,
-    "eol-last": 2,
-    "eqeqeq": [2, "smart"],
-    "guard-for-in": 1,
-    "indent": [
-      2,
-      2,
-      {
-        "SwitchCase": 1
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+
+    // non-null assertions compromise the type safety somewhat, but many
+    // our types are still imprecisely defined and we don't use noImplicitAny
+    // anyway, so for the time being assertions are allowed
+    "@typescript-eslint/no-non-null-assertion": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-prototype-builtins": "off",
+    "require-atomic-updates": "off",
+    "no-buffer-constructor": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "id-blacklist": ["error", "exports"] // in TS, use "export" instead of Node's "module.exports"
       }
-    ],
-    "max-depth": [1, 3],
-    "max-len": [1, 120],
-    "max-statements": [1, 25],
-    "new-cap": 0,
-    "no-caller": 2,
-    "no-else-return": 2,
-    "no-extend-native": 2,
-    "no-mixed-spaces-and-tabs": 2,
-    "no-trailing-spaces": 2,
-    "no-undef": 2,
-    "no-unused-vars": 1,
-    "no-use-before-define": [2, "nofunc"],
-    "object-curly-spacing": [2, "never"],
-    "quotes": [2, "single", "avoid-escape"],
-    "semi": [2, "always"],
-    "keyword-spacing": [2, {"before": true, "after": true}],
-    "space-before-function-paren": [
-      2,
-      {
-        "anonymous": "ignore",
-        "named": "never"
-      }
-    ],
-    "space-unary-ops": 2
-  }
+    }
+  ]
 }
