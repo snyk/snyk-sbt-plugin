@@ -6,7 +6,11 @@ import * as debugModule from 'debug';
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
 const debug = debugModule('snyk-sbt-plugin');
 
-import { sbtCoursierPluginName, sbtDependencyGraphPluginName, sbtDependencyGraphPluginNameNew } from './constants';
+import {
+  sbtCoursierPluginName,
+  sbtDependencyGraphPluginName,
+  sbtDependencyGraphPluginNameNew,
+} from './constants';
 import * as subProcess from './sub-process';
 import * as parser from './parse-sbt';
 import * as types from './types';
@@ -42,8 +46,11 @@ export async function inspect(
     targetFile,
     sbtDependencyGraphPluginName,
   );
-  const isNewSbtDependencyGraphPresent = await isPluginInstalled(root,
-    targetFile, sbtDependencyGraphPluginNameNew);
+  const isNewSbtDependencyGraphPresent = await isPluginInstalled(
+    root,
+    targetFile,
+    sbtDependencyGraphPluginNameNew,
+  );
 
   debug(`isCoursierPresent: ${isCoursierPresent}, isSbtDependencyGraphPresent: ${isSbtDependencyGraphPresent},
   isNewSbtDependencyGraphPresent: ${isNewSbtDependencyGraphPresent}`);
@@ -129,7 +136,9 @@ async function injectSbtScript(
     // The Node filesystem in that case is not real: https://github.com/zeit/pkg#snapshot-filesystem
     // Copying the injectable script into a temp file.
     let projectFolderPath = path.resolve(targetFolderPath, 'project/');
-    debug(`injectSbtScript: injecting snyk sbt plugin "${sbtPluginPath}" in "${projectFolderPath}"`);
+    debug(
+      `injectSbtScript: injecting snyk sbt plugin "${sbtPluginPath}" in "${projectFolderPath}"`,
+    );
     if (!fs.existsSync(projectFolderPath)) {
       debug(`injectSbtScript: "${projectFolderPath}" does not exist`);
       projectFolderPath = path.resolve(targetFolderPath, '..', 'project/');
@@ -211,7 +220,7 @@ async function pluginInspect(
   } catch (error) {
     debug(
       'Failed to produce dependency tree with custom snyk plugin due to error: ' +
-      error.message,
+        error.message,
     );
     return null;
   } finally {

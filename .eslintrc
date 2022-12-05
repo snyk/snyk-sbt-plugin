@@ -27,7 +27,9 @@
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-control-regex": "off",
+    "no-useless-escape": "off",
     "no-prototype-builtins": "off",
     "require-atomic-updates": "off",
     "no-buffer-constructor": "error"

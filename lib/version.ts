@@ -5,13 +5,16 @@ import * as subProcess from './sub-process';
 import * as debugModule from 'debug';
 const debug = debugModule('snyk-sbt-plugin');
 
-export async function getSbtVersion(root: string, targetFile: string): Promise<string> {
+export async function getSbtVersion(
+  root: string,
+  targetFile: string,
+): Promise<string> {
   try {
     let buildPropsPath = path.join(
       root,
       path.dirname(targetFile),
       'project/build.properties',
-      );
+    );
     debug(`getSbtVersion: buildPropsPath=${buildPropsPath}`);
     if (!fs.existsSync(buildPropsPath)) {
       // NOTE(alexmu): We've seen this fail with the wrong path.
@@ -39,15 +42,18 @@ export async function getSbtVersion(root: string, targetFile: string): Promise<s
       .split(/=\s*/)[1]
       .trim(); // return only the version
   } catch (err) {
-    debug('Failed to get sbt version from project/build.properties: ' + err.message);
+    debug(
+      'Failed to get sbt version from project/build.properties: ' + err.message,
+    );
   }
 
   try {
     const stdout = await subProcess.execute('sbt', ['--version'], {});
-    return stdout.split('\n')
-    .find((line) => !!line.match(/sbt script version/))!
-    .split(':')[1]
-    .trim();
+    return stdout
+      .split('\n')
+      .find((line) => !!line.match(/sbt script version/))!
+      .split(':')[1]
+      .trim();
   } catch (err) {
     debug('Failed to get sbt version sbt --version' + err.message);
   }
