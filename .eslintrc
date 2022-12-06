@@ -27,6 +27,8 @@
     "no-useless-escape": "off",
     "no-prototype-builtins": "off",
     "require-atomic-updates": "off",
+    "no-unused-vars": "warn",
+    "no-import-assign": "warn",
     "no-buffer-constructor": "error"
   },
   "overrides": [
