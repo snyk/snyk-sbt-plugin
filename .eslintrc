@@ -1,20 +1,14 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 6
+    "project": "./tsconfig.json"
   },
   "env": {
-    "node": true,
-    "es6": true
+    "es2019": true,
+    "node": true
   },
   "plugins": ["@typescript-eslint"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
-  ],
+  "extends": ["eslint:recommended", "prettier"],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -27,16 +21,20 @@
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-control-regex": "off",
+    "no-useless-escape": "off",
     "no-prototype-builtins": "off",
     "require-atomic-updates": "off",
+    "no-unused-vars": "warn",
+    "no-import-assign": "warn",
     "no-buffer-constructor": "error"
   },
   "overrides": [
     {
       "files": ["*.ts"],
       "rules": {
-        "id-blacklist": ["error", "exports"] // in TS, use "export" instead of Node's "module.exports"
+        "id-denylist": ["error", "exports"] // in TS, use "export" instead of Node's "module.exports"
       }
     }
   ]

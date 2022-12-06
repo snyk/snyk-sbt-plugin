@@ -26,9 +26,9 @@ export interface PluginMetadata {
   meta?: {
     versionBuildInfo?: {
       metaBuildVersion?: {
-        sbtVersion?: string,
-      },
-    },
+        sbtVersion?: string;
+      };
+    };
   };
 }
 

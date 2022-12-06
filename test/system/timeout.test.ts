@@ -7,8 +7,8 @@ test('trigger timeout on inspect()', async () => {
   await expect(
     plugin.inspect(
       path.join(__dirname, '..', 'fixtures', 'testproj-faux-coursier-0.13'),
-      'build.sbt'
-    )
+      'build.sbt',
+    ),
   ).rejects.toThrowError(/timeout/);
   process.env.PROC_TIMEOUT = prevTimeout;
 });

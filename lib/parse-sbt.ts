@@ -1,12 +1,9 @@
-import {DepDict, DepTree} from './types';
+import { DepDict, DepTree } from './types';
 
 const tabdown = require('./tabdown');
 import * as types from './types';
 
-export {
-  parse,
-  parseSbtPluginResults,
-};
+export { parse, parseSbtPluginResults };
 
 function convertStrToTree(dependenciesTextTree) {
   const lines = dependenciesTextTree.toString().split('\n') || [];
@@ -69,8 +66,7 @@ function convertCoursierStrToTree(dependenciesTextTree) {
 function walkInTree(toNode, fromNode) {
   if (fromNode.children && fromNode.children.length > 0) {
     for (const j of Object.keys(fromNode.children)) {
-      const externalNode = getPackageNameAndVersion(
-        fromNode.children[j].data);
+      const externalNode = getPackageNameAndVersion(fromNode.children[j].data);
       if (externalNode) {
         const newNode = {
           version: externalNode.version,
@@ -78,8 +74,10 @@ function walkInTree(toNode, fromNode) {
           dependencies: [],
         };
         toNode.dependencies.push(newNode);
-        walkInTree(toNode.dependencies[toNode.dependencies.length - 1],
-          fromNode.children[j]);
+        walkInTree(
+          toNode.dependencies[toNode.dependencies.length - 1],
+          fromNode.children[j],
+        );
       }
     }
   }
@@ -87,7 +85,6 @@ function walkInTree(toNode, fromNode) {
 }
 
 function getPackageNameAndVersion(packageDependency) {
-  let splited;
   let version;
   let app;
   if (packageDependency.indexOf('(evicted by:') > -1) {
@@ -96,13 +93,13 @@ function getPackageNameAndVersion(packageDependency) {
   if (packageDependency.indexOf('->') > -1) {
     return null;
   }
-  splited = packageDependency.split(':');
+  const splited = packageDependency.split(':');
   version = splited[splited.length - 1];
   app = splited[0] + ':' + splited[1];
   app = app.split('\t').join('');
   app = app.trim();
   version = version.trim();
-  return {name: app, version};
+  return { name: app, version };
 }
 
 function convertDepArrayToObject(depsArr) {
@@ -145,7 +142,7 @@ function createSnykTree(rootTree, name, version) {
 
 function getProjectName(root) {
   const app = root.split(' ')[0].trim();
-  return {name: app};
+  return { name: app };
 }
 
 function createCoursierSnykTree(rootTree, name, version) {
@@ -189,18 +186,26 @@ function parse(text, name, version, isCoursier): DepTree {
   return createSnykTree(rootTree, name, version);
 }
 
-function parseSbtPluginResults(sbtOutput: string, packageName: string, packageVersion: string): DepTree {
+function parseSbtPluginResults(
+  sbtOutput: string,
+  packageName: string,
+  packageVersion: string,
+): DepTree {
   // remove all other output
   const outputStart = 'Snyk Output Start';
   const outputEnd = 'Snyk Output End';
   const sbtProjectOutput = sbtOutput.substring(
     sbtOutput.indexOf(outputStart) + outputStart.length,
-    sbtOutput.indexOf(outputEnd));
+    sbtOutput.indexOf(outputEnd),
+  );
   const sbtOutputJson: types.SbtModulesGraph = JSON.parse(sbtProjectOutput);
 
   if (Object.keys(sbtOutputJson).length === 1) {
     const project = Object.keys(sbtOutputJson)[0];
-    return parseSbtPluginProjectResultToDepTree(project, sbtOutputJson[project]);
+    return parseSbtPluginProjectResultToDepTree(
+      project,
+      sbtOutputJson[project],
+    );
   }
 
   const depTree = {
@@ -211,7 +216,10 @@ function parseSbtPluginResults(sbtOutput: string, packageName: string, packageVe
 
   // iterating over different project
   for (const project of Object.keys(sbtOutputJson)) {
-    depTree.dependencies[project] = parseSbtPluginProjectResultToDepTree(project, sbtOutputJson[project]);
+    depTree.dependencies[project] = parseSbtPluginProjectResultToDepTree(
+      project,
+      sbtOutputJson[project],
+    );
   }
 
   return depTree;
@@ -221,12 +229,13 @@ const PRODUCTION_SCOPES: string[] = ['compile', 'runtime', 'provided'];
 
 function parseSbtPluginProjectResultToDepTree(
   projectKey: string,
-  sbtProjectOutput: types.SbtModulesGraph): DepTree {
-
-  const pkgs = Object.keys(sbtProjectOutput.modules)
-    .filter((module) => {
-      return sbtProjectOutput.modules[module].configurations.some((c) => PRODUCTION_SCOPES.includes(c));
-    });
+  sbtProjectOutput: types.SbtModulesGraph,
+): DepTree {
+  const pkgs = Object.keys(sbtProjectOutput.modules).filter((module) => {
+    return sbtProjectOutput.modules[module].configurations.some((c) =>
+      PRODUCTION_SCOPES.includes(c),
+    );
+  });
 
   const getDependenciesFor = (name: string): DepTree => {
     if (!sbtProjectOutput.dependencies[name]) {
@@ -237,7 +246,8 @@ function parseSbtPluginProjectResultToDepTree(
     }
     const dependencies: DepDict = {};
     for (const subDepName of sbtProjectOutput.dependencies[name]) {
-      if (pkgs.indexOf(subDepName) > -1) { // dependency is in production configuration
+      if (pkgs.indexOf(subDepName) > -1) {
+        // dependency is in production configuration
         dependencies[subDepName] = getDependenciesFor(subDepName);
       }
     }

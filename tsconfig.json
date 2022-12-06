@@ -1,22 +1,17 @@
 {
   "compilerOptions": {
-      "outDir": "./dist",
-      "pretty": true,
-      "target": "es2016",
-      "lib": [
-        "es2016",
-      ],
-      "noImplicitThis": false,
-      "module": "commonjs",
-      "allowJs": true,
-      "sourceMap": true,
-      "strict": true,
-      "useUnknownInCatchVariables": false,
-      // "declaration": true,
-      "importHelpers": true,
-      "noImplicitAny": false // Needed to compile tap and ansi-escapes
+    "outDir": "./dist",
+    "pretty": true,
+    "target": "es2019",
+    "lib": ["es2019"],
+    "module": "commonjs",
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": false,
+    "declaration": true,
+    "importHelpers": true,
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "noImplicitThis": false
   },
-  "include": [
-      "./lib/**/*"
-  ]
+  "include": ["./lib/**/*"]
 }

@@ -11,7 +11,7 @@ describe('Run inspect() ', () => {
     const result: any = await plugin.inspect(
       fixtureDir,
       `${fixture}/build.sbt`,
-      {}
+      {},
     );
 
     expect(result.plugin.name).toBe(handler);
@@ -21,7 +21,7 @@ describe('Run inspect() ', () => {
 
     expect(
       result.package.dependencies['axis:axis'].dependencies['axis:axis-jaxrpc']
-        .dependencies['org.apache.axis:axis-jaxrpc'].version
+        .dependencies['org.apache.axis:axis-jaxrpc'].version,
     ).toBe('1.4');
   });
 });
@@ -37,7 +37,7 @@ describe('Run inspect() with coursier ', () => {
     const result: any = await plugin.inspect(
       fixtureDir,
       `${fixture}/build.sbt`,
-      {}
+      {},
     );
 
     expect(result.plugin.name).toBe(handler);
@@ -45,7 +45,7 @@ describe('Run inspect() with coursier ', () => {
     expect(result.package.name).toMatch('root');
     expect(
       result.package.dependencies['axis:axis'].dependencies['axis:axis-jaxrpc']
-        .dependencies['org.apache.axis:axis-jaxrpc'].version
+        .dependencies['org.apache.axis:axis-jaxrpc'].version,
     ).toBe('1.4');
   });
 });
@@ -55,7 +55,7 @@ test('Run inspect() on 0.13 with custom-plugin native-packages', async () => {
   const result: any = await plugin.inspect(
     fixtureDir,
     'testproj-0.13-native-packager/build.sbt',
-    {}
+    {},
   );
 
   expect(result.plugin.name).toBe('snyk:sbt');
@@ -63,14 +63,14 @@ test('Run inspect() on 0.13 with custom-plugin native-packages', async () => {
   expect(
     result.package.dependencies['org.apache.spark:spark-sql_2.12'].dependencies[
       'com.fasterxml.jackson.core:jackson-databind'
-    ].dependencies['com.fasterxml.jackson.core:jackson-core'].version
+    ].dependencies['com.fasterxml.jackson.core:jackson-core'].version,
   ).toBe('2.7.9');
 });
 test('Run inspect() on play-scala-seed 1.2.8 with custom-plugin', async () => {
   const result: any = await plugin.inspect(
     fixtureDir,
     'testproj-play-scala-seed-1.2.8/build.sbt',
-    {}
+    {},
   );
 
   expect(result.plugin.name).toBe('snyk:sbt');
@@ -79,7 +79,7 @@ test('Run inspect() on play-scala-seed 1.2.8 with custom-plugin', async () => {
     result.package.dependencies['com.typesafe.play:play-guice_2.13']
       .dependencies['com.typesafe.play:play_2.13'].dependencies[
       'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    ].version
+    ].version,
   ).toBe('2.9.8');
 });
 
@@ -92,7 +92,7 @@ describe('(These tests will fail locally if sbt-dependency-graph plugin is insta
     const result: any = await plugin.inspect(
       fixtureDir,
       `${fixture}/build.sbt`,
-      {}
+      {},
     );
 
     expect(result.plugin.name).toBe(handler);
@@ -100,7 +100,7 @@ describe('(These tests will fail locally if sbt-dependency-graph plugin is insta
       expect(
         result.package.dependencies['axis:axis'].dependencies[
           'axis:axis-wsdl4j'
-        ].version
+        ].version,
       ).toBe('1.5.1');
   });
 });
@@ -109,7 +109,7 @@ test('run inspect() with commented out coursier on 0.13', async () => {
   const result: any = await plugin.inspect(
     `${fixtureDir}/testproj-faux-coursier-0.13`,
     'build.sbt',
-    {}
+    {},
   );
 
   expect(result.plugin.name).toBe('snyk:sbt');
@@ -118,7 +118,7 @@ test('run inspect() with commented out coursier on 0.13', async () => {
   expect(result.package.packageFormatVersion).toBe('mvn:0.0.1');
   expect(
     result.package.dependencies['axis:axis'].dependencies['axis:axis-jaxrpc']
-      .dependencies['org.apache.axis:axis-jaxrpc'].version
+      .dependencies['org.apache.axis:axis-jaxrpc'].version,
   ).toBe('1.4');
 });
 
@@ -126,7 +126,7 @@ test('run legacy inspect() on sbt 1.4.0 with sbt-dependency-graph new naming- ad
   const result: any = await plugin.inspect(
     fixtureDir,
     'testproj-1.4.0/build.sbt',
-    {}
+    {},
   );
 
   expect(result.plugin.name).toBe('bundled:sbt');
@@ -140,38 +140,39 @@ test('run inspect() proj with provided 1.7', async () => {
   const result = await plugin.inspect(
     fixtureDir,
     'proj-with-provided-1.7/build.sbt',
-    {}
+    {},
   );
   if (!result.package.dependencies) {
     expect(result).rejects.toThrowError('project has no dependencies');
   } else {
     expect(Object.keys(result.package.dependencies).length).toBe(8);
     expect(result.package.dependencies['org.jsoup:jsoup']?.version).toBe(
-      '1.14.2'
+      '1.14.2',
     );
     expect(
-      result.package.dependencies['com.github.etaty:rediscala_2.13']?.version
+      result.package.dependencies['com.github.etaty:rediscala_2.13']?.version,
     ).toBe('1.9.0');
     expect(
-      result.package.dependencies['com.softwaremill.macwire:util_2.13']?.version
+      result.package.dependencies['com.softwaremill.macwire:util_2.13']
+        ?.version,
     ).toBe('2.3.5');
     expect(
       result.package.dependencies['com.softwaremill.macwire:macros_2.13']
-        ?.version
+        ?.version,
     ).toBe('2.3.5');
     expect(
       result.package.dependencies['com.softwaremill.macwire:macrosakka_2.13']
-        ?.version
+        ?.version,
     ).toBe('2.3.5');
     expect(
       result.package.dependencies['com.softwaremill.common:tagging_2.13']
-        ?.version
+        ?.version,
     ).toBe('2.2.1');
     expect(
-      result.package.dependencies['org.apache.santuario:xmlsec']?.version
+      result.package.dependencies['org.apache.santuario:xmlsec']?.version,
     ).toBe('2.2.3');
     expect(
-      result.package.dependencies['org.apache.commons:commons-text']?.version
+      result.package.dependencies['org.apache.commons:commons-text']?.version,
     ).toBe('1.9');
   }
 });
