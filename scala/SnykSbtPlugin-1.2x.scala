@@ -10,7 +10,7 @@ object SnykSbtPlugin extends AutoPlugin {
   val ConfigBlacklist: Set[String] =
     Set("windows", "universal", "universal-docs", "debian", "rpm", "universal-src", "docker", "linux", "web-assets", "web-plugin", "web-assets-test", "scalafix")
 
-  case class SnykModuleInfo(version: String, configurations: Set[String])
+  case class SnykModuleInfo(version: String, configurations: Set[String], isRoot: Boolean)
   case class SnykProjectData(
     projectId: String,
     modules: Map[String, SnykModuleInfo],
@@ -23,7 +23,8 @@ object SnykSbtPlugin extends AutoPlugin {
             case Some(existing) =>
               acc + (moduleName -> SnykModuleInfo(
                 existing.version,
-                existing.configurations ++ moduleInfo.configurations
+                existing.configurations ++ moduleInfo.configurations,
+                existing.isRoot
               ))
             case None =>
               acc + (moduleName -> moduleInfo)
@@ -63,12 +64,21 @@ object SnykSbtPlugin extends AutoPlugin {
             Map(
               "modules" -> JObject(
                 modules.mapValues { moduleInfo =>
-                  JObject(
-                    Map(
-                      "version"        -> JString(moduleInfo.version),
-                      "configurations" -> JArray(moduleInfo.configurations.toVector.map(JString))
+                  if (moduleInfo.isRoot)
+                    JObject(
+                      Map(
+                        "version"        -> JString(moduleInfo.version),
+                        "configurations" -> JArray(moduleInfo.configurations.toVector.map(JString)),
+                        "isRoot"         -> JBoolean(moduleInfo.isRoot)
+                      )
                     )
-                  )
+                  else
+                    JObject(
+                      Map(
+                        "version"        -> JString(moduleInfo.version),
+                        "configurations" -> JArray(moduleInfo.configurations.toVector.map(JString)),
+                      )
+                    )
                 }
               ),
               "dependencies" -> JObject(
@@ -103,7 +113,9 @@ object SnykSbtPlugin extends AutoPlugin {
           case (projectData, (configName, graph)) =>
             val modules = graph.modules.flatMap {
               case (moduleId, module) =>
-                if (module.isUsed) Some(formatModuleId(moduleId) -> SnykModuleInfo(moduleId.version, Set(configName)))
+                val formattedModuleId = formatModuleId(moduleId)
+                val isRoot = formattedModuleId.equals(thisProjectId)
+                if (module.isUsed) Some(formattedModuleId -> SnykModuleInfo(moduleId.version, Set(configName), isRoot))
                 else None
             }
 
