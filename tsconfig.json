@@ -3,7 +3,7 @@
     "outDir": "./dist",
     "pretty": true,
     "target": "es2019",
-    "lib": ["es2019", "dom"],
+    "lib": ["es2019"],
     "module": "commonjs",
     "allowJs": true,
     "sourceMap": true,
@@ -13,5 +13,5 @@
     "typeRoots": ["./node_modules/@types", "./typings"],
     "noImplicitThis": false
   },
-  "include": ["./lib/**/*", "typings/tap/index.d.ts"]
+  "include": ["./lib/**/*"]
 }
