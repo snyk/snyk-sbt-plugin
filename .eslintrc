@@ -1,14 +1,13 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 9
+    "project": "./tsconfig.json"
   },
   "env": {
     "es2019": true,
-    "jest/globals": true,
     "node": true
   },
-  "plugins": ["@typescript-eslint", "jest"],
+  "plugins": ["@typescript-eslint"],
   "extends": ["eslint:recommended", "prettier"],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -35,7 +34,7 @@
     {
       "files": ["*.ts"],
       "rules": {
-        "id-blacklist": ["error", "exports"] // in TS, use "export" instead of Node's "module.exports"
+        "id-denylist": ["error", "exports"] // in TS, use "export" instead of Node's "module.exports"
       }
     }
   ]

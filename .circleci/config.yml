@@ -4,30 +4,30 @@ params: &params
   parameters:
     node_version:
       type: string
-      default: "14"
+      default: '14'
     jdk_version:
       type: string
-      default: "8.0.292.j9-adpt"
+      default: '8.0.292.j9-adpt'
     sbt_version:
       type: string
-      default: "1.5.5"
+      default: '1.5.5'
     semantic_release_version:
       type: string
-      default: "17"
+      default: '17'
 
 test_matrix: &test_matrix
   matrix:
     parameters:
       node_version:
-        - "12"
-        - "14"
-        - "16"
+        - '12'
+        - '14'
+        - '16'
       jdk_version:
-        - "8.0.292.j9-adpt"
-        - "11.0.11.j9-adpt"
+        - '8.0.292.j9-adpt'
+        - '11.0.11.j9-adpt'
       sbt_version:
-        - "1.5.5"
-        - "1.7.0"
+        - '1.5.5'
+        - '1.7.0'
 jobs:
   test:
     <<: *params
