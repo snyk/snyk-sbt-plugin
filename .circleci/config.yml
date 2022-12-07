@@ -132,9 +132,6 @@ jobs:
           path: ./coverage
   test-windows:
     <<: *windows_params
-    environment:
-      JDK: << parameters.jdk_version >>
-      SBT: << parameters.sbt_version >>
     steps:
       - run: git config --global core.autocrlf false
       - checkout
@@ -165,18 +162,18 @@ jobs:
 workflows:
   test_and_release:
     jobs:
-      - test-unix:
-          name: Test OS=Unix node=<< matrix.node_version >> sbt=<< matrix.sbt_version >>
-          context: nodejs-install
-          <<: *test_matrix
+      # - test-unix:
+      #     name: Test OS=Unix node=<< matrix.node_version >> sbt=<< matrix.sbt_version >>
+      #     context: nodejs-install
+      #     <<: *test_matrix
       - test-windows:
           name: Test OS=Windows node=<< matrix.node_version >> sbt=<< matrix.sbt_version >>
           context: nodejs-install
           <<: *test_matrix
-      - release:
-          name: Release
-          context: nodejs-app-release
-          filters:
-            branches:
-              only:
-                - master
+      # - release:
+      #     name: Release
+      #     context: nodejs-app-release
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
