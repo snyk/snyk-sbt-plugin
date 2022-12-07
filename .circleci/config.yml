@@ -1,13 +1,16 @@
 version: 2.1
 
+orbs:
+  win: circleci/windows@4.0.0
+
 params: &params
   parameters:
     node_version:
       type: string
-      default: '14'
+      default: '16.18.1'
     jdk_version:
       type: string
-      default: '8.0.292.j9-adpt'
+      default: '11.0.17-librca'
     sbt_version:
       type: string
       default: '1.5.5'
@@ -15,75 +18,161 @@ params: &params
       type: string
       default: '17'
 
+windows_params: &windows_params
+  parameters:
+    node_version:
+      type: string
+      default: '16.18.1'
+    jdk_version:
+      type: string
+      default: '11'
+    sbt_version:
+      type: string
+      default: '1.3.10'
+  environment:
+    npm_config_loglevel: silent
+  executor:
+    name: win/default
+    size: large
+    shell: cmd.exe
+
 test_matrix: &test_matrix
   matrix:
     parameters:
       node_version:
-        - '12'
-        - '14'
-        - '16'
-      jdk_version:
-        - '8.0.292.j9-adpt'
-        - '11.0.11.j9-adpt'
+        - '16.18.1'
       sbt_version:
-        - '1.5.5'
-        - '1.7.0'
-jobs:
-  test:
-    <<: *params
-    docker:
-      - image: circleci/node:<<parameters.node_version>>
+        - '1.3.10'
+
+commands:
+  install_node_npm:
+    parameters:
+      node_version:
+        type: string
+        default: ''
     steps:
-      - checkout
       - run:
-          name: Install sdkman
+          name: Install correct version of Node
+          command: nvm install << parameters.node_version >>
+      - run:
+          name: Use correct version of Node
+          command: nvm use << parameters.node_version >>
+  install_sdkman:
+    steps:
+      - run:
+          name: Installing SDKMAN
           command: |
             curl -s "https://get.sdkman.io?rcupdate=false" | bash
             echo -e '\nsource "/home/circleci/.sdkman/bin/sdkman-init.sh"' >> $BASH_ENV
             source $BASH_ENV
+  install_sbt_windows:
+    parameters:
+      sbt_version:
+        type: string
+        default: ''
+    steps:
       - run:
-          name: Install JDK <<parameters.jdk_version>>
-          command: sdk install java <<parameters.jdk_version>>
+          name: Installing sbt
+          command: choco install sbt --version=<< parameters.sbt_version >> -y
+  install_sbt_unix:
+    parameters:
+      sbt_version:
+        type: string
+        default: ''
+    steps:
       - run:
-          name: Install sbt << parameters.sbt_version >>
-          command: sdk install sbt <<parameters.sbt_version>>
+          name: Installing sbt
+          command: sdk install sbt << parameters.sbt_version >>
+  install_jdk_windows:
+    parameters:
+      jdk_version:
+        type: string
+        default: ''
+    steps:
+      - run:
+          name: Installing JDK
+          command: choco install openjdk<< parameters.jdk_version >> -y
+  install_jdk_unix:
+    parameters:
+      jdk_version:
+        type: string
+        default: ''
+    steps:
+      - run:
+          name: Installing JDK
+          command: sdk install java << parameters.jdk_version >>
+  install_deps:
+    steps:
       - run:
           name: Install dependencies
           command: npm install
+  run_test:
+    steps:
       - run:
-          name: Lint
-          command: npm run lint
-      - run:
-          name: Test
+          name: Run tests
           command: npm test
+
+jobs:
+  test-unix:
+    <<: *params
+    docker:
+      - image: cimg/node:<< parameters.node_version >>
+    environment:
+      JDK: << parameters.jdk_version >>
+    steps:
+      - checkout
+      - install_sdkman
+      - install_jdk_unix:
+          jdk_version: << parameters.jdk_version >>
+      - install_sbt_unix:
+          sbt_version: << parameters.sbt_version >>
+      - install_deps
+      - run_test
       - store_test_results:
           path: ./coverage
+  test-windows:
+    <<: *windows_params
+    environment:
+      JDK: << parameters.jdk_version >>
+      SBT: << parameters.sbt_version >>
+    steps:
+      - run: git config --global core.autocrlf false
+      - checkout
+      - install_node_npm:
+          node_version: << parameters.node_version >>
+      - install_jdk_windows:
+          jdk_version: << parameters.jdk_version >>
+      - install_sbt_windows:
+          sbt_version: << parameters.sbt_version >>
+      - install_deps
+      - run: set SBT_HOME="C:\Program Files (x86)\sbt" && set PATH=%PATH%";C:\Program Files (x86)\sbt\bin" && refreshenv && npm test
+      - run: env
+      - run_test
+
   release:
     <<: *params
     resource_class: small
     docker:
-      - image: circleci/node:<<parameters.node_version>>
+      - image: cimg/node:<< parameters.node_version >>
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: npm install
+      - install_deps
+      - run_test
       - run:
           name: Release
-          command: npx semantic-release@<<parameters.semantic_release_version>>
+          command: npx semantic-release@<< parameters.semantic_release_version >>
 
 workflows:
-  version: 2
   test_and_release:
     jobs:
-      - test:
-          name: Test node=<<matrix.node_version>> jdk=<<matrix.jdk_version>> sbt=<<matrix.sbt_version>>
+      - test-unix:
+          name: Test OS=Unix node=<< matrix.node_version >> sbt=<< matrix.sbt_version >>
           context: nodejs-install
           <<: *test_matrix
-          filters:
-            branches:
-              ignore:
-                - master
+      - test-windows:
+          name: Test OS=Windows node=<< matrix.node_version >> sbt=<< matrix.sbt_version >>
+          context: nodejs-install
+          <<: *test_matrix
       - release:
           name: Release
           context: nodejs-app-release
