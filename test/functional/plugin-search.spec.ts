@@ -7,6 +7,8 @@ import {
   sbtDependencyGraphPluginNameNew,
 } from '../../lib/constants';
 
+const root = path.join(__dirname, '..', 'fixtures');
+
 describe('plugin-search test', () => {
   describe('isPluginInstalled locally', () => {
     beforeEach(() => {
@@ -16,7 +18,6 @@ describe('plugin-search test', () => {
     afterEach(() => jest.resetAllMocks());
     describe('in local projects folder', () => {
       it('returns true if the project directory has sbt file with given plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('testproj-0.13', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -26,7 +27,6 @@ describe('plugin-search test', () => {
         expect(received).toBe(true);
       });
       it('returns false if the project directory has sbt file without plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('testproj-0.13', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -36,7 +36,6 @@ describe('plugin-search test', () => {
         expect(received).toBe(false);
       });
       it('returns false if the project directory has sbt file with plugin name in a single-line comment', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('single-line-comments', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -46,7 +45,6 @@ describe('plugin-search test', () => {
         expect(received).toBe(false);
       });
       it('returns false if the project directory has sbt file with plugin name in a multi-line comment', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('multi-line-comments', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -58,7 +56,6 @@ describe('plugin-search test', () => {
     });
     describe('in local project/project folder', () => {
       it('returns true if the project/project directory has sbt file with given plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('nested-project', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -68,7 +65,6 @@ describe('plugin-search test', () => {
         expect(received).toBe(true);
       });
       it('returns false if the project/project directory has sbt file without plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('nested-project', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -88,7 +84,6 @@ describe('plugin-search test', () => {
     afterEach(() => jest.resetAllMocks());
     describe('in users home directory', () => {
       it('returns true if ~/.sbt/0.13/plugins directory has sbt file with given plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -98,7 +93,6 @@ describe('plugin-search test', () => {
         expect(received).toBe(true);
       });
       it('returns false if ~/.sbt/0.13/plugins directory has sbt file without plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -119,7 +113,6 @@ describe('plugin-search test', () => {
     afterEach(() => jest.resetAllMocks());
     describe('in users home directory', () => {
       it('returns true if ~/.sbt/1.0/plugins directory has sbt file with given plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app', 'build.sbt');
         const received =
           (await isPluginInstalled(
@@ -135,7 +128,6 @@ describe('plugin-search test', () => {
         expect(received).toBe(true);
       });
       it('returns false if ~/.sbt/1.0/plugins directory has sbt file without plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app', 'build.sbt');
         const received = await isPluginInstalled(
           root,
@@ -161,7 +153,6 @@ describe('plugin-search test', () => {
     afterEach(() => jest.resetAllMocks());
     describe('in users home directory', () => {
       it('returns true if ~/.sbt/1.0/plugins directory has sbt file with given plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app-sbt-1.4.0', 'build.sbt');
         const received =
           (await isPluginInstalled(
@@ -177,7 +168,6 @@ describe('plugin-search test', () => {
         expect(received).toBe(true);
       });
       it('returns false if ~/.sbt/1.0/plugins directory has sbt file without plugin name', async () => {
-        const root = path.join(__dirname, '..', 'fixtures');
         const targetFile = path.join('simple-app', 'build.sbt');
         const received = await isPluginInstalled(
           root,
