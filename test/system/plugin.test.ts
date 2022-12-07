@@ -145,17 +145,7 @@ test('run inspect() proj with provided 1.7', async () => {
   if (!result.package.dependencies) {
     expect(result).rejects.toThrowError('project has no dependencies');
   } else {
-    expect(Object.keys(result.package.dependencies).length).toBe(8);
-    expect(result.package.dependencies['org.jsoup:jsoup']?.version).toBe(
-      '1.14.2',
-    );
-    expect(
-      result.package.dependencies['com.github.etaty:rediscala_2.13']?.version,
-    ).toBe('1.9.0');
-    expect(
-      result.package.dependencies['com.softwaremill.macwire:util_2.13']
-        ?.version,
-    ).toBe('2.3.5');
+    expect(Object.keys(result.package.dependencies).length).toBe(2);
     expect(
       result.package.dependencies['com.softwaremill.macwire:macros_2.13']
         ?.version,
@@ -164,15 +154,5 @@ test('run inspect() proj with provided 1.7', async () => {
       result.package.dependencies['com.softwaremill.macwire:macrosakka_2.13']
         ?.version,
     ).toBe('2.3.5');
-    expect(
-      result.package.dependencies['com.softwaremill.common:tagging_2.13']
-        ?.version,
-    ).toBe('2.2.1');
-    expect(
-      result.package.dependencies['org.apache.santuario:xmlsec']?.version,
-    ).toBe('2.2.3');
-    expect(
-      result.package.dependencies['org.apache.commons:commons-text']?.version,
-    ).toBe('1.9');
   }
 });
