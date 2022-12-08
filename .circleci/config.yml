@@ -1,48 +1,37 @@
 version: 2.1
 
 orbs:
-  win: circleci/windows@4.0.0
+  win: circleci/windows@2.4.0
 
-params: &params
+defaults: &defaults
   parameters:
-    node_version:
-      type: string
-      default: '16.18.1'
     jdk_version:
       type: string
-      default: '11.0.17-librca'
-    sbt_version:
-      type: string
-      default: '1.5.5'
-    semantic_release_version:
-      type: string
-      default: '17'
-
-windows_params: &windows_params
-  parameters:
+      default: ''
     node_version:
       type: string
-      default: '16.18.1'
-    jdk_version:
-      type: string
-      default: '11'
+      default: ''
     sbt_version:
       type: string
-      default: '1.3.10'
+      default: ''
+
+windows_defaults: &windows_defaults
   environment:
     npm_config_loglevel: silent
   executor:
     name: win/default
-    size: large
-    shell: cmd.exe
 
-test_matrix: &test_matrix
-  matrix:
-    parameters:
-      node_version:
-        - '16.18.1'
-      sbt_version:
-        - '1.3.10'
+test_matrix_win: &test_matrix_win
+  parameters:
+    node_version: ['16']
+    jdk_version: ['11']
+    sbt_version: ['1.5.5']
+
+test_matrix_unix: &test_matrix_unix
+  parameters:
+    node_version: ['16']
+    jdk_version: ['11.0.9.fx-zulu']
+    sbt_version: ['1.5.5']
 
 commands:
   install_node_npm:
@@ -52,11 +41,13 @@ commands:
         default: ''
     steps:
       - run:
-          name: Install correct version of Node
-          command: nvm install << parameters.node_version >>
+          name: Install and use correct version of Node
+          command: nvm install << parameters.node_version >> && nvm use << parameters.node_version >>
+  show_node_version:
+    steps:
       - run:
-          name: Use correct version of Node
-          command: nvm use << parameters.node_version >>
+          name: Node version and npm version
+          command: node --version && npm --version
   install_sdkman:
     steps:
       - run:
@@ -71,9 +62,7 @@ commands:
         type: string
         default: ''
     steps:
-      - run:
-          name: Installing sbt
-          command: choco install sbt --version=<< parameters.sbt_version >> -y
+      - run: choco install sbt --version=<< parameters.sbt_version >>
   install_sbt_unix:
     parameters:
       sbt_version:
@@ -81,8 +70,23 @@ commands:
         default: ''
     steps:
       - run:
-          name: Installing sbt
+          name: Install correct version of sbt
           command: sdk install sbt << parameters.sbt_version >>
+      - run:
+          name: Use correct version of sbt
+          command: sdk use sbt << parameters.sbt_version >>
+  install_jdk_unix:
+    parameters:
+      jdk_version:
+        type: string
+        default: ''
+    steps:
+      - run:
+          name: Install correct version of JDK
+          command: sdk install java << parameters.jdk_version >>
+      - run:
+          name: Use correct version of JDK
+          command: sdk use java << parameters.jdk_version >>
   install_jdk_windows:
     parameters:
       jdk_version:
@@ -91,47 +95,27 @@ commands:
     steps:
       - run:
           name: Installing JDK
-          command: choco install openjdk<< parameters.jdk_version >> -y
-  install_jdk_unix:
-    parameters:
-      jdk_version:
-        type: string
-        default: ''
-    steps:
-      - run:
-          name: Installing JDK
-          command: sdk install java << parameters.jdk_version >>
-  install_deps:
-    steps:
-      - run:
-          name: Install dependencies
-          command: npm install
-  run_test:
-    steps:
-      - run:
-          name: Run tests
-          command: npm test
+          command: choco install zulu<< parameters.jdk_version >> --allow-downgrade
 
 jobs:
-  test-unix:
-    <<: *params
+  lint:
+    <<: *defaults
     docker:
-      - image: cimg/node:<< parameters.node_version >>
-    environment:
-      JDK: << parameters.jdk_version >>
+      - image: circleci/node:<< parameters.node_version >>
     steps:
       - checkout
-      - install_sdkman
-      - install_jdk_unix:
-          jdk_version: << parameters.jdk_version >>
-      - install_sbt_unix:
-          sbt_version: << parameters.sbt_version >>
-      - install_deps
-      - run_test
-      - store_test_results:
-          path: ./coverage
+      - run: npm install
+      - show_node_version
+      - run:
+          name: Run lint
+          command: npm run lint
+
   test-windows:
-    <<: *windows_params
+    <<: *defaults
+    <<: *windows_defaults
+    environment:
+      JDK: << parameters.jdk_version >>
+      SBT: << parameters.sbt_version >>
     steps:
       - run: git config --global core.autocrlf false
       - checkout
@@ -141,38 +125,75 @@ jobs:
           jdk_version: << parameters.jdk_version >>
       - install_sbt_windows:
           sbt_version: << parameters.sbt_version >>
-      - install_deps
-      - run: set SBT_HOME="C:\Program Files (x86)\sbt" && set PATH=%PATH%";C:\Program Files (x86)\sbt\bin" && refreshenv && npm test
-      - run: env
-      - run_test
+      - run: npm install
+      - show_node_version
+      - run: npm run test
 
-  release:
-    <<: *params
-    resource_class: small
+  test-unix:
+    <<: *defaults
     docker:
-      - image: cimg/node:<< parameters.node_version >>
+      - image: circleci/node:<< parameters.node_version >>
+    environment:
+      JDK: << parameters.jdk_version >>
+      SBT: << parameters.sbt_version >>
     steps:
       - checkout
-      - install_deps
-      - run_test
-      - run:
-          name: Release
-          command: npx semantic-release@<< parameters.semantic_release_version >>
+      - install_sdkman
+      - install_jdk_unix:
+          jdk_version: << parameters.jdk_version >>
+      - install_sbt_unix:
+          sbt_version: << parameters.sbt_version >>
+      - run: npm install
+      - show_node_version
+      - run: npm run test
+
+  # release:
+  #   <<: *defaults
+  #   docker:
+  #     - image: circleci/node:<< parameters.node_version >>
+  #   steps:
+  #     - checkout
+  #     - run: npm install
+  #     - run: sudo npm i -g semantic-release @semantic-release/exec pkg
+  #     - run:
+  #         name: Publish to GitHub
+  #         command: semantic-release
 
 workflows:
+  version: 2
   test_and_release:
     jobs:
-      # - test-unix:
-      #     name: Test OS=Unix node=<< matrix.node_version >> sbt=<< matrix.sbt_version >>
-      #     context: nodejs-install
-      #     <<: *test_matrix
-      - test-windows:
-          name: Test OS=Windows node=<< matrix.node_version >> sbt=<< matrix.sbt_version >>
+      - lint:
+          name: Lint
           context: nodejs-install
-          <<: *test_matrix
+          node_version: '8'
+          filters:
+            branches:
+              ignore:
+                - master
+
+      - test-unix:
+          name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
+          context: nodejs-install
+          <<: *test_matrix_unix
+          requires:
+            - Lint
+          filters:
+            branches:
+              ignore:
+                - master
+
+      - test-windows:
+          name: Windows Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
+          context: nodejs-install
+          <<: *test_matrix_win
+          requires:
+            - Lint
+
       # - release:
       #     name: Release
       #     context: nodejs-app-release
+      #     node_version: '16'
       #     filters:
       #       branches:
       #         only:
