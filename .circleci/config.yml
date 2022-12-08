@@ -22,16 +22,18 @@ windows_defaults: &windows_defaults
     name: win/default
 
 test_matrix_win: &test_matrix_win
-  parameters:
-    node_version: ['16']
-    jdk_version: ['11']
-    sbt_version: ['1.5.5']
+  matrix:
+    parameters:
+      node_version: ['16']
+      jdk_version: ['11']
+      sbt_version: ['1.5.5']
 
 test_matrix_unix: &test_matrix_unix
-  parameters:
-    node_version: ['16']
-    jdk_version: ['11.0.9.fx-zulu']
-    sbt_version: ['1.5.5']
+  matrix:
+    parameters:
+      node_version: ['16']
+      jdk_version: ['11.0.9.fx-zulu']
+      sbt_version: ['1.5.5']
 
 commands:
   install_node_npm:
