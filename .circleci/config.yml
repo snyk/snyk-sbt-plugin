@@ -46,10 +46,10 @@ commands:
           name: Install and use correct version of Node
           command: nvm install << parameters.node_version >> && nvm use << parameters.node_version >>
   show_node_version:
+    description: Show node version and npm version
     steps:
-      - run:
-          name: Node version and npm version
-          command: node --version && npm --version
+      - run: node --version
+      - run: npm --version
   install_sdkman:
     steps:
       - run:
