@@ -42,9 +42,8 @@ commands:
         type: string
         default: ''
     steps:
-      - run:
-          name: Install and use correct version of Node
-          command: nvm install << parameters.node_version >> && nvm use << parameters.node_version >>
+      - run: nvm install << parameters.node_version >>
+      - run: nvm use << parameters.node_version >>
   show_node_version:
     description: Show node version and npm version
     steps:
