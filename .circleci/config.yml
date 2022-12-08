@@ -168,7 +168,7 @@ workflows:
       - lint:
           name: Lint
           context: nodejs-install
-          node_version: '8'
+          node_version: '16'
           filters:
             branches:
               ignore:
@@ -178,19 +178,11 @@ workflows:
           name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
           context: nodejs-install
           <<: *test_matrix_unix
-          requires:
-            - Lint
-          filters:
-            branches:
-              ignore:
-                - master
 
       - test-windows:
           name: Windows Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
           context: nodejs-install
           <<: *test_matrix_win
-          requires:
-            - Lint
 
       # - release:
       #     name: Release
