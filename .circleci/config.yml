@@ -130,23 +130,23 @@ jobs:
       - show_node_version
       - run: npm run test
 
-  test-unix:
-    <<: *defaults
-    docker:
-      - image: circleci/node:<< parameters.node_version >>
-    environment:
-      JDK: << parameters.jdk_version >>
-      SBT: << parameters.sbt_version >>
-    steps:
-      - checkout
-      - install_sdkman
-      - install_jdk_unix:
-          jdk_version: << parameters.jdk_version >>
-      - install_sbt_unix:
-          sbt_version: << parameters.sbt_version >>
-      - run: npm install
-      - show_node_version
-      - run: npm run test
+  # test-unix:
+  #   <<: *defaults
+  #   docker:
+  #     - image: circleci/node:<< parameters.node_version >>
+  #   environment:
+  #     JDK: << parameters.jdk_version >>
+  #     SBT: << parameters.sbt_version >>
+  #   steps:
+  #     - checkout
+  #     - install_sdkman
+  #     - install_jdk_unix:
+  #         jdk_version: << parameters.jdk_version >>
+  #     - install_sbt_unix:
+  #         sbt_version: << parameters.sbt_version >>
+  #     - run: npm install
+  #     - show_node_version
+  #     - run: npm run test
 
   # release:
   #   <<: *defaults
@@ -163,15 +163,15 @@ jobs:
 workflows:
   version: 2
   test_and_release:
-    # jobs:
-    #   - lint:
-    #       name: Lint
-    #       context: nodejs-install
-    #       node_version: '16'
-    #       filters:
-    #         branches:
-    #           ignore:
-    #             - master
+    jobs:
+      # - lint:
+      #     name: Lint
+      #     context: nodejs-install
+      #     node_version: '16'
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - master
 
     #   - test-unix:
     #       name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
