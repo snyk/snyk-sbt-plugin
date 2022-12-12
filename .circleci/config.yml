@@ -163,31 +163,31 @@ jobs:
 workflows:
   version: 2
   test_and_release:
-    jobs:
-      - lint:
-          name: Lint
-          context: nodejs-install
-          node_version: '16'
-          filters:
-            branches:
-              ignore:
-                - master
+    # jobs:
+    #   - lint:
+    #       name: Lint
+    #       context: nodejs-install
+    #       node_version: '16'
+    #       filters:
+    #         branches:
+    #           ignore:
+    #             - master
 
-      - test-unix:
-          name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
-          context: nodejs-install
-          <<: *test_matrix_unix
+    #   - test-unix:
+    #       name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
+    #       context: nodejs-install
+    #       <<: *test_matrix_unix
 
-      - test-windows:
-          name: Windows Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
-          context: nodejs-install
-          <<: *test_matrix_win
+    - test-windows:
+        name: Windows Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
+        context: nodejs-install
+        <<: *test_matrix_win
 
-      # - release:
-      #     name: Release
-      #     context: nodejs-app-release
-      #     node_version: '16'
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
+    # - release:
+    #     name: Release
+    #     context: nodejs-app-release
+    #     node_version: '16'
+    #     filters:
+    #       branches:
+    #         only:
+    #           - master

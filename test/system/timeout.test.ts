@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-test('trigger timeout on inspect()', async () => {
+test.skip('trigger timeout on inspect()', async () => {
   const prevTimeout = process.env.PROC_TIMEOUT;
   process.env.PROC_TIMEOUT = '10'; // set timeout to very small number before importing plugin
   const plugin = require('../../lib');
