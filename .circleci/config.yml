@@ -20,6 +20,8 @@ windows_defaults: &windows_defaults
     npm_config_loglevel: silent
   executor:
     name: win/default
+    size: large
+    shell: bash.exe
 
 test_matrix_win: &test_matrix_win
   matrix:
