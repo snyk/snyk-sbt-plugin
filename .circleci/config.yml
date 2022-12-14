@@ -64,7 +64,7 @@ commands:
         type: string
         default: ''
     steps:
-      - run: choco install sbt --version=<< parameters.sbt_version >>
+      - run: choco install sbt --version=<< parameters.sbt_version >> -y
   install_sbt_unix:
     parameters:
       sbt_version:
@@ -97,7 +97,7 @@ commands:
     steps:
       - run:
           name: Installing JDK
-          command: choco install zulu<< parameters.jdk_version >> --allow-downgrade
+          command: choco install zulu<< parameters.jdk_version >> -y
 
 jobs:
   lint:
@@ -129,7 +129,7 @@ jobs:
           sbt_version: << parameters.sbt_version >>
       - run: npm install
       - show_node_version
-      - run: set SBT_HOME="C:\Program Files (x86)\sbt" && set PATH=%PATH%";C:\Program Files (x86)\sbt\bin" && RefreshEnv && npm test
+      - run: set SBT_HOME="C:\Program Files (x86)\sbt" && set PATH=%PATH%";C:\Program Files (x86)\sbt\bin" && refreshenv && npm test
       - run: env
       - run: npm run test
 
