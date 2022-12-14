@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  win: circleci/windows@2.4.0
+  win: circleci/windows@5.0
 
 defaults: &defaults
   parameters:
@@ -20,8 +20,7 @@ windows_defaults: &windows_defaults
     npm_config_loglevel: silent
   executor:
     name: win/default
-    size: large
-    shell: bash.exe
+    shell: cmd.exe
 
 test_matrix_win: &test_matrix_win
   matrix:
@@ -130,7 +129,7 @@ jobs:
           sbt_version: << parameters.sbt_version >>
       - run: npm install
       - show_node_version
-      - run: set SBT_HOME="C:\Program Files (x86)\sbt" && set PATH=%PATH%";C:\Program Files (x86)\sbt\bin" && refreshenv && npm test
+      - run: set SBT_HOME="C:\Program Files (x86)\sbt" && set PATH=%PATH%";C:\Program Files (x86)\sbt\bin" && RefreshEnv && npm test
       - run: env
       - run: npm run test
 
