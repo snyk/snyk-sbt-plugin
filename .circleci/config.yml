@@ -130,6 +130,8 @@ jobs:
           sbt_version: << parameters.sbt_version >>
       - run: npm install
       - show_node_version
+      - run: set SBT_HOME="C:\Program Files (x86)\sbt" && set PATH=%PATH%";C:\Program Files (x86)\sbt\bin" && refreshenv && npm test
+      - run: env
       - run: npm run test
 
   # test-unix:
@@ -175,15 +177,15 @@ workflows:
       #         ignore:
       #           - master
 
-    #   - test-unix:
-    #       name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
-    #       context: nodejs-install
-    #       <<: *test_matrix_unix
+      #   - test-unix:
+      #       name: Unix Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
+      #       context: nodejs-install
+      #       <<: *test_matrix_unix
 
-    - test-windows:
-        name: Windows Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
-        context: nodejs-install
-        <<: *test_matrix_win
+      - test-windows:
+          name: Windows Tests for Node << matrix.node_version >>, JDK << matrix.jdk_version >>, SBT << matrix.sbt_version >>
+          context: nodejs-install
+          <<: *test_matrix_win
 
     # - release:
     #     name: Release
