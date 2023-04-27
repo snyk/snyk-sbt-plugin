@@ -18,10 +18,12 @@ describe('version test', () => {
 
     it('fall back onto sbt --version if checking build.properties fails', async () => {
       const root = path.join(fixtures, 'empty-homdir');
-      jest.spyOn(subProcess, 'execute').mockResolvedValue(`
+      jest.spyOn(subProcess, 'execute').mockResolvedValue(
+        `
 sbt version in this project: 1.5.5
 sbt script version: 1.5.5
-`);
+`.split('\n'),
+      );
       const received = await getSbtVersion(root, '');
       expect(received).toBe('1.5.5');
     });

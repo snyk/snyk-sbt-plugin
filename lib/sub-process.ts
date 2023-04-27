@@ -14,7 +14,7 @@ export const execute = (
   command: string,
   args: string[],
   options: { cwd?: string },
-): Promise<string> => {
+): Promise<string[]> => {
   const spawnOptions: { cwd?: string; shell: boolean } = { shell: true };
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
@@ -23,7 +23,7 @@ export const execute = (
 
   return new Promise((resolve, reject) => {
     const out = {
-      stdout: '',
+      stdout: [''],
       stderr: '',
     };
 
@@ -33,9 +33,9 @@ export const execute = (
     }
 
     proc.stdout.on('data', (data) => {
-      const strData = data.toString();
-      out.stdout = out.stdout + strData;
+      const strData = out.stdout.pop() + data.toString();
       strData.split('\n').forEach((str) => {
+        out.stdout.push(str);
         debugLogging(str);
       });
       if (strData.includes('(q)uit')) {
@@ -63,7 +63,9 @@ export const execute = (
         const errorMessage =
           `>>> command: ${fullCommand} ` +
           (code ? `>>> exit code: ${code} ` : '') +
-          (out.stdout ? `>>> stdout: ${out.stdout} ` : '') +
+          (out.stdout.length
+            ? `>>> stdout: ... ${out.stdout[out.stdout.length - 1]} `
+            : '') +
           (out.stderr ? `>>> stderr: ${out.stderr}` : 'null');
         return reject(new Error(errorMessage));
       }

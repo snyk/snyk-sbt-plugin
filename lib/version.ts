@@ -50,7 +50,6 @@ export async function getSbtVersion(
   try {
     const stdout = await subProcess.execute('sbt', ['--version'], {});
     return stdout
-      .split('\n')
       .find((line) => !!line.match(/sbt script version/))!
       .split(':')[1]
       .trim();
