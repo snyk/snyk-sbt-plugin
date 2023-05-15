@@ -120,12 +120,10 @@ test('parse `sbt dependencies` output: plugin 1.2.8', async () => {
 });
 
 test('parse `sbt dependencies` output: plugin 0.13', async () => {
-  const sbtOutput = fs
-    .readFileSync(
-      path.join(__dirname, '..', 'fixtures', 'sbt-plugin-0.13-output.txt'),
-      'utf8',
-    )
-    .split('\n');
+  const sbtOutput = fs.readFileSync(
+    path.join(__dirname, '..', 'fixtures', 'sbt-plugin-0.13-output.txt'),
+    'utf8',
+  ).split('\n');
   const depTree = parser.parseSbtPluginResults(
     sbtOutput,
     'com.example:hello_2.12',

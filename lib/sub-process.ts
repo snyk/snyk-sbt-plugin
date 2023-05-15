@@ -23,9 +23,10 @@ export const execute = (
 
   return new Promise((resolve, reject) => {
     const out = {
-      stdout: [''],
+      stdout: [],
       stderr: '',
     };
+    var lastLine = "";
 
     const proc = childProcess.spawn(command, args, spawnOptions);
     if (PROC_TIMEOUT !== 0) {
@@ -33,12 +34,16 @@ export const execute = (
     }
 
     proc.stdout.on('data', (data) => {
-      const strData = out.stdout.pop() + data.toString();
-      strData.split('\n').forEach((str) => {
-        out.stdout.push(str);
+      var strData = data.toString().split('\n');
+
+      strData[0] = lastLine + strData[0];
+      lastLine = strData.pop();
+
+      strData.forEach((str) => {
+	out.stdout.push(str)
         debugLogging(str);
       });
-      if (strData.includes('(q)uit')) {
+      if (lastLine.includes('(q)uit')) {
         proc.stdin.write('q\n');
         debugLogging(
           'sbt is requiring input. Provided (q)uit signal. ' +
@@ -58,14 +63,17 @@ export const execute = (
     });
 
     proc.on('close', (code) => {
+
+      out.stdout.push(lastLine);
+      debugLogging(lastLine);
+      lastLine = "";
+
       if (code !== 0) {
         const fullCommand = command + ' ' + args.join(' ');
         const errorMessage =
           `>>> command: ${fullCommand} ` +
           (code ? `>>> exit code: ${code} ` : '') +
-          (out.stdout.length
-            ? `>>> stdout: ... ${out.stdout[out.stdout.length - 1]} `
-            : '') +
+          (`>>> stdout: ${out.stdout.join('\n')} `) +
           (out.stderr ? `>>> stderr: ${out.stderr}` : 'null');
         return reject(new Error(errorMessage));
       }
