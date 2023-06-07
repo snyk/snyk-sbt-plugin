@@ -5,8 +5,7 @@ import * as types from './types';
 
 export { parse, parseSbtPluginResults };
 
-function convertStrToTree(dependenciesTextTree) {
-  const lines = dependenciesTextTree.toString().split('\n') || [];
+function convertStrToTree(lines) {
   const newLines = lines
     .map((line) => {
       return line.replace(/\u001b\[0m/g, '');
@@ -37,8 +36,7 @@ function convertStrToTree(dependenciesTextTree) {
   return tree;
 }
 
-function convertCoursierStrToTree(dependenciesTextTree) {
-  const lines = dependenciesTextTree.toString().split('\n') || [];
+function convertCoursierStrToTree(lines) {
   const newLines = lines
     .map((line) => {
       return line.replace(/\u001b\[0m/g, '');
@@ -187,17 +185,17 @@ function parse(text, name, version, isCoursier): DepTree {
 }
 
 function parseSbtPluginResults(
-  sbtOutput: string,
+  sbtOutput: string[],
   packageName: string,
   packageVersion: string,
 ): DepTree {
   // remove all other output
   const outputStart = 'Snyk Output Start';
   const outputEnd = 'Snyk Output End';
-  const sbtProjectOutput = sbtOutput.substring(
-    sbtOutput.indexOf(outputStart) + outputStart.length,
-    sbtOutput.indexOf(outputEnd),
-  );
+  const sbtProjectOutput = sbtOutput.slice(
+    sbtOutput.findIndex(line => line.indexOf(outputStart)!=-1) + 1,
+    sbtOutput.findIndex(line => line.indexOf(outputEnd)!=-1),
+  ).join("\n");
   const sbtOutputJson: types.SbtModulesGraph = JSON.parse(sbtProjectOutput);
 
   if (Object.keys(sbtOutputJson).length === 1) {

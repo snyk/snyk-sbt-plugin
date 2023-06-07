@@ -18,10 +18,12 @@ function flatten(dependencies: DepTree): string[] {
 }
 
 test('parse `sbt dependencies` output: multi configuration', async () => {
-  const sbtOutput = fs.readFileSync(
-    path.join(__dirname, '..', 'fixtures', 'sbt-dependency-output.txt'),
-    'utf8',
-  );
+  const sbtOutput = fs
+    .readFileSync(
+      path.join(__dirname, '..', 'fixtures', 'sbt-dependency-output.txt'),
+      'utf8',
+    )
+    .split('\n');
   const depTree = parser.parse(sbtOutput, 'testApp', '1.0.1', false);
 
   expect(depTree.name).toBe('testApp');
@@ -48,15 +50,17 @@ test('parse `sbt dependencies` output: multi configuration', async () => {
 });
 
 test('parse `sbt dependencies` output: single configuration', async () => {
-  const sbtOutput = fs.readFileSync(
-    path.join(
-      __dirname,
-      '..',
-      'fixtures',
-      'sbt-single-config-dependency-output.txt',
-    ),
-    'utf8',
-  );
+  const sbtOutput = fs
+    .readFileSync(
+      path.join(
+        __dirname,
+        '..',
+        'fixtures',
+        'sbt-single-config-dependency-output.txt',
+      ),
+      'utf8',
+    )
+    .split('\n');
 
   const depTree = parser.parse(sbtOutput, 'unused', 'unused', false);
 
@@ -90,10 +94,12 @@ test('parse `sbt dependencies` output: single configuration', async () => {
 });
 
 test('parse `sbt dependencies` output: plugin 1.2.8', async () => {
-  const sbtOutput = fs.readFileSync(
-    path.join(__dirname, '..', 'fixtures', 'sbt-plugin-1.2.8-output.txt'),
-    'utf8',
-  );
+  const sbtOutput = fs
+    .readFileSync(
+      path.join(__dirname, '..', 'fixtures', 'sbt-plugin-1.2.8-output.txt'),
+      'utf8',
+    )
+    .split('\n');
   const depTree = parser.parseSbtPluginResults(
     sbtOutput,
     'com.example:hello_2.12',
@@ -114,10 +120,12 @@ test('parse `sbt dependencies` output: plugin 1.2.8', async () => {
 });
 
 test('parse `sbt dependencies` output: plugin 0.13', async () => {
-  const sbtOutput = fs.readFileSync(
-    path.join(__dirname, '..', 'fixtures', 'sbt-plugin-0.13-output.txt'),
-    'utf8',
-  );
+  const sbtOutput = fs
+    .readFileSync(
+      path.join(__dirname, '..', 'fixtures', 'sbt-plugin-0.13-output.txt'),
+      'utf8',
+    )
+    .split('\n');
   const depTree = parser.parseSbtPluginResults(
     sbtOutput,
     'com.example:hello_2.12',
