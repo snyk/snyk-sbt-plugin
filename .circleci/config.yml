@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  prodsec: snyk/prodsec-orb@1.0
+
 params: &params
   parameters:
     node_version:
@@ -76,6 +79,12 @@ workflows:
   version: 2
   test_and_release:
     jobs:
+      - prodsec/secrets-scan:
+          name: Scan repository for secrets
+          context:
+            - snyk-bot-slack
+          channel: os-team-managed-alerts
+
       - test:
           name: Test node=<<matrix.node_version>> jdk=<<matrix.jdk_version>> sbt=<<matrix.sbt_version>>
           context: nodejs-install
