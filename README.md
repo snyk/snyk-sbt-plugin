@@ -21,11 +21,11 @@ This plugin provides dependency metadata for **sbt** projects that use `sbt` and
 
 ## Supported OS
 
-| OS      | Node 12 | Node 14 | Node 16 |
-| ------- | ------- | ------- | ------- |
-| Windows | ✅      | ✅      | ✅      |
-| Linux   | ✅      | ✅      | ✅      |
-| OSX     | ✅      | ✅      | ✅      |
+| OS      | Node 18 |
+| ------- | ------- |
+| Windows | ✅      |
+| Linux   | ✅      |
+| OSX     | ✅      |
 
 ## Supported Java & sbt versions
 
