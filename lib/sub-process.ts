@@ -1,7 +1,7 @@
 import * as childProcess from 'child_process';
 import * as treeKill from 'tree-kill';
 import * as debugModule from 'debug';
-import { quoteAll } from 'shescape';
+import { quoteAll } from 'shescape/stateless';
 
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
 const debugLogging = debugModule('snyk-sbt-plugin');
