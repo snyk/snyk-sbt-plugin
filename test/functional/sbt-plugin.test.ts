@@ -6,6 +6,7 @@ test('check build args with array not coursier', () => {
     '-Dsbt.log.noformat=true',
     '-Paxis',
     '-Pjaxen',
+    'set asciiGraphWidth := 999999999',
     'dependencyTree',
   ]);
 });
@@ -15,6 +16,7 @@ test('check build args with string not coursie', () => {
   expect(result).toEqual([
     '-Dsbt.log.noformat=true',
     '-Paxis -Pjaxen',
+    'set asciiGraphWidth := 999999999',
     'dependencyTree',
   ]);
 });
@@ -61,6 +63,7 @@ test('check build args with string for not coursier and not snykRenderTree', () 
   expect(result).toEqual([
     '-Dsbt.log.noformat=true',
     '-Paxis -Pjaxen',
+    'set asciiGraphWidth := 999999999',
     'dependencyTree',
   ]);
 });
