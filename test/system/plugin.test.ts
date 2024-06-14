@@ -80,7 +80,7 @@ test('Run inspect() on play-scala-seed 1.2.8 with custom-plugin', async () => {
       .dependencies['com.typesafe.play:play_2.13'].dependencies[
       'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     ].version,
-  ).toBe('2.9.8');
+  ).toBe('2.11.4');
 });
 
 describe('(These tests will fail locally if sbt-dependency-graph plugin is installed globally.) Run inspect() on sbt v.1.7.0 will use legacy inspect ', () => {
