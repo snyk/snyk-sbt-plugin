@@ -19,7 +19,7 @@ export const execute = (
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
   }
-  args = quoteAll(args, spawnOptions);
+  args = quoteAll(args, { ...spawnOptions, flagProtection: false });
 
   return new Promise((resolve, reject) => {
     const out = {
@@ -47,7 +47,7 @@ export const execute = (
         proc.stdin.write('q\n');
         debugLogging(
           'sbt is requiring input. Provided (q)uit signal. ' +
-            'There is no current workaround for this, see: https://stackoverflow.com/questions/21484166',
+          'There is no current workaround for this, see: https://stackoverflow.com/questions/21484166',
         );
       }
     });
