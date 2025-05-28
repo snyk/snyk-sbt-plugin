@@ -71,6 +71,7 @@ jobs:
           command: npm run lint
       - run:
           name: Test
+          no_output_timeout: 30m
           command: npm test
       - store_test_results:
           path: ./coverage

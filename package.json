@@ -19,7 +19,7 @@
     "lint": "eslint --color --cache 'lib/**/*.{js,ts}'",
     "format": "prettier --write '{lib,test}/**/*.{js,ts}'",
     "prepare": "npm run build",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand --verbose"
   },
   "author": "snyk.io",
   "license": "Apache-2.0",
