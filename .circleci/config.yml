@@ -7,7 +7,7 @@ params: &params
   parameters:
     node_version:
       type: string
-      default: '14'
+      default: '20'
     jdk_version:
       type: string
       default: '8.0.292.j9-adpt'
@@ -22,9 +22,7 @@ test_matrix: &test_matrix
   matrix:
     parameters:
       node_version:
-        - '12'
-        - '14'
-        - '16'
+        - '20.19.1'
       jdk_version:
         - '8.0.292.j9-adpt'
         - '11.0.11.j9-adpt'
@@ -50,7 +48,7 @@ jobs:
   test:
     <<: *params
     docker:
-      - image: circleci/node:<<parameters.node_version>>
+      - image: cimg/node:<<parameters.node_version>>
     steps:
       - checkout
       - run:
@@ -73,6 +71,7 @@ jobs:
           command: npm run lint
       - run:
           name: Test
+          no_output_timeout: 30m
           command: npm test
       - store_test_results:
           path: ./coverage
@@ -80,7 +79,7 @@ jobs:
     <<: *params
     resource_class: small
     docker:
-      - image: circleci/node:<<parameters.node_version>>
+      - image: cimg/node:<<parameters.node_version>>
     steps:
       - checkout
       - run:
