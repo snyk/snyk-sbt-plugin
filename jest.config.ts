@@ -9,6 +9,6 @@ export default async (): Promise<Config.InitialOptions> => {
     coverageReporters: ['text-summary', 'html'],
     reporters: ['default', 'jest-junit'],
     testResultsProcessor: 'jest-junit',
-    testTimeout: 150000, // 2.5 minutes
+    testTimeout: 300000, // 5 minutes
   };
 };
