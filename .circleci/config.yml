@@ -7,7 +7,7 @@ params: &params
   parameters:
     node_version:
       type: string
-      default: '20'
+      default: '20.19.1'
     jdk_version:
       type: string
       default: '8.0.292.j9-adpt'
