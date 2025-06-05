@@ -1,7 +1,7 @@
 import * as childProcess from 'child_process';
 import * as treeKill from 'tree-kill';
 import * as debugModule from 'debug';
-import { quoteAll } from 'shescape';
+import { quoteAll } from 'shescape/stateless';
 
 // To enable debugging output, run the CLI as `DEBUG=snyk-sbt-plugin snyk ...`
 const debugLogging = debugModule('snyk-sbt-plugin');
@@ -19,7 +19,7 @@ export const execute = (
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
   }
-  args = quoteAll(args, spawnOptions);
+  args = quoteAll(args, { flagProtection: false });
 
   return new Promise((resolve, reject) => {
     const out = {
@@ -47,7 +47,7 @@ export const execute = (
         proc.stdin.write('q\n');
         debugLogging(
           'sbt is requiring input. Provided (q)uit signal. ' +
-            'There is no current workaround for this, see: https://stackoverflow.com/questions/21484166',
+          'There is no current workaround for this, see: https://stackoverflow.com/questions/21484166',
         );
       }
     });
