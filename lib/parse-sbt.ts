@@ -192,10 +192,12 @@ function parseSbtPluginResults(
   // remove all other output
   const outputStart = 'Snyk Output Start';
   const outputEnd = 'Snyk Output End';
-  const sbtProjectOutput = sbtOutput.slice(
-    sbtOutput.findIndex(line => line.indexOf(outputStart)!=-1) + 1,
-    sbtOutput.findIndex(line => line.indexOf(outputEnd)!=-1),
-  ).join("\n");
+  const sbtProjectOutput = sbtOutput
+    .slice(
+      sbtOutput.findIndex((line) => line.indexOf(outputStart) != -1) + 1,
+      sbtOutput.findIndex((line) => line.indexOf(outputEnd) != -1),
+    )
+    .join('\n');
   const sbtOutputJson: types.SbtModulesGraph = JSON.parse(sbtProjectOutput);
 
   if (Object.keys(sbtOutputJson).length === 1) {
