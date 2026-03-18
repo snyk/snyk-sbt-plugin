@@ -146,7 +146,7 @@ async function injectSbtScript(
     }
     const tmpSbtPlugin = tmp.fileSync({
       postfix: '-SnykSbtPlugin.scala',
-      dir: projectFolderPath,
+      tmpdir: projectFolderPath,
     });
     fs.createReadStream(sbtPluginPath).pipe(
       fs.createWriteStream(tmpSbtPlugin.name),
