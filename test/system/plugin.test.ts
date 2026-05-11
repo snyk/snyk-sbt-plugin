@@ -136,6 +136,19 @@ test('run legacy inspect() on sbt 1.4.0 with sbt-dependency-graph new naming- ad
   expect(result.package.dependencies['axis:axis'].version).toBe('1.4');
 });
 
+test('run inspect() on project with custom non-standard config (missing moduleGraph)', async () => {
+  const result: any = await plugin.inspect(
+    fixtureDir,
+    'testproj-1.10-custom-config/build.sbt',
+    {},
+  );
+
+  // Plugin path should run to completion instead of falling back to legacy `bundled:sbt`.
+  expect(result.plugin.name).toBe('snyk:sbt');
+  expect(result.package.packageFormatVersion).toBe('mvn:0.0.1');
+  expect(result.package.dependencies['axis:axis'].version).toBe('1.4');
+});
+
 test('run inspect() proj with provided 1.7', async () => {
   const result = await plugin.inspect(
     fixtureDir,

@@ -94,15 +94,16 @@ object SnykSbtPlugin extends AutoPlugin {
         ConfigBlacklist.contains(c.name) || !c.isPublic
       }
       val filter = ScopeFilter(configurations = inConfigurations(thisProjectConfigs: _*))
+      // Use `moduleGraph.?` so configurations that don't have `moduleGraph` defined (e.g. user-defined configs) are
+      // skipped instead of failing the whole task graph with sbt.internal.util.Init$RuntimeUndefined.
       val configAndModuleGraph = Def.task {
-        val graph = moduleGraph.value
         val configName = configuration.value.name
 
-        configName -> graph
+        moduleGraph.?.value.map(graph => configName -> graph)
       }
 
       Def.task {
-        val graphs = configAndModuleGraph.all(filter).value
+        val graphs = configAndModuleGraph.all(filter).value.flatten
 
         graphs.foldLeft(SnykProjectData(thisProjectId, Map.empty, Map.empty)) {
           case (projectData, (configName, graph)) =>
