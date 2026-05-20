@@ -7,7 +7,7 @@ describe('version test', () => {
   describe('getSbtVersion', () => {
     it.each`
       fixture                      | expected
-      ${'testproj-0.13'}           | ${'0.13.17'}
+      ${'testproj-0.13'}           | ${'0.13.18'}
       ${'testproj-1.2.8'}          | ${'1.2.8'}
       ${'testproj-coursier-1.3.5'} | ${'1.3.5'}
     `('returns $expected for $fixture', async ({ fixture, expected }) => {
