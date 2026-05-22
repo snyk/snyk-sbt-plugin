@@ -98,8 +98,14 @@ object SnykSbtPlugin extends AutoPlugin {
       // skipped instead of failing the whole task graph with sbt.internal.util.Init$RuntimeUndefined.
       val configAndModuleGraph = Def.task {
         val configName = configuration.value.name
+        val log = streams.value.log
 
-        moduleGraph.?.value.map(graph => configName -> graph)
+        moduleGraph.?.value match {
+          case Some(graph) => Some(configName -> graph)
+          case None =>
+            log.warn(s"[snyk] Skipping configuration '$configName' - no moduleGraph defined")
+            None
+        }
       }
 
       Def.task {
