@@ -273,8 +273,11 @@ export function buildArgs(
   isCoursierProject?: boolean,
   isOutputGraph?: boolean,
 ) {
-  // force plain output so we don't have to parse colour codes
-  let args = ['-Dsbt.log.noformat=true'];
+  
+  let args = [
+    '-Dsbt.log.noformat=true', // force plain output so we don't have to parse colour codes
+    '\'set asciiGraphWidth := 999999999\'' // to ensure no trunctation with deep dependency trees
+  ];
   if (sbtArgs) {
     args = args.concat(sbtArgs);
   }
