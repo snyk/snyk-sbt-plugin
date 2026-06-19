@@ -56,7 +56,6 @@ export const execute = (
 
       lines.forEach((str) => {
         out.stdout.push(str);
-        debugLogging(str);
       });
       if (lastLine.includes('(q)uit')) {
         proc.stdin.write('q\n');
