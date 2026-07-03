@@ -16,7 +16,7 @@ params: &params
       default: '1.5.5'
     semantic_release_version:
       type: string
-      default: '17'
+      default: '25.0.5'
 
 test_matrix: &test_matrix
   matrix:
@@ -87,7 +87,9 @@ jobs:
           command: npm install
       - run:
           name: Release
-          command: npx semantic-release@<<parameters.semantic_release_version>>
+          command: |
+            export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+            npx semantic-release@<<parameters.semantic_release_version>>
 
 workflows:
   version: 2
@@ -119,7 +121,10 @@ workflows:
                 - master
       - release:
           name: Release
-          context: nodejs-app-release
+          node_version: '24.18'
+          context:
+            - nodejs-install
+            - github-release
           filters:
             branches:
               only:
