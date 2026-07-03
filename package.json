@@ -1,10 +1,19 @@
 {
   "name": "snyk-sbt-plugin",
   "description": "Snyk CLI SBT plugin",
-  "homepage": "https://github.com/snyk/snyk-sbt-plugin",
+  "homepage": "https://github.com/snyk/snyk-sbt-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/snyk/snyk-sbt-plugin/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/snyk/snyk-sbt-plugin"
+    "url": "https://github.com/snyk/snyk-sbt-plugin.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "files": [
     "dist",
