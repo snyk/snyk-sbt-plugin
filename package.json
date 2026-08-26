@@ -1,10 +1,19 @@
 {
   "name": "snyk-sbt-plugin",
   "description": "Snyk CLI SBT plugin",
-  "homepage": "https://github.com/snyk/snyk-sbt-plugin",
+  "homepage": "https://github.com/snyk/snyk-sbt-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/snyk/snyk-sbt-plugin/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/snyk/snyk-sbt-plugin"
+    "url": "https://github.com/snyk/snyk-sbt-plugin.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "files": [
     "dist",
@@ -16,37 +25,36 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "tslint --project tsconfig.json --format stylish",
-    "lint-fix": "tslint --project tsconfig.json --format stylish --fix",
+    "lint": "eslint --color --cache 'lib/**/*.{js,ts}'",
+    "format": "prettier --write '{lib,test}/**/*.{js,ts}'",
     "prepare": "npm run build",
-    "test": "npm run test-functional && npm run test-system && npm run test-jest",
-    "test-jest": "jest",
-    "test-functional": "tap -Rspec ./test/functional/*.test.[tj]s",
-    "test-system": "tap -Rspec --timeout=1000 ./test/system/*.test.[tj]s",
-    "test-system-windows": "tap -Rspec --timeout=700 ./test/system-windows/*.test.[tj]s"
+    "test": "jest --runInBand --verbose"
   },
   "author": "snyk.io",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/jest": "^27.0.1",
-    "@types/node": "6.14.6",
-    "@types/sinon": "7.0.11",
-    "jest": "^27.0.6",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^20.17.50",
+    "@typescript-eslint/eslint-plugin": "^5.45.1",
+    "@typescript-eslint/parser": "^5.45.1",
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "^27.1.6",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.7.0",
     "jest-junit": "^12.2.0",
-    "sinon": "^2.4.1",
-    "tap": "12.6.1",
-    "tap-only": "0.0.5",
-    "ts-jest": "^27.0.5",
-    "ts-node": "^10.2.1",
-    "tslint": "5.16.0",
-    "typescript": "^4.7.4"
+    "prettier": "^2.8.0",
+    "ts-jest": "^29.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "debug": "^4.1.1",
     "semver": "^6.1.2",
-    "tmp": "^0.1.0",
+    "shescape": "2.1.14",
+    "tmp": "^0.2.3",
     "tree-kill": "^1.2.2",
-    "tslib": "^1.10.0"
+    "tslib": "^2.8.1"
   },
   "jest-junit": {
     "outputDirectory": "./coverage"

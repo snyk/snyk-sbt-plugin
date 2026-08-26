@@ -1,80 +1,69 @@
-import * as test from 'tap-only';
 import * as plugin from '../../lib';
 
-test('check build args with array not coursier', (t) => {
-  const result = plugin.buildArgs([
+test('check build args with array not coursier', () => {
+  const result = plugin.buildArgs(['-Paxis', '-Pjaxen'], false);
+  expect(result).toEqual([
+    '-Dsbt.log.noformat=true',
     '-Paxis',
     '-Pjaxen',
-  ], false);
-  t.deepEqual(result, [
-    '"-Dsbt.log.noformat=true\"',
-    '-Paxis',
-    '-Pjaxen',
+    'set asciiGraphWidth := 999999999',
     'dependencyTree',
   ]);
-  t.end();
 });
 
-test('check build args with string not coursie', (t) => {
+test('check build args with string not coursie', () => {
   const result = plugin.buildArgs('-Paxis -Pjaxen', false);
-  t.deepEqual(result, [
-    '"-Dsbt.log.noformat=true\"',
+  expect(result).toEqual([
+    '-Dsbt.log.noformat=true',
     '-Paxis -Pjaxen',
+    'set asciiGraphWidth := 999999999',
     'dependencyTree',
   ]);
-  t.end();
 });
 
-test('check build args with array for coursier', (t) => {
-  const result = plugin.buildArgs([
-    '-Paxis',
-    '-Pjaxen',
-  ], true);
-  t.deepEqual(result, [
-    '"-Dsbt.log.noformat=true\"',
+test('check build args with array for coursier', () => {
+  const result = plugin.buildArgs(['-Paxis', '-Pjaxen'], true);
+  expect(result).toEqual([
+    '-Dsbt.log.noformat=true',
     '-Paxis',
     '-Pjaxen',
     'coursierDependencyTree',
   ]);
-  t.end();
 });
 
-test('check build args with string for coursier', (t) => {
+test('check build args with string for coursier', () => {
   const result = plugin.buildArgs('-Paxis -Pjaxen', true);
-  t.deepEqual(result, [
-    '"-Dsbt.log.noformat=true\"',
+  expect(result).toEqual([
+    '-Dsbt.log.noformat=true',
     '-Paxis -Pjaxen',
     'coursierDependencyTree',
   ]);
-  t.end();
 });
 
-test('check build args with string for snykRenderTree', (t) => {
+test('check build args with string for snykRenderTree', () => {
   const result = plugin.buildArgs('-Paxis -Pjaxen', false, true);
-  t.deepEqual(result, [
-    '"-Dsbt.log.noformat=true\"',
+  expect(result).toEqual([
+    '-Dsbt.log.noformat=true',
     '-Paxis -Pjaxen',
     'snykRenderTree',
   ]);
-  t.end();
 });
 
-test('check build args with string for coursier and not snykRenderTree', (t) => {
+test('check build args with string for coursier and not snykRenderTree', () => {
   const result = plugin.buildArgs('-Paxis -Pjaxen', true, false);
-  t.deepEqual(result, [
-    '"-Dsbt.log.noformat=true\"',
+  expect(result).toEqual([
+    '-Dsbt.log.noformat=true',
     '-Paxis -Pjaxen',
     'coursierDependencyTree',
   ]);
-  t.end();
 });
 
-test('check build args with string for not coursier and not snykRenderTree', (t) => {
+test('check build args with string for not coursier and not snykRenderTree', () => {
   const result = plugin.buildArgs('-Paxis -Pjaxen', false, false);
-  t.deepEqual(result, [
-    '"-Dsbt.log.noformat=true\"',
+  expect(result).toEqual([
+    '-Dsbt.log.noformat=true',
     '-Paxis -Pjaxen',
+    'set asciiGraphWidth := 999999999',
     'dependencyTree',
   ]);
-  t.end();
 });

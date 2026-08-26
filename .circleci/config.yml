@@ -1,38 +1,54 @@
 version: 2.1
 
+orbs:
+  prodsec: snyk/prodsec-orb@1
+
 params: &params
   parameters:
     node_version:
       type: string
-      default: "14"
+      default: '20.19.1'
     jdk_version:
       type: string
-      default: "8.0.292.j9-adpt"
+      default: '8.0.292.j9-adpt'
     sbt_version:
       type: string
-      default: "1.5.5"
+      default: '1.5.5'
     semantic_release_version:
       type: string
-      default: "17"
+      default: '25.0.5'
 
 test_matrix: &test_matrix
   matrix:
     parameters:
       node_version:
-        - "12"
-        - "14"
-        - "16"
+        - '20.19.1'
       jdk_version:
-        - "8.0.292.j9-adpt"
-        - "11.0.11.j9-adpt"
+        - '8.0.292.j9-adpt'
+        - '11.0.11.j9-adpt'
       sbt_version:
         - "1.5.5"
         - "1.7.3"
 jobs:
+  security-scans:
+    resource_class: small
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - prodsec/security_scans:
+          mode: auto
+          release-branch: master
+          open-source-additional-arguments: --exclude=test
+          iac-scan: disabled
+
   test:
     <<: *params
     docker:
-      - image: circleci/node:<<parameters.node_version>>
+      - image: cimg/node:<<parameters.node_version>>
     steps:
       - checkout
       - run:
@@ -55,6 +71,7 @@ jobs:
           command: npm run lint
       - run:
           name: Test
+          no_output_timeout: 30m
           command: npm test
       - store_test_results:
           path: ./coverage
@@ -62,7 +79,7 @@ jobs:
     <<: *params
     resource_class: small
     docker:
-      - image: circleci/node:<<parameters.node_version>>
+      - image: cimg/node:<<parameters.node_version>>
     steps:
       - checkout
       - run:
@@ -70,12 +87,32 @@ jobs:
           command: npm install
       - run:
           name: Release
-          command: npx semantic-release@<<parameters.semantic_release_version>>
+          command: |
+            export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+            npx semantic-release@<<parameters.semantic_release_version>>
 
 workflows:
   version: 2
   test_and_release:
     jobs:
+      - prodsec/secrets-scan:
+          name: Scan repository for secrets
+          context:
+            - snyk-bot-slack
+            - prodsec-orb-runtime
+          channel: snyk-vuln-alerts-sca
+          filters:
+            branches:
+              ignore:
+                - master
+
+      - security-scans:
+          name: Security Scans
+          context:
+            - open_source-managed
+            - nodejs-install
+            - prodsec-orb-runtime
+
       - test:
           name: Test node=<<matrix.node_version>> jdk=<<matrix.jdk_version>> sbt=<<matrix.sbt_version>>
           context: nodejs-install
@@ -86,7 +123,10 @@ workflows:
                 - master
       - release:
           name: Release
-          context: nodejs-app-release
+          node_version: '24.18'
+          context:
+            - nodejs-install
+            - github-release
           filters:
             branches:
               only:

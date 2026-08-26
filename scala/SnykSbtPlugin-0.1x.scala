@@ -31,7 +31,10 @@ object SnykSbtPlugin extends AutoPlugin {
           }
       }
 
-      val mergedDeps = dependencies ++ otherDeps
+      // merge maps and set values together
+      val mergedDeps = dependencies ++ otherDeps.map { 
+        case (key, value) => key -> (value ++ dependencies.getOrElse(key, Set.empty))
+      }
 
       SnykProjectData(projectId, mergedModules, mergedDeps)
     }
@@ -88,20 +91,25 @@ object SnykSbtPlugin extends AutoPlugin {
 
       val thisProjectId = formatModuleId((moduleGraph in Compile).value.roots.head.id)
       val thisProjectConfigs = thisProject.value.configurations.filterNot { c =>
-        ConfigBlacklist.contains(c.name)
+        ConfigBlacklist.contains(c.name) || !c.isPublic
       }
-      println(">>> Project's configurations after filtering blacklisted:")
-      println(thisProjectConfigs)
       val filter = ScopeFilter(configurations = inConfigurations(thisProjectConfigs: _*))
+      // Use `moduleGraph.?` so configurations that don't have `moduleGraph` defined (e.g. user-defined configs) are
+      // skipped instead of failing the whole task graph with sbt.internal.util.Init$RuntimeUndefined.
       val configAndModuleGraph = Def.task {
-        val graph = moduleGraph.value
         val configName = configuration.value.name
+        val log = streams.value.log
 
-        configName -> graph
+        moduleGraph.?.value match {
+          case Some(graph) => Some(configName -> graph)
+          case None =>
+            log.warn(s"[snyk] Skipping configuration '$configName' - no moduleGraph defined")
+            None
+        }
       }
 
       Def.task {
-        val graphs = configAndModuleGraph.all(filter).value
+        val graphs = configAndModuleGraph.all(filter).value.flatten
 
         graphs.foldLeft(SnykProjectData(thisProjectId, Map.empty, Map.empty)) {
           case (projectData, (configName, graph)) =>

@@ -1,10 +1,10 @@
 exports.parse = (lines) => {
   function addHiddenProperties(scope, props) {
     for (const p of Object.keys(props)) {
-      Object.defineProperty(scope, p, {enumerable: false, value: props[p]});
+      Object.defineProperty(scope, p, { enumerable: false, value: props[p] });
     }
   }
-  const TreeNode = function(data, depth) {
+  const TreeNode = function (data, depth) {
     this.parent = null;
     addHiddenProperties(this, {
       data,
@@ -15,7 +15,7 @@ exports.parse = (lines) => {
     this[data || 'root'] = this.children;
   };
 
-  TreeNode.prototype.toString = function() {
+  TreeNode.prototype.toString = function () {
     return JSON.stringify(this.children);
   };
 
@@ -27,7 +27,7 @@ exports.parse = (lines) => {
     let count = 0;
     for (const i of Object.keys(line)) {
       const ch = line[i];
-      if ((ch === '\t')) {
+      if (ch === '\t') {
         count += 1;
       } else if (/[^\s]/.test(ch)) {
         return count;

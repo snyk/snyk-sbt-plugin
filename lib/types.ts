@@ -26,16 +26,19 @@ export interface PluginMetadata {
   meta?: {
     versionBuildInfo?: {
       metaBuildVersion?: {
-        sbtVersion?: string,
-      },
-    },
+        sbtVersion?: string;
+      };
+    };
   };
 }
 
+interface Module {
+  version: string;
+  configurations: string[];
+}
+
 export interface SbtModulesGraph {
-  modules: {
-    string: string;
-  };
+  modules: Record<string, Module>;
   dependencies: {
     string: string[];
   };

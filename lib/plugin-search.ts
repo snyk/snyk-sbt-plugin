@@ -14,26 +14,35 @@ export async function isPluginInstalled(
 }
 
 // search project and project/project relative to the root
-function searchProjectFiles(root: string, targetFile: string, plugin: string): boolean {
+function searchProjectFiles(
+  root: string,
+  targetFile: string,
+  plugin: string,
+): boolean {
   const basePath = path.dirname(path.resolve(root, targetFile));
-  const sbtFileList = sbtFiles(path.join(basePath, 'project'))
-    .concat(sbtFiles(path.join(basePath, 'project', 'project')));
-  const searchResults = sbtFileList.map ((file) => {
+  const sbtFileList = sbtFiles(path.join(basePath, 'project')).concat(
+    sbtFiles(path.join(basePath, 'project', 'project')),
+  );
+  const searchResults = sbtFileList.map((file) => {
     return searchWithFs(file, plugin);
   });
   return searchResults.filter(Boolean).length > 0;
 }
 
 // search globally installed plugins (~/.sbt)
-async function searchGlobalFiles(root: string, targetFile: string, plugin: string): Promise<boolean> {
+async function searchGlobalFiles(
+  root: string,
+  targetFile: string,
+  plugin: string,
+): Promise<boolean> {
   const homedir = os.homedir();
   const sbtVersion = await getSbtVersion(root, targetFile);
   // https://www.scala-sbt.org/1.x/docs/Using-Plugins.html#Global+plugins
-  const pluginsPath = semver.lt(sbtVersion, '1.0.0') ?
-    path.join(homedir, '.sbt', '0.13', 'plugins') :
-    path.join(homedir, '.sbt', '1.0', 'plugins');
+  const pluginsPath = semver.lt(sbtVersion, '1.0.0')
+    ? path.join(homedir, '.sbt', '0.13', 'plugins')
+    : path.join(homedir, '.sbt', '1.0', 'plugins');
   const sbtFileList = sbtFiles(pluginsPath);
-  const searchResults = sbtFileList.map ((file) => {
+  const searchResults = sbtFileList.map((file) => {
     return searchWithFs(file, plugin);
   });
   return searchResults.filter(Boolean).length > 0;
@@ -55,7 +64,7 @@ function sbtFiles(basePath) {
 }
 
 function searchWithFs(filename, word) {
-  let buffer = fs.readFileSync(filename, {encoding: 'utf8'});
+  let buffer = fs.readFileSync(filename, { encoding: 'utf8' });
 
   // remove single-line and multi-line comments
   const singleLineCommentPattern = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm;
