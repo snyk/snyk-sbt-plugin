@@ -10,7 +10,7 @@ params: &params
       default: '20.19.1'
     jdk_version:
       type: string
-      default: '8.0.292.j9-adpt'
+      default: '8.0.482.1-sem'
     sbt_version:
       type: string
       default: '1.5.5'
@@ -24,8 +24,8 @@ test_matrix: &test_matrix
       node_version:
         - '20.19.1'
       jdk_version:
-        - '8.0.292.j9-adpt'
-        - '11.0.11.j9-adpt'
+        - '8.0.482.1-sem'
+        - '11.0.32-sem'
       sbt_version:
         - '1.5.5'
         - '1.7.0'
