@@ -48,11 +48,18 @@ export async function getSbtVersion(
   }
 
   try {
-    const stdout = await subProcess.execute('sbt', ['--version'], {});
-    return stdout
-      .find((line) => !!line.match(/sbt script version/))!
-      .split(':')[1]
-      .trim();
+    // run in the project directory, so "version in this project" is this project
+    const projectDir = path.dirname(path.resolve(root, targetFile));
+    const stdout = await subProcess.execute(
+      'sbt',
+      ['--version'],
+      fs.existsSync(projectDir) ? { cwd: projectDir } : {},
+    );
+    const version = parseSbtVersionOutput(stdout);
+    if (version) {
+      return version;
+    }
+    debug('No sbt version found in sbt --version output');
   } catch (err) {
     debug('Failed to get sbt version sbt --version' + err.message);
   }
@@ -61,4 +68,26 @@ export async function getSbtVersion(
   // assume sbt 1.0.0 for the purposes of copying the correct scala script and global plugin search
   debug('Assuming sbt version is 1.0.0');
   return '1.0.0';
+}
+
+// `sbt --version` prints the project's sbt version and the runner's version:
+//   sbt version in this project: 1.5.5
+//   sbt script version: 1.5.5   (older runners)
+//   sbt runner version: 2.0.9   (sbt 1.10+ and 2.x runners)
+// The project line is the version that builds the project. sbt 2 runners omit
+// it when there is no project/build.properties and build with their own version.
+export function parseSbtVersionOutput(lines: string[]): string | undefined {
+  const patterns = [
+    /sbt version in this project:\s*(\S+)/,
+    /sbt (?:runner|script) version:\s*(\S+)/,
+  ];
+  for (const pattern of patterns) {
+    for (const line of lines) {
+      const match = pattern.exec(line);
+      if (match) {
+        return match[1];
+      }
+    }
+  }
+  return undefined;
 }
