@@ -12,6 +12,10 @@ of your CI (Build) system.
 
 This plugin provides dependency metadata for **sbt** projects that use `sbt` and have a `build.sbt` file.
 
+## Contributing
+
+This repository is closed to public contributions.
+
 # Support
 
 ❓ No issues expected but tests not updated yet to verify
