@@ -75,6 +75,33 @@ jobs:
           command: npm test
       - store_test_results:
           path: ./coverage
+  test-sbt2:
+    <<: *params
+    docker:
+      - image: cimg/node:<<parameters.node_version>>
+    steps:
+      - checkout
+      - run:
+          name: Install sdkman
+          command: |
+            curl -s "https://get.sdkman.io?rcupdate=false" | bash
+            echo -e '\nsource "/home/circleci/.sdkman/bin/sdkman-init.sh"' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Install JDK <<parameters.jdk_version>>
+          command: sdk install java <<parameters.jdk_version>>
+      - run:
+          name: Install sbt << parameters.sbt_version >>
+          command: sdk install sbt <<parameters.sbt_version>>
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Test sbt 2
+          no_output_timeout: 30m
+          command: npm run test:sbt2
+      - store_test_results:
+          path: ./coverage
   release:
     <<: *params
     resource_class: small
@@ -117,6 +144,15 @@ workflows:
           name: Test node=<<matrix.node_version>> jdk=<<matrix.jdk_version>> sbt=<<matrix.sbt_version>>
           context: nodejs-install
           <<: *test_matrix
+          filters:
+            branches:
+              ignore:
+                - master
+      - test-sbt2:
+          name: Test node=20.19.1 jdk=17.0.20-sem sbt=2.0.9
+          context: nodejs-install
+          jdk_version: '17.0.20-sem'
+          sbt_version: '2.0.9'
           filters:
             branches:
               ignore:
