@@ -275,9 +275,12 @@ function buildHintMessage(options, sbtVersion?: string) {
   );
 }
 
-// sbt 2 starts in thin client mode, which joins every trailing argument into
-// one command line. Separate commands must therefore be passed as a single
-// ';'-separated argument. sbt 0.13 rejects that form, so it is only used for 2+.
+// sbt 2 defaults to the sbtn thin client, which starts an sbt server in the
+// background and leaves that JVM running after the scan. `--server` runs sbt
+// in the foreground instead (like `--no-daemon` for Gradle).
+// The thin client also joins every trailing argument into one command line, so
+// the commands are passed as one ';'-separated argument. That form works with
+// or without the thin client, but sbt 0.13 rejects it, so it is only used for 2+.
 function isSbt2OrLater(sbtVersion?: string): boolean {
   const version = sbtVersion ? semver.coerce(sbtVersion) : null;
   return !!version && version.major >= 2;
@@ -300,6 +303,7 @@ export function buildArgs(
   } else if (isCoursierProject) {
     args.push('coursierDependencyTree'); // coursier
   } else if (isSbt2OrLater(sbtVersion)) {
+    args.unshift('--server');
     args.push('set asciiGraphWidth := 999999999; dependencyTree');
   } else {
     // enhance sbt default output width from 40 chars to the max

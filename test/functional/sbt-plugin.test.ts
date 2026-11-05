@@ -82,7 +82,13 @@ describe('native dependencyTree command by sbt version', () => {
     ${'2.0.9'}      | ${oneCommand}
   `('sbt $sbtVersion', ({ sbtVersion, expected }) => {
     const result = plugin.buildArgs(['-Paxis'], false, false, sbtVersion);
-    expect(result).toEqual(['-Dsbt.log.noformat=true', '-Paxis', ...expected]);
+    const runInForeground = expected === oneCommand ? ['--server'] : [];
+    expect(result).toEqual([
+      ...runInForeground,
+      '-Dsbt.log.noformat=true',
+      '-Paxis',
+      ...expected,
+    ]);
   });
 
   test('coursier and snykRenderTree are unaffected by sbt 2', () => {
