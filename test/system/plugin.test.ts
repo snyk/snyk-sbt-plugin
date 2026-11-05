@@ -151,6 +151,23 @@ test('run inspect() on project with custom non-standard config (missing moduleGr
   expect(result.package.dependencies['axis:axis'].version).toBe('1.4');
 });
 
+test('run inspect() via nested build.sbt that is a subproject of the parent', async () => {
+  // `snyk test --all-projects` discovers the nested build.sbt. The parent
+  // declares that directory as a project base (ID may differ from the folder
+  // name); inspect matches via sbt project bases and runs from the parent.
+  const result: any = await plugin.inspect(
+    fixtureDir,
+    'testproj-multi-module/subModule/build.sbt',
+    {},
+  );
+
+  expect(result.plugin.name).toBe('bundled:sbt');
+  expect(result.package.packageFormatVersion).toBe('mvn:0.0.1');
+  // Dep lives only on the submodule; visible because we inspect from the
+  // parent and ask every project for its tree.
+  expect(flattenCoords(result.package)).toContain('com.google.code.gson:gson');
+});
+
 test('run inspect() proj with provided 1.7', async () => {
   const result = await plugin.inspect(
     fixtureDir,
@@ -171,3 +188,16 @@ test('run inspect() proj with provided 1.7', async () => {
     ).toBe('2.3.5');
   }
 });
+
+function flattenCoords(node: any, acc: string[] = []): string[] {
+  if (node?.name) {
+    acc.push(node.name);
+  }
+  const deps = node?.dependencies;
+  if (deps) {
+    for (const key of Object.keys(deps)) {
+      flattenCoords(deps[key], acc);
+    }
+  }
+  return acc;
+}
