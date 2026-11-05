@@ -50,3 +50,5 @@ The below table illustrates all supported **sbt** versions.
 | 13   | ✅                        | ✅                | ✅                  | ✅     | ✅     | ✅     | ✅     | ✅     | ✅     |
 | 14   | ✅                        | ✅                | ✅                  | ✅     | ✅     | ✅     | ✅     | ✅     | ✅     |
 | 15   | ✅                        | ✅                | ✅                  | ✅     | ✅     | ✅     | ✅     | ✅     | ✅     |
+
+sbt 2.\* is supported on Java 17 and later, through the built-in `dependencyTree` command.

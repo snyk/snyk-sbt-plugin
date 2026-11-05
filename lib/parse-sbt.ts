@@ -5,28 +5,32 @@ import * as types from './types';
 
 export { parse, parseSbtPluginResults };
 
+// Strips colour and cursor control sequences (CSI), e.g. '\u001b[0m', '\u001b[0J'.
+const ANSI_CONTROL_SEQUENCE = /\u001b\[[0-9;?]*[A-Za-z]/g;
+const LOG_LEVEL_PREFIX = /^\[([a-z]+)\] ?/;
+const TREE_ENTRY = /^[ |]*\+-\S/;
+const ROOT_COORDINATE = /^[\w_.\-]+:[\w_.\-]+:[\w_.\-]+( \[S\])?$/;
+
+// sbt 0.13 and 1.x print the dependency tree through the logger, so every line
+// starts with '[info] '. sbt 2 prints it straight to stdout with no prefix.
+// Lines logged at any other level are never part of the tree.
+function removeInfoPrefix(line: string): string | null {
+  const prefix = LOG_LEVEL_PREFIX.exec(line);
+  if (!prefix) {
+    return line;
+  }
+  return prefix[1] === 'info' ? line.slice(prefix[0].length) : null;
+}
+
 function convertStrToTree(lines) {
   const newLines = lines
-    .map((line) => {
-      return line.replace(/\u001b\[0m/g, '');
-    })
-    .filter((line) => {
-      if (line.indexOf('[info] ') === 0 && line.indexOf('+-') > -1) {
-        return true;
-      }
-      let match = line.match(/\[info\]\s[\w_\.\-]+:[\w_\.\-]+:[\w_\.\-]+/);
-      if (match && match[0].length === line.length) {
-        return true;
-      }
-      match = line.match(/\[info\]\s[\w_\.\-]+:[\w_\.\-]+:[\w_\.\-]+\s\[S\]/);
-      if (match && match[0].length === line.length) {
-        return true;
-      }
-      return false;
-    })
+    .map((line) => removeInfoPrefix(line.replace(ANSI_CONTROL_SEQUENCE, '')))
+    .filter(
+      (line): line is string =>
+        line !== null && (TREE_ENTRY.test(line) || ROOT_COORDINATE.test(line)),
+    )
     .map((line) => {
       return line
-        .slice(7, line.length) // slice off '[info] '
         .replace(' [S]', '')
         .replace(/\|/g, ' ')
         .replace('+-', '')

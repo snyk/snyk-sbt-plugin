@@ -28,7 +28,8 @@
     "lint": "eslint --color --cache 'lib/**/*.{js,ts}'",
     "format": "prettier --write '{lib,test}/**/*.{js,ts}'",
     "prepare": "npm run build",
-    "test": "jest --runInBand --verbose"
+    "test": "jest --runInBand --verbose",
+    "test:sbt2": "SBT_2_TESTS=true jest --runInBand --verbose test/system/sbt-2.test.ts"
   },
   "author": "snyk.io",
   "license": "Apache-2.0",
