@@ -26,11 +26,11 @@ This repository is closed to public contributions.
 
 ## Supported OS
 
-| OS      | Node 22 | Node 24 | Node 26 |
-|---------|---------|---------|---------|
-| Windows | ✅       | ✅       | ✅       |
-| Linux   | ✅       | ✅       | ✅       |
-| OSX     | ✅       | ✅       | ✅       |
+| OS      | Node 22 |
+|---------|---------|
+| Windows | ✅       |
+| Linux   | ✅       |
+| OSX     | ✅       |
 
 ## Supported Java & sbt versions
 

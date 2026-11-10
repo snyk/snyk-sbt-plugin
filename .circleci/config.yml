@@ -23,8 +23,6 @@ test_matrix: &test_matrix
     parameters:
       node_version:
         - '22'
-        - '24'
-        - '26'
       jdk_version:
         - '8.0.482.1-sem'
         - '11.0.32-sem'
