@@ -26,7 +26,7 @@ This repository is closed to public contributions.
 
 ## Supported OS
 
-| OS      | Node 20 |
+| OS      | Node 22 |
 |---------|---------|
 | Windows | ✅       |
 | Linux   | ✅       |
