@@ -33,7 +33,7 @@ jobs:
   security-scans:
     resource_class: small
     docker:
-      - image: cimg/node:22
+      - image: cimg/node:24
     steps:
       - checkout
       - run:
@@ -159,7 +159,7 @@ workflows:
                 - master
       - release:
           name: Release
-          node_version: '22'
+          node_version: '24'  # npm 11+ (Node 24) is needed for OIDC trusted publishing
           context:
             - nodejs-install
             - github-release
