@@ -98,12 +98,12 @@ describe('(These tests will fail locally if sbt-dependency-graph plugin is insta
     );
 
     expect(result.plugin.name).toBe(handler);
-    expect(result.package.packageFormatVersion).toBe('mvn:0.0.1'),
+    (expect(result.package.packageFormatVersion).toBe('mvn:0.0.1'),
       expect(
         result.package.dependencies['axis:axis'].dependencies[
           'axis:axis-wsdl4j'
         ].version,
-      ).toBe('1.5.1');
+      ).toBe('1.5.1'));
   });
 });
 
