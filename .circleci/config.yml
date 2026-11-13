@@ -38,7 +38,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm ci
       - prodsec/security_scans:
           mode: auto
           release-branch: master
@@ -65,7 +65,7 @@ jobs:
           command: sdk install sbt <<parameters.sbt_version>>
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm ci
       - run:
           name: Lint
           command: npm run lint
@@ -95,7 +95,7 @@ jobs:
           command: sdk install sbt <<parameters.sbt_version>>
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm ci
       - run:
           name: Test sbt 2
           no_output_timeout: 30m
@@ -111,7 +111,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm ci
       - run:
           name: Release
           command: |
