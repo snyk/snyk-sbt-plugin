@@ -12,6 +12,10 @@ of your CI (Build) system.
 
 This plugin provides dependency metadata for **sbt** projects that use `sbt` and have a `build.sbt` file.
 
+## Contributing
+
+This repository is closed to public contributions.
+
 # Support
 
 ❓ No issues expected but tests not updated yet to verify
@@ -22,7 +26,7 @@ This plugin provides dependency metadata for **sbt** projects that use `sbt` and
 
 ## Supported OS
 
-| OS      | Node 20 |
+| OS      | Node 22 |
 |---------|---------|
 | Windows | ✅       |
 | Linux   | ✅       |
@@ -46,3 +50,5 @@ The below table illustrates all supported **sbt** versions.
 | 13   | ✅                        | ✅                | ✅                  | ✅     | ✅     | ✅     | ✅     | ✅     | ✅     |
 | 14   | ✅                        | ✅                | ✅                  | ✅     | ✅     | ✅     | ✅     | ✅     | ✅     |
 | 15   | ✅                        | ✅                | ✅                  | ✅     | ✅     | ✅     | ✅     | ✅     | ✅     |
+
+sbt 2.\* is supported on Java 17 and later, through the built-in `dependencyTree` command.

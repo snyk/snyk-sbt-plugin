@@ -141,3 +141,48 @@ test('parse the projects of a build without a project listing', () => {
 
   expect(result).toEqual([]);
 });
+
+describe('native dependencyTree command by sbt version', () => {
+  const twoCommands = ['set asciiGraphWidth := 999999999', 'dependencyTree'];
+  const oneCommand = ['set asciiGraphWidth := 999999999; dependencyTree'];
+
+  test.each`
+    sbtVersion      | expected
+    ${undefined}    | ${twoCommands}
+    ${'0.13.18'}    | ${twoCommands}
+    ${'1.10.7'}     | ${twoCommands}
+    ${'not-semver'} | ${twoCommands}
+    ${'2.0.0-RC6'}  | ${oneCommand}
+    ${'2.0.9'}      | ${oneCommand}
+  `('sbt $sbtVersion', ({ sbtVersion, expected }) => {
+    const result = plugin.buildArgs(['-Paxis'], false, false, [], sbtVersion);
+    const runInForeground = expected === oneCommand ? ['--server'] : [];
+    expect(result).toEqual([
+      ...runInForeground,
+      '-Dsbt.log.noformat=true',
+      '-Paxis',
+      ...expected,
+    ]);
+  });
+
+  test('sbt 2 multi-module build runs in the foreground', () => {
+    expect(
+      plugin.buildArgs(undefined, false, false, ['root', 'api'], '2.0.9'),
+    ).toEqual([
+      '--server',
+      '-Dsbt.log.noformat=true',
+      'set ThisBuild / asciiGraphWidth := 999999999; project root; dependencyTree; project api; dependencyTree',
+    ]);
+  });
+
+  test('coursier and snykRenderTree are unaffected by sbt 2', () => {
+    expect(plugin.buildArgs([], true, false, [], '2.0.9')).toEqual([
+      '-Dsbt.log.noformat=true',
+      'coursierDependencyTree',
+    ]);
+    expect(plugin.buildArgs([], false, true, [], '2.0.9')).toEqual([
+      '-Dsbt.log.noformat=true',
+      'snykRenderTree',
+    ]);
+  });
+});

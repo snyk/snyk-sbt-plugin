@@ -7,7 +7,7 @@ params: &params
   parameters:
     node_version:
       type: string
-      default: '20.19.1'
+      default: '22'
     jdk_version:
       type: string
       default: '8.0.482.1-sem'
@@ -22,7 +22,7 @@ test_matrix: &test_matrix
   matrix:
     parameters:
       node_version:
-        - '20.19.1'
+        - '22'
       jdk_version:
         - '8.0.482.1-sem'
         - '11.0.32-sem'
@@ -33,12 +33,12 @@ jobs:
   security-scans:
     resource_class: small
     docker:
-      - image: circleci/node:lts
+      - image: cimg/node:24
     steps:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm ci
       - prodsec/security_scans:
           mode: auto
           release-branch: master
@@ -65,7 +65,7 @@ jobs:
           command: sdk install sbt <<parameters.sbt_version>>
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm ci
       - run:
           name: Lint
           command: npm run lint
@@ -73,6 +73,33 @@ jobs:
           name: Test
           no_output_timeout: 30m
           command: npm test
+      - store_test_results:
+          path: ./coverage
+  test-sbt2:
+    <<: *params
+    docker:
+      - image: cimg/node:<<parameters.node_version>>
+    steps:
+      - checkout
+      - run:
+          name: Install sdkman
+          command: |
+            curl -s "https://get.sdkman.io?rcupdate=false" | bash
+            echo -e '\nsource "/home/circleci/.sdkman/bin/sdkman-init.sh"' >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Install JDK <<parameters.jdk_version>>
+          command: sdk install java <<parameters.jdk_version>>
+      - run:
+          name: Install sbt << parameters.sbt_version >>
+          command: sdk install sbt <<parameters.sbt_version>>
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Test sbt 2
+          no_output_timeout: 30m
+          command: npm run test:sbt2
       - store_test_results:
           path: ./coverage
   release:
@@ -84,7 +111,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm ci
       - run:
           name: Release
           command: |
@@ -121,9 +148,18 @@ workflows:
             branches:
               ignore:
                 - master
+      - test-sbt2:
+          name: Test node=22 jdk=17.0.20-sem sbt=2.0.9
+          context: nodejs-install
+          jdk_version: '17.0.20-sem'
+          sbt_version: '2.0.9'
+          filters:
+            branches:
+              ignore:
+                - master
       - release:
           name: Release
-          node_version: '24.18'
+          node_version: '24'  # npm 11+ (Node 24) is needed for OIDC trusted publishing
           context:
             - nodejs-install
             - github-release

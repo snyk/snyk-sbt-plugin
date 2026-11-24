@@ -93,6 +93,87 @@ test('parse `sbt dependencies` output: single configuration', async () => {
   ).toBe('2.5');
 });
 
+describe('parse `sbt dependencyTree` output: sbt 2', () => {
+  const sbt2Output = () =>
+    fs
+      .readFileSync(
+        path.join(__dirname, '..', 'fixtures', 'sbt-2-dependency-output.txt'),
+        'utf8',
+      )
+      .split('\n');
+
+  test('reads the tree printed without [info] prefixes', () => {
+    const depTree = parser.parse(sbt2Output(), 'unused', 'unused', false);
+
+    expect(depTree.name).toBe('com.example:sbt2-app_3');
+    expect(depTree.version).toBe('0.1.0-SNAPSHOT');
+    // the [info] banner and [success] lines contribute nothing
+    expect(Object.keys(depTree.dependencies!).sort()).toEqual([
+      'com.fasterxml.jackson.core:jackson-databind',
+      'com.fasterxml.jackson.module:jackson-module-scala_3',
+      'com.google.code.gson:gson',
+      'org.scala-lang:scala3-library_3',
+    ]);
+
+    const scalaModule =
+      depTree.dependencies![
+        'com.fasterxml.jackson.module:jackson-module-scala_3'
+      ];
+    expect(scalaModule.version).toBe('2.15.0');
+    // evicted versions are dropped, the selected versions kept
+    expect(
+      scalaModule.dependencies!['com.fasterxml.jackson.core:jackson-databind']
+        .version,
+    ).toBe('2.17.2');
+    expect(
+      scalaModule.dependencies!['com.fasterxml.jackson.core:jackson-databind']
+        .dependencies!['com.fasterxml.jackson.core:jackson-core'].version,
+    ).toBe('2.17.2');
+    expect(
+      scalaModule.dependencies!['org.scala-lang:scala3-library_3'].version,
+    ).toBe('3.3.4');
+    expect(
+      scalaModule.dependencies!['com.thoughtworks.paranamer:paranamer'].version,
+    ).toBe('2.8');
+  });
+
+  test('ignores coordinates logged at a level other than info', () => {
+    const output = sbt2Output().concat([
+      '[warn] com.example:not-a-dependency:1.0.0',
+      '[error]   +-com.example:also-not-a-dependency:1.0.0',
+    ]);
+
+    const names = flatten(parser.parse(output, 'unused', 'unused', false));
+
+    expect(names).not.toContain('com.example:not-a-dependency');
+    expect(names).not.toContain('com.example:also-not-a-dependency');
+  });
+
+  test('ignores unprefixed lines that are not tree entries', () => {
+    const output = sbt2Output().concat([
+      'downloading https://repo1.maven.org/a+-b',
+      'see com.example:x:1.0.0 for details',
+    ]);
+
+    const names = flatten(parser.parse(output, 'unused', 'unused', false));
+
+    expect(names.some((name) => name.includes('repo1'))).toBe(false);
+    expect(names).not.toContain('com.example:x');
+  });
+
+  test('strips colour codes from coloured output', () => {
+    const coloured = sbt2Output().map((line) =>
+      line.startsWith('  +-') ? `\u001b[32m${line}\u001b[0m` : line,
+    );
+
+    const depTree = parser.parse(coloured, 'unused', 'unused', false);
+
+    expect(depTree.dependencies!['com.google.code.gson:gson'].version).toBe(
+      '2.10.1',
+    );
+  });
+});
+
 test('parse `sbt dependencies` output: plugin 1.2.8', async () => {
   const sbtOutput = fs
     .readFileSync(

@@ -96,17 +96,22 @@ export async function inspect(
   }
 
   options.useCoursier = false;
+  const sbtVersion = await getSbtVersion(root, targetFile);
   try {
     result = await legacyInspect(root, targetFile, options);
     return result;
   } catch (err) {
-    const hintMsg = buildHintMessage(options);
+    const hintMsg = buildHintMessage(options, sbtVersion);
     err.message = err.message + '\n' + hintMsg;
     throw new Error(err);
   }
 }
 
-async function legacyInspect(root: string, targetFile: string, options: any) {
+async function legacyInspect(
+  root: string,
+  targetFile: string,
+  options: any,
+) {
   const targetFilePath = path.dirname(path.resolve(root, targetFile));
   if (!fs.existsSync(targetFilePath)) {
     debug(
@@ -125,14 +130,14 @@ async function legacyInspect(root: string, targetFile: string, options: any) {
   }
 
   const useCoursier = options.useCoursier;
-  const sbtVersion = await getSbtVersion(buildRoot, 'build.sbt');
+  const buildSbtVersion = await getSbtVersion(buildRoot, 'build.sbt');
 
   const sbtArgs = buildArgs(
     options.args,
     useCoursier,
     false,
     projects,
-    sbtVersion,
+    buildSbtVersion,
   );
   debug(`running command: sbt ${sbtArgs.join(' ')}`);
   const result = {
@@ -458,8 +463,9 @@ async function pluginInspect(
   }
 }
 
-function buildHintMessage(options) {
-  const dgArgs = '`sbt ' + buildArgs(options.args, false).join(' ') + '`';
+function buildHintMessage(options, sbtVersion?: string) {
+  const dgArgs =
+    '`sbt ' + buildArgs(options.args, false, false, [], sbtVersion).join(' ') + '`';
   const csArgs = '`sbt ' + buildArgs(options.args, true).join(' ') + '`';
   return (
     '\n\n' +
@@ -482,6 +488,17 @@ function buildHintMessage(options) {
     csArgs +
     ' and contact support@snyk.io\n'
   );
+}
+
+// sbt 2 defaults to the sbtn thin client, which starts an sbt server in the
+// background and leaves that JVM running after the scan. `--server` runs sbt
+// in the foreground instead (like `--no-daemon` for Gradle).
+// The thin client also joins every trailing argument into one command line, so
+// the commands are passed as one ';'-separated argument. That form works with
+// or without the thin client, but sbt 0.13 rejects it, so it is only used for 2+.
+function isSbt2OrLater(sbtVersion?: string): boolean {
+  const version = sbtVersion ? semver.coerce(sbtVersion) : null;
+  return !!version && version.major >= 2;
 }
 
 export function buildArgs(
@@ -511,7 +528,13 @@ export function buildArgs(
         : 'coursierDependencyTree',
     ); // coursier
   } else if (isMultiProject) {
+    if (isSbt2OrLater(sbtVersion)) {
+      args.unshift('--server');
+    }
     args.push(nativeMultiProjectCommand(projects, sbtVersion)); // sbt native
+  } else if (isSbt2OrLater(sbtVersion)) {
+    args.unshift('--server');
+    args.push('set asciiGraphWidth := 999999999; dependencyTree');
   } else {
     // enhance sbt default output width from 40 chars to the max
     args.push('set asciiGraphWidth := 999999999');

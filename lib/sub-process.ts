@@ -1,4 +1,5 @@
 import * as childProcess from 'child_process';
+import { cleanSnykEnv } from '@snyk/cli-interface';
 import * as treeKill from 'tree-kill';
 import * as debugModule from 'debug';
 import { escapeAll, quoteAll } from 'shescape/stateless';
@@ -16,7 +17,11 @@ export const execute = (
   args: string[],
   options: { cwd?: string },
 ): Promise<string[]> => {
-  const spawnOptions: { cwd?: string; shell: boolean } = { shell: false };
+  const spawnOptions: {
+    cwd?: string;
+    shell: boolean;
+    env: Record<string, string | undefined>;
+  } = { shell: false, env: cleanSnykEnv(process.env, process.env) };
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
   }
