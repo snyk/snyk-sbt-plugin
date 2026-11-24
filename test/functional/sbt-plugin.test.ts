@@ -92,7 +92,29 @@ test('check build args sets the graph width per project on sbt 0.13', () => {
   );
   expect(result).toEqual([
     '-Dsbt.log.noformat=true',
-    'project root; set asciiGraphWidth := 999999999; dependencyTree; project api; set asciiGraphWidth := 999999999; dependencyTree',
+    'project root',
+    'set asciiGraphWidth := 999999999',
+    'dependencyTree',
+    'project api',
+    'set asciiGraphWidth := 999999999',
+    'dependencyTree',
+  ]);
+});
+
+test('check build args for coursier on sbt 0.13 passes one command per argument', () => {
+  const result = plugin.buildArgs(
+    undefined,
+    true,
+    false,
+    ['root', 'api'],
+    '0.13.18',
+  );
+  expect(result).toEqual([
+    '-Dsbt.log.noformat=true',
+    'project root',
+    'coursierDependencyTree',
+    'project api',
+    'coursierDependencyTree',
   ]);
 });
 

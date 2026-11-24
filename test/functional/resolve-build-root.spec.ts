@@ -133,3 +133,41 @@ describe('resolveBuildRoot', () => {
     expect(showCalls(execute)).toEqual([]);
   });
 });
+
+describe('resolveBuildRoot on sbt 2', () => {
+  let tmp: string;
+
+  beforeEach(() => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'sbt2-root-'));
+    fs.writeFileSync(path.join(tmp, 'build.sbt'), '');
+    fs.mkdirSync(path.join(tmp, 'project'));
+    fs.writeFileSync(
+      path.join(tmp, 'project', 'build.properties'),
+      'sbt.version=2.0.0\n',
+    );
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    fs.rmSync(tmp, { recursive: true, force: true });
+  });
+
+  it('runs every project listing in the foreground', async () => {
+    const execute = jest
+      .spyOn(subProcess, 'execute')
+      .mockImplementation(async (_cmd, args) =>
+        args[args.length - 1] === 'projects'
+          ? projectsOutput(tmp, ['root', 'api'])
+          : (() => {
+              throw new Error('sbt failed');
+            })(),
+      );
+
+    await resolveBuildRoot(tmp, undefined);
+
+    expect(execute.mock.calls.length).toBeGreaterThan(1);
+    for (const [, args] of execute.mock.calls) {
+      expect(args[0]).toBe('--server');
+    }
+  });
+});
