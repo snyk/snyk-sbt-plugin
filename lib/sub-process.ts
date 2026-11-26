@@ -21,7 +21,12 @@ export const execute = (
     cwd?: string;
     shell: boolean;
     env: Record<string, string | undefined>;
-  } = { shell: false, env: cleanSnykEnv(process.env, process.env) };
+  } = {
+    shell: false,
+    env: cleanSnykEnv(process.env, process.env, {
+      restoreProxy: { lowercase: true },
+    }),
+  };
   if (options && options.cwd) {
     spawnOptions.cwd = options.cwd;
   }
