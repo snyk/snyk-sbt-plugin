@@ -15,7 +15,22 @@ import * as subProcess from './sub-process';
 import * as parser from './parse-sbt';
 import * as types from './types';
 import { isPluginInstalled } from './plugin-search';
+import {
+  findParentBuildDirs,
+  isProjectBaseDir,
+  LIST_PROJECT_BASES_COMMAND,
+  parseBaseDirectories,
+  parseProjectBases,
+} from './sbt-build-root';
 import { getSbtVersion } from './version';
+
+export {
+  findParentBuildDirs,
+  isProjectBaseDir,
+  LIST_PROJECT_BASES_COMMAND,
+  parseBaseDirectories,
+  parseProjectBases,
+} from './sbt-build-root';
 
 import * as tmp from 'tmp';
 tmp.setGracefulCleanup();
@@ -36,19 +51,34 @@ export async function inspect(
     options = { dev: false };
   }
 
+  const targetFilePath = path.dirname(path.resolve(root, targetFile));
+  if (!fs.existsSync(targetFilePath)) {
+    debug(
+      `build.sbt not found at location: ${targetFilePath}. This may result in no dependencies`,
+    );
+  }
+
+  // sbt runs from the build root, which is a parent of a nested `build.sbt`
+  // when that is a subproject, so plugins are looked up there as well.
+  const build = await resolveBuildRoot(targetFilePath, options.args);
+  if (build.buildRoot !== targetFilePath) {
+    debug(
+      `inspect: nested path "${targetFilePath}" is a subproject base of "${build.buildRoot}"`,
+    );
+  }
   const isCoursierPresent = await isPluginInstalled(
-    root,
-    targetFile,
+    build.buildRoot,
+    'build.sbt',
     sbtCoursierPluginName,
   );
   const isSbtDependencyGraphPresent = await isPluginInstalled(
-    root,
-    targetFile,
+    build.buildRoot,
+    'build.sbt',
     sbtDependencyGraphPluginName,
   );
   const isNewSbtDependencyGraphPresent = await isPluginInstalled(
-    root,
-    targetFile,
+    build.buildRoot,
+    'build.sbt',
     sbtDependencyGraphPluginNameNew,
   );
 
@@ -59,7 +89,7 @@ export async function inspect(
   if (isCoursierPresent) {
     try {
       options.useCoursier = true;
-      result = await legacyInspect(root, targetFile, options);
+      result = await legacyInspect(root, build, options);
       return result;
     } catch (err) {
       debug('Coursier failed with error: ', err);
@@ -70,7 +100,7 @@ export async function inspect(
   if (isSbtDependencyGraphPresent) {
     try {
       debug('Applying plugin inspect');
-      result = await pluginInspect(root, targetFile, options);
+      result = await pluginInspect(root, build, options);
     } catch (err) {
       debug('pluginInspect failed with error: ', err);
     }
@@ -81,9 +111,9 @@ export async function inspect(
   }
 
   options.useCoursier = false;
-  const sbtVersion = await getSbtVersion(root, targetFile);
+  const sbtVersion = await getSbtVersion(build.buildRoot, 'build.sbt');
   try {
-    result = await legacyInspect(root, targetFile, options, sbtVersion);
+    result = await legacyInspect(root, build, options);
     return result;
   } catch (err) {
     const hintMsg = buildHintMessage(options, sbtVersion);
@@ -94,23 +124,24 @@ export async function inspect(
 
 async function legacyInspect(
   root: string,
-  targetFile: string,
+  build: { buildRoot: string; projects: string[] },
   options: any,
-  sbtVersion?: string,
 ) {
-  const targetFilePath = path.dirname(path.resolve(root, targetFile));
-  if (!fs.existsSync(targetFilePath)) {
-    debug(
-      `build.sbt not found at location: ${targetFilePath}. This may result in no dependencies`,
-    );
-  }
+  const { buildRoot, projects } = build;
   const useCoursier = options.useCoursier;
+  const buildSbtVersion = await getSbtVersion(buildRoot, 'build.sbt');
 
-  const sbtArgs = buildArgs(options.args, useCoursier, false, sbtVersion);
+  const sbtArgs = buildArgs(
+    options.args,
+    useCoursier,
+    false,
+    projects,
+    buildSbtVersion,
+  );
   debug(`running command: sbt ${sbtArgs.join(' ')}`);
   const result = {
     sbtOutput: await subProcess.execute('sbt', sbtArgs, {
-      cwd: targetFilePath,
+      cwd: buildRoot,
     }),
     coursier: useCoursier,
   };
@@ -131,6 +162,199 @@ async function legacyInspect(
     },
     package: depTree,
   };
+}
+
+export async function resolveBuildRoot(
+  startDir: string,
+  sbtArgs,
+): Promise<{ buildRoot: string; projects: string[] }> {
+  for (const parent of findParentBuildDirs(startDir)) {
+    const listed = await listProjectsAndBases(sbtArgs, parent);
+    if (listed.projects.length === 0) {
+      continue;
+    }
+    if (isProjectBaseDir(listed.baseDirs, startDir)) {
+      return { buildRoot: parent, projects: listed.projects };
+    }
+    // The chained `show` stops at the first failing project, so bases may be
+    // missing. Ask each project on its own rather than guess from names/paths.
+    if (
+      !listed.complete &&
+      (await isBaseOfAnyProject(
+        sbtArgs,
+        parent,
+        listed.projects,
+        startDir,
+        listed.sbtVersion,
+      ))
+    ) {
+      return { buildRoot: parent, projects: listed.projects };
+    }
+  }
+
+  const listed = await listProjectsAndBases(sbtArgs, startDir);
+  return {
+    buildRoot: startDir,
+    projects: listed.projects,
+  };
+}
+
+/**
+ * Single sbt launch: project IDs + canonical base directories (ID may ≠ dirname).
+ * Falls back to `sbt projects` if the session command is unavailable.
+ *
+ * `complete` is false when sbt could not report every project's base.
+ */
+async function listProjectsAndBases(
+  sbtArgs,
+  buildDir: string,
+): Promise<{
+  projects: string[];
+  baseDirs: string[];
+  complete: boolean;
+  sbtVersion: string;
+}> {
+  const sbtVersion = await getSbtVersion(buildDir, 'build.sbt');
+  const args = listingArgs(sbtArgs, LIST_PROJECT_BASES_COMMAND, sbtVersion);
+
+  try {
+    const output = await subProcess.execute('sbt', args, { cwd: buildDir });
+    const parsed = parseProjectBases(output);
+    if (parsed.length > 0) {
+      const projects = parsed.map((p) => p.id);
+      const baseDirs = parsed.map((p) => p.base);
+      debug(`sbt projects in this build: ${projects.join(', ')}`);
+      debug(`sbt project base directories: ${baseDirs.join(', ')}`);
+      return { projects, baseDirs, complete: true, sbtVersion };
+    }
+    debug(
+      'snykListProjectBases produced no rows; falling back to projects + show',
+    );
+  } catch (err) {
+    debug('Failed to list sbt project bases in one call: ', err);
+  }
+
+  const projects = await listProjects(sbtArgs, buildDir, sbtVersion);
+  const baseDirs = await listProjectBaseDirectories(
+    sbtArgs,
+    buildDir,
+    projects,
+    sbtVersion,
+  );
+  return {
+    projects,
+    baseDirs: baseDirs || [],
+    complete: baseDirs !== undefined,
+    sbtVersion,
+  };
+}
+
+/**
+ * Base directories of `projects`, or undefined if the `show` chain failed
+ * (sbt aborts the chain at the first failure, so the output is partial).
+ */
+async function listProjectBaseDirectories(
+  sbtArgs,
+  buildDir: string,
+  projects: string[],
+  sbtVersion?: string,
+): Promise<string[] | undefined> {
+  if (projects.length === 0) {
+    return [];
+  }
+
+  const args = listingArgs(
+    sbtArgs,
+    projects.map((id) => `show ${id}/baseDirectory`).join('; '),
+    sbtVersion,
+  );
+
+  try {
+    const output = await subProcess.execute('sbt', args, { cwd: buildDir });
+    const baseDirs = parseBaseDirectories(output);
+    debug(`sbt project base directories: ${baseDirs.join(', ')}`);
+    return baseDirs;
+  } catch (err) {
+    debug('Failed to list sbt project base directories: ', err);
+    return undefined;
+  }
+}
+
+/**
+ * Last resort when the chained `show` failed: one sbt launch per project,
+ * stopping at the first project whose base is `dir`. Failing projects are
+ * skipped.
+ */
+async function isBaseOfAnyProject(
+  sbtArgs,
+  buildDir: string,
+  projects: string[],
+  dir: string,
+  sbtVersion?: string,
+): Promise<boolean> {
+  debug(
+    `sbt base directories incomplete for ${buildDir}; checking ${projects.length} projects one by one`,
+  );
+  for (const id of projects) {
+    const baseDirs = await listProjectBaseDirectories(
+      sbtArgs,
+      buildDir,
+      [id],
+      sbtVersion,
+    );
+    if (baseDirs && isProjectBaseDir(baseDirs, dir)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+async function listProjects(
+  sbtArgs,
+  targetFilePath: string,
+  sbtVersion?: string,
+): Promise<string[]> {
+  const args = listingArgs(sbtArgs, 'projects', sbtVersion);
+
+  try {
+    const output = await subProcess.execute('sbt', args, {
+      cwd: targetFilePath,
+    });
+    const projects = parseProjects(output);
+    debug(`sbt projects in this build: ${projects.join(', ')}`);
+    return projects;
+  } catch (err) {
+    debug(
+      'Failed to list sbt projects, inspecting current project only: ',
+      err,
+    );
+    return [];
+  }
+}
+
+export function parseProjects(sbtOutput: string[]): string[] {
+  const projects: string[] = [];
+  let insideProjectList = false;
+
+  for (const line of sbtOutput) {
+    const plain = line.replace(/\u001b\[[0-9;]*[A-Za-z]/g, '');
+    if (/^\[info\]\s+In\s+\S+/.test(plain)) {
+      insideProjectList = true;
+      continue;
+    }
+    if (!insideProjectList) {
+      continue;
+    }
+    const match = plain.match(/^\[info\]\s+(?:\*\s+)?([A-Za-z0-9_.-]+)\s*$/);
+    if (!match) {
+      continue;
+    }
+    if (!projects.includes(match[1])) {
+      projects.push(match[1]);
+    }
+  }
+
+  return projects;
 }
 
 async function injectSbtScript(
@@ -187,23 +411,23 @@ function generateSbtPluginPath(sbtVersion: string): string {
 
 async function pluginInspect(
   root: string,
-  targetFile: string,
+  build: { buildRoot: string; projects: string[] },
   options: any,
 ): Promise<types.PluginResult | null> {
   let injectedScript: InjectedScript | undefined;
   try {
-    const targetFolderPath = path.dirname(path.resolve(root, targetFile));
+    const { buildRoot } = build;
     const sbtArgs = buildArgs(options.args, false, true);
-    const sbtVersion = await getSbtVersion(root, targetFile);
+    const sbtVersion = await getSbtVersion(buildRoot, 'build.sbt');
     const sbtPluginPath = generateSbtPluginPath(sbtVersion);
     const packageName = path.basename(root);
     const packageVersion = '1.0.0';
 
-    injectedScript = await injectSbtScript(sbtPluginPath, targetFolderPath);
+    injectedScript = await injectSbtScript(sbtPluginPath, buildRoot);
     debug('injectedScript.path: ' + injectedScript.path);
     debug('args passed to plugin inspect: ', sbtArgs.join(' '));
     const stdout = await subProcess.execute('sbt', sbtArgs, {
-      cwd: targetFolderPath,
+      cwd: buildRoot,
     });
     return {
       plugin: {
@@ -250,7 +474,9 @@ async function pluginInspect(
 
 function buildHintMessage(options, sbtVersion?: string) {
   const dgArgs =
-    '`sbt ' + buildArgs(options.args, false, false, sbtVersion).join(' ') + '`';
+    '`sbt ' +
+    buildArgs(options.args, false, false, [], sbtVersion).join(' ') +
+    '`';
   const csArgs = '`sbt ' + buildArgs(options.args, true).join(' ') + '`';
   return (
     '\n\n' +
@@ -286,10 +512,26 @@ function isSbt2OrLater(sbtVersion?: string): boolean {
   return !!version && version.major >= 2;
 }
 
+// Arguments for the one-off sbt launches that list the build's projects. They
+// follow the same rules as the dependency tree launch: sbt 2 runs in the
+// foreground (`--server`), so no server JVM is left behind per listed build.
+function listingArgs(sbtArgs, command: string, sbtVersion?: string): string[] {
+  let args = ['-Dsbt.log.noformat=true'];
+  if (sbtArgs) {
+    args = args.concat(sbtArgs);
+  }
+  args.push(command);
+  if (isSbt2OrLater(sbtVersion)) {
+    args.unshift('--server');
+  }
+  return args;
+}
+
 export function buildArgs(
   sbtArgs,
   isCoursierProject?: boolean,
   isOutputGraph?: boolean,
+  projects: string[] = [],
   sbtVersion?: string,
 ) {
   // force plain output so we don't have to parse colour codes
@@ -298,10 +540,29 @@ export function buildArgs(
     args = args.concat(sbtArgs);
   }
 
+  // `dependencyTree` only reports the current project and the projects its root
+  // aggregates, so builds whose root does not aggregate every module report a
+  // partial tree. Ask each project in the build for its own tree instead.
+  const isMultiProject = projects.length > 1;
+
   if (isOutputGraph) {
     args.push('snykRenderTree'); // sbt-dependency-graph
   } else if (isCoursierProject) {
-    args.push('coursierDependencyTree'); // coursier
+    if (isMultiProject) {
+      args.push(
+        ...joinCommands(
+          perProjectCommands(projects, ['coursierDependencyTree']),
+          sbtVersion,
+        ),
+      ); // coursier
+    } else {
+      args.push('coursierDependencyTree'); // coursier
+    }
+  } else if (isMultiProject) {
+    if (isSbt2OrLater(sbtVersion)) {
+      args.unshift('--server');
+    }
+    args.push(...nativeMultiProjectCommands(projects, sbtVersion)); // sbt native
   } else if (isSbt2OrLater(sbtVersion)) {
     args.unshift('--server');
     args.push('set asciiGraphWidth := 999999999; dependencyTree');
@@ -312,4 +573,43 @@ export function buildArgs(
   }
 
   return args;
+}
+
+function perProjectCommands(projects: string[], tasks: string[]): string[] {
+  return projects.flatMap((project) => [`project ${project}`, ...tasks]);
+}
+
+function isSbt0(sbtVersion?: string): boolean {
+  return !!sbtVersion && semver.lt(sbtVersion, '1.0.0');
+}
+
+// sbt 0.13 treats every argument as one command and rejects a ';'-separated
+// list, so it gets one argument per command. Later versions get a single
+// argument, which also works with the sbt 2 thin client.
+function joinCommands(commands: string[], sbtVersion?: string): string[] {
+  return isSbt0(sbtVersion) ? commands : [commands.join('; ')];
+}
+
+function nativeMultiProjectCommands(
+  projects: string[],
+  sbtVersion?: string,
+): string[] {
+  // enhance sbt default output width from 40 chars to the max, for every
+  // project rather than only the one that is current when the build loads
+  if (isSbt0(sbtVersion)) {
+    return joinCommands(
+      perProjectCommands(projects, [
+        'set asciiGraphWidth := 999999999',
+        'dependencyTree',
+      ]),
+      sbtVersion,
+    );
+  }
+  return joinCommands(
+    [
+      'set ThisBuild / asciiGraphWidth := 999999999',
+      ...perProjectCommands(projects, ['dependencyTree']),
+    ],
+    sbtVersion,
+  );
 }
